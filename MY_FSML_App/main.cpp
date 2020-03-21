@@ -78,9 +78,9 @@ int main(int argc, char** argv)
 
     int fpsCounter{0};
     double targetFPS{144};
-    sf::Time targetFrameTime{sf::microseconds(1'000'000 / targetFPS)};
+    sf::Time targetFrameTime{sf::microseconds(1'000'000. / targetFPS)};
     sf::Time lastFrameTime{};
-    game::deltaTime = lastFrameTime.asMicroseconds() / 1000.0f;
+    game::deltaTime = lastFrameTime.asMicroseconds() / 1000.f;
 
 
     sf::Clock fpsClock;
@@ -117,15 +117,14 @@ int main(int argc, char** argv)
         ++fpsCounter;
 
         lastFrameTime = frameClock.getElapsedTime();
-        game::deltaTime = lastFrameTime.asMicroseconds() / 1000.0;
+        game::deltaTime = lastFrameTime.asMicroseconds() / 1000.;
         frameClock.restart();
-
 
         if (fpsClock.getElapsedTime() >= SECOND)
         {
             fpsClock.restart();
             std::cout << "FPS: " << fpsCounter << std::endl;
-            fpsCounter = 0u;
+            fpsCounter = 0;
         }
     }
 }
