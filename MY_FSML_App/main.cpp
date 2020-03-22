@@ -1,6 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Sleep.hpp>
 
+
+#include "AssetManager.h"
 #include "FPP_Player.h"
 #include "InputHandler.h"
 #include "Renderer.h"
@@ -66,6 +68,9 @@ int main(int argc, char** argv)
         INITIAL_PLAYER_DIR
     };
 
+    game::AssetManager assetManager{"asset_info.json"};
+    assetManager.loadAssetInfo();
+
     game::Renderer renderer{
         player,
         WINDOW_WIDTH,
@@ -78,10 +83,10 @@ int main(int argc, char** argv)
 
     int fpsCounter{0};
     double targetFPS{144};
-    sf::Time targetFrameTime{sf::microseconds(1'000'000. / targetFPS)};
+    sf::Time targetFrameTime{sf::microseconds(1'000'000 / targetFPS)};
     sf::Time lastFrameTime{};
     game::deltaTime = lastFrameTime.asMicroseconds() / 1000.f;
-
+    
 
     sf::Clock fpsClock;
     sf::Clock frameClock;
