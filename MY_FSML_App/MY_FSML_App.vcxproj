@@ -153,7 +153,8 @@
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="FPP_Player.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="ImageWrapper.cpp" />
+    <ClCompile Include="SpriteManager.cpp" />
+    <ClCompile Include="SpriteWrapper.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RayCaster.cpp" />
@@ -164,7 +165,8 @@
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="FPP_Player.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="ImageWrapper.h" />
+    <ClInclude Include="SpriteManager.h" />
+    <ClInclude Include="SpriteWrapper.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="RayCaster.h" />
     <ClInclude Include="Renderer.h" />

@@ -4,11 +4,11 @@
 
 namespace game
 {
-    class ImageWrapper
+    class SpriteWrapper
     {
     public:
-        ImageWrapper(std::string imagePath,
-                     std::string imageName);
+        SpriteWrapper(std::string imagePath,
+                      std::string imageName);
 
         void load();
     private:
@@ -39,7 +39,7 @@ namespace game
             return image_;
         }
 
-        bool isIsLoaded() const
+        bool isLoaded() const
         {
             return isLoaded_;
         }

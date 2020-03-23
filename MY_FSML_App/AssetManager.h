@@ -4,7 +4,9 @@
 #include <unordered_map>
 
 
-#include "ImageWrapper.h"
+
+#include "SpriteManager.h"
+#include "SpriteWrapper.h"
 
 namespace game
 {
@@ -15,14 +17,18 @@ namespace game
 
 
         void loadAssetInfo();
+        void loadAssets();
 
     private:
         const std::string assetInfoFilePath_{};
         rapidjson::Document assetInfo_;
 
-        
-        std::unordered_map<std::string, ImageWrapper> sprites_{};
-        void loadSpriteInfo();
+
+        // SPRITE MANAGEMENT
+
+        SpriteManager spriteManager_;
+        void loadSpriteInfo(SpriteManager&);
+        void loadSprites();
 
     };
 

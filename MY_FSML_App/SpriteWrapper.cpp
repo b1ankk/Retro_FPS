@@ -1,10 +1,13 @@
-#include "ImageWrapper.h"
+#include "SpriteWrapper.h"
+
+#include <iostream>
+#include <ostream>
 #include <utility>
 
 namespace game
 {
 
-    ImageWrapper::ImageWrapper(std::string imagePath,
+    SpriteWrapper::SpriteWrapper(std::string imagePath,
                                std::string imageName) :
         imagePath_(std::move(imagePath)),
         imageName_(std::move(imageName))
@@ -12,10 +15,11 @@ namespace game
     }
 
     // Load the image from the specified file
-    void ImageWrapper::load()
+    void SpriteWrapper::load()
     {
         image_.loadFromFile(imagePath_);
         isLoaded_ = true;
+        std::cout << "Sprite loaded: " << imageName_ << std::endl;
     }
 
 

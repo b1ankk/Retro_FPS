@@ -9,18 +9,23 @@
 #include <ostream>
 #include <utility>
 
-#include "ImageLoader.h"
+
 
 namespace game
 {
     AssetManager::AssetManager(std::string assetInfoFilePath) :
         assetInfoFilePath_(std::move(assetInfoFilePath))
     {
+        loadAssetInfo();
     }
 
     void AssetManager::loadAssetInfo()
     {
         std::ifstream     file{assetInfoFilePath_};
+
+        if (!file.good())
+            throw std::runtime_error{"Error reading file: " + assetInfoFilePath_};
+
         std::stringstream buffer;
         buffer << file.rdbuf();
         std::string fileContents = buffer.str();
@@ -31,11 +36,16 @@ namespace game
 
         assetInfo_.Parse(fileContents.c_str());
 
-        loadSpriteInfo();
+        loadSpriteInfo(this->spriteManager_);
     }
 
 
-    void AssetManager::loadSpriteInfo()
+    void AssetManager::loadAssets()
+    {
+        loadSprites();
+    }
+
+    void AssetManager::loadSpriteInfo(SpriteManager& spriteManager)
     {
         rapidjson::Value& spriteInfo = assetInfo_["assets"]["sprites"];
         assert(spriteInfo.IsArray());
@@ -43,14 +53,18 @@ namespace game
         for (rapidjson::Value::ConstValueIterator itr = spriteInfo.Begin();
              itr != spriteInfo.End(); ++itr)
         {
-            ImageWrapper image{
+            spriteManager.loadSpriteInfo(
                 (*itr)["name"].GetString(),
                 (*itr)["path"].GetString()
-            };
-
-            sprites_.insert({image.getImageName(), std::move(image)});
+            );
         }
 
-        std::cout << "Sprites info loaded" << std::endl;
+        std::cout << "Sprites' info loaded" << std::endl;
+    }
+
+
+    void AssetManager::loadSprites()
+    {
+        spriteManager_.loadAllSprites();
     }
 }
