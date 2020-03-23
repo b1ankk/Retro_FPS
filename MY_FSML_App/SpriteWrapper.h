@@ -12,10 +12,12 @@ namespace game
 
         void load();
     private:
+
         // FIELDS
+
         const std::string imagePath_;
         const std::string imageName_;
-        sf::Image         image_;
+        sf::Image         image_{};
 
         // FLAGS
         bool isLoaded_{}; // whether the image was loaded
@@ -34,7 +36,10 @@ namespace game
             return imageName_;
         }
 
-        sf::Image getImage() const
+        /**
+         * @return a const reference to the instance's image
+         */
+        const sf::Image& getImage() const
         {
             return image_;
         }

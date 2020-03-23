@@ -1,4 +1,5 @@
 #include "InputHandler.h"
+#include "GameTime.h"
 
 namespace game
 {
@@ -19,6 +20,9 @@ namespace game
 
     void InputHandler::handleInput()
     {
+        if (!window_.hasFocus())
+            return;
+
         handleMouseLook();
         handleKeyMovement();
     }
@@ -63,7 +67,7 @@ namespace game
         }
 
         if (direction.x != 0 || direction.y != 0)
-            player_.move(direction, movementSpeed_ * 0.01);
+            player_.move(direction, movementSpeed_ / 1000. * game::GameTime::deltaTime());
     }
 }
 

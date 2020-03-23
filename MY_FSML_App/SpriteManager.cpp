@@ -1,10 +1,8 @@
-#include "SpriteManager.h"
-
 #include <iostream>
 #include <ostream>
 
-
 #include "SpriteWrapper.h"
+#include "SpriteManager.h"
 
 namespace game
 {

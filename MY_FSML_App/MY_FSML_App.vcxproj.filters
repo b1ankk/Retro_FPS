@@ -21,9 +21,6 @@
     <ClCompile Include="Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RayCaster.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="vector_additions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -45,12 +42,12 @@
     <ClCompile Include="SpriteManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameTime.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RayCaster.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="vector_additions.h">
@@ -72,6 +69,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SpriteManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameTime.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

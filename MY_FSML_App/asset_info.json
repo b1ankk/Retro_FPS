@@ -2,8 +2,8 @@
   "assets": {
     "sprites": [
       {
-        "name": "test_file",
-        "path": "text_file.txt"
+        "name": "wolfensteinBricks",
+        "path": "wolfenstein_bricks.png"
       }
     ]
   }
