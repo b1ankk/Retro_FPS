@@ -15,13 +15,12 @@ namespace game
     class Renderer
     {
     public:
-        Renderer(const FPP_Player& player,
-                 const int&        width,
-                 const int&        height,
-                 std::shared_ptr
-                 <sf::RenderWindow> renderWindow,
-                 const SpriteManager& spriteManager,
-                 const double&        renderDistance = 32.
+        Renderer(std::shared_ptr<const FPP_Player> player,
+                 const int&                        width,
+                 const int&                        height,
+                 std::shared_ptr<sf::RenderWindow> renderWindow,
+                 const SpriteManager&              spriteManager,
+                 const double&                     renderDistance = 32.
         );
 
         ~Renderer();
@@ -38,14 +37,14 @@ namespace game
 
         int width_;  // width to render
         int height_; // height to render
-        std::shared_ptr
-        <sf::RenderWindow> const renderWindow_;
+        std::shared_ptr<sf::RenderWindow> renderWindow_;
+        // sf::RenderWindow&        renderWindow_;
 
         const SpriteManager& spriteManager_;
         sf::Uint8*           screenBuffer_{};
 
-        const FPP_Player&   player_; // player object 
-        const sf::Vector2d& plane_;  // camera plane
+        std::shared_ptr<const FPP_Player> player_; // player object 
+        const sf::Vector2d&               plane_;  // camera plane
 
         double renderDistance_;
 

@@ -16,7 +16,6 @@ namespace game
     constexpr int MAP_WIDTH  = 24;
     constexpr int MAP_HEIGHT = 24;
 
-
     vector<vector<int>> tempWorldMap
     {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -59,15 +58,28 @@ int main(int argc, char** argv)
     const sf::Vector2d INITIAL_PLAYER_DIR{-1, 0};
 
     // Window initialization
-    sf::RenderWindow window{sf::VideoMode{WINDOW_WIDTH, WINDOW_HEIGHT},
-        "MyGame"/*, sf::Style::Fullscreen*/};
-
-    // Player object
-    game::FPP_Player player{
-        INITIAL_PLAYER_POS,
-        INITIAL_PLAYER_DIR
+    // std::shared_ptr<sf::RenderWindow> window = make_shared<sf::RenderWindow>(
+    //     sf::RenderWindow{sf::VideoMode{WINDOW_WIDTH, WINDOW_HEIGHT},
+    //                     "MyGame"/*, sf::Style::Fullscreen*/
+    //     }
+    // );
+    
+    std::shared_ptr<sf::RenderWindow> window{
+        new sf::RenderWindow{
+            sf::VideoMode{WINDOW_WIDTH, WINDOW_HEIGHT},
+                       "MyGame"/*, sf::Style::Fullscreen*/
+        }
     };
-
+    
+    
+    // Player object
+    std::shared_ptr<game::FPP_Player> player = std::make_shared<game::FPP_Player>(
+        game::FPP_Player{
+            INITIAL_PLAYER_POS,
+            INITIAL_PLAYER_DIR
+        }
+    );
+    
     game::AssetManager assetManager{"asset_info.json"};
     assetManager.loadAssets();
 
@@ -75,7 +87,7 @@ int main(int argc, char** argv)
         player,
         WINDOW_WIDTH,
         WINDOW_HEIGHT,
-        std::shared_ptr<sf::RenderWindow>(&window),
+        window,
         assetManager.spriteManager(),
     };
 
@@ -100,19 +112,19 @@ int main(int argc, char** argv)
     sf::Clock frameClock;
 
     sf::Time toFrameEnd;
-    while (window.isOpen())
+    while (window->isOpen())
     {
         // it is the most safe to handle window events in the function of creation
         sf::Event event; // NOLINT(cppcoreguidelines-pro-type-member-init, hicpp-member-init)
-        while (window.pollEvent(event))
+        while (window->pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
-                window.close();
+                window->close();
             if (event.type == sf::Event::KeyPressed)
             {
                 if (event.key.code == sf::Keyboard::Escape)
                 {
-                    window.close();
+                    window->close();
                     exit(0);
                 }
             }

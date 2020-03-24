@@ -21,7 +21,7 @@ namespace game
 
     void AssetManager::loadAssetInfo()
     {
-        std::ifstream     file{assetInfoFilePath_};
+        std::ifstream file{assetInfoFilePath_};
 
         if (!file.good())
             throw std::runtime_error{"Error reading file: " + assetInfoFilePath_};

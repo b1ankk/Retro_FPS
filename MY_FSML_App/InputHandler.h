@@ -8,14 +8,15 @@ namespace game
     class InputHandler
     {
     public:
-        InputHandler(sf::RenderWindow& window, FPP_Player& player);
+        InputHandler(std::shared_ptr<sf::RenderWindow> window,
+                     std::shared_ptr<FPP_Player> player);
 
         void handleInput();
 
     private:
         // REFERENCES
-        sf::RenderWindow& window_;
-        FPP_Player& player_;
+        std::shared_ptr<sf::RenderWindow> window_;
+        std::shared_ptr<FPP_Player> player_;
 
         // FIELDS
 
@@ -25,8 +26,8 @@ namespace game
         double movementSpeed_{1.};
 
         sf::Vector2i screenMiddle_{
-            static_cast<int>(window_.getSize().x) / 2,
-            static_cast<int>(window_.getSize().y) / 2
+            static_cast<int>(window_->getSize().x) / 2,
+            static_cast<int>(window_->getSize().y) / 2
         };
 
         

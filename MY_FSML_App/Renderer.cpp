@@ -8,19 +8,19 @@
 
 namespace game
 {
-    Renderer::Renderer(const FPP_Player&    player,
-                       const int&           width,
-                       const int&           height,
+    Renderer::Renderer(std::shared_ptr<const FPP_Player> player,
+                       const int&                        width,
+                       const int&                        height,
                        std::shared_ptr<sf::RenderWindow> renderWindow,
-                       const SpriteManager& spriteManager,
-                       const double&        renderDistance) :
+                       const SpriteManager&              spriteManager,
+                       const double&                     renderDistance) :
         width_(width),
         height_(height),
         renderWindow_(std::move(renderWindow)),
         spriteManager_(spriteManager),
-        screenBuffer_(new sf::Uint8[4L * width_ * height_]),
-        player_(player),
-        plane_(player.cameraPlane()),
+        screenBuffer_(new sf::Uint8[width_ * 4LL * height_]),
+        player_(std::move(player)),
+        plane_(player_->cameraPlane()),
         renderDistance_(renderDistance)
     {
     }
@@ -40,12 +40,12 @@ namespace game
             double cameraX = 2. * x / static_cast<double>(width_) - 1.; //x-coordinate in camera space
 
             sf::Vector2d rayDirection{
-                player_.direction().x + plane_.x * cameraX,
-                player_.direction().y + plane_.y * cameraX
+                player_->direction().x + plane_.x * cameraX,
+                player_->direction().y + plane_.y * cameraX
             };
 
             // get player's position on the grid
-            sf::Vector2i gridPosition = static_cast<sf::Vector2i>(player_.position());
+            sf::Vector2i gridPosition = static_cast<sf::Vector2i>(player_->position());
 
             // length of ray from one x or y-side to next x or y-side
             // not a Vector2!!! but separate values
@@ -61,22 +61,22 @@ namespace game
             if (rayDirection.x < 0)
             {
                 stepDirection.x = -1;
-                sideDistX = (player_.position().x - gridPosition.x) * deltaDistX;
+                sideDistX       = (player_->position().x - gridPosition.x) * deltaDistX;
             }
             else
             {
                 stepDirection.x = 1;
-                sideDistX = (gridPosition.x + 1.0 - player_.position().x) * deltaDistX;
+                sideDistX       = (gridPosition.x + 1.0 - player_->position().x) * deltaDistX;
             }
             if (rayDirection.y < 0)
             {
                 stepDirection.y = -1;
-                sideDistY = (player_.position().y - gridPosition.y) * deltaDistY;
+                sideDistY       = (player_->position().y - gridPosition.y) * deltaDistY;
             }
             else
             {
                 stepDirection.y = 1;
-                sideDistY = (gridPosition.y + 1.0 - player_.position().y) * deltaDistY;
+                sideDistY       = (gridPosition.y + 1.0 - player_->position().y) * deltaDistY;
             }
 
             bool        hit = false;
@@ -105,11 +105,11 @@ namespace game
             double wallPerpDist;
             // Calculate distance projected on camera direction (Euclidean distance will give fisheye effect!)
             if (side == WallHitSide::HORIZONTAL)
-                wallPerpDist = (gridPosition.x - player_.position().x
-                                + (1 - stepDirection.x) / 2) / rayDirection.x;
+                wallPerpDist = (gridPosition.x - player_->position().x
+                    + (1 - stepDirection.x) / 2) / rayDirection.x;
             else
-                wallPerpDist = (gridPosition.y - player_.position().y
-                                + (1 - stepDirection.y) / 2) / rayDirection.y;
+                wallPerpDist = (gridPosition.y - player_->position().y
+                    + (1 - stepDirection.y) / 2) / rayDirection.y;
 
 
             //Calculate height of line to draw on screen
@@ -122,27 +122,23 @@ namespace game
             int drawEnd = lineHeight / 2 + height_ / 2 /*+ static_cast<int>(verticalOffset)*/;
             if (drawEnd >= height_)
                 drawEnd = height_ - 1;
-
         }
-
-
     }
 
     void Renderer::drawPrimitiveWorld()
     {
-
         for (int x = 0; x < width_; ++x)
         {
             // calculate ray position and direction
             double cameraX = 2. * x / static_cast<double>(width_) - 1.; //x-coordinate in camera space
 
             sf::Vector2d rayDirection{
-                player_.direction().x + plane_.x * cameraX,
-                player_.direction().y + plane_.y * cameraX
+                player_->direction().x + plane_.x * cameraX,
+                player_->direction().y + plane_.y * cameraX
             };
 
             // get player's position on the grid
-            sf::Vector2i gridPosition = static_cast<sf::Vector2i>(player_.position());
+            sf::Vector2i gridPosition = static_cast<sf::Vector2i>(player_->position());
 
             // length of ray from one x or y-side to next x or y-side
             // not a Vector2!!! but separate values
@@ -158,22 +154,22 @@ namespace game
             if (rayDirection.x < 0)
             {
                 stepDirection.x = -1;
-                sideDistX = (player_.position().x - gridPosition.x) * deltaDistX;
+                sideDistX       = (player_->position().x - gridPosition.x) * deltaDistX;
             }
             else
             {
                 stepDirection.x = 1;
-                sideDistX = (gridPosition.x + 1.0 - player_.position().x) * deltaDistX;
+                sideDistX       = (gridPosition.x + 1.0 - player_->position().x) * deltaDistX;
             }
             if (rayDirection.y < 0)
             {
                 stepDirection.y = -1;
-                sideDistY = (player_.position().y - gridPosition.y) * deltaDistY;
+                sideDistY       = (player_->position().y - gridPosition.y) * deltaDistY;
             }
             else
             {
                 stepDirection.y = 1;
-                sideDistY = (gridPosition.y + 1.0 - player_.position().y) * deltaDistY;
+                sideDistY       = (gridPosition.y + 1.0 - player_->position().y) * deltaDistY;
             }
 
             bool        hit = false;
@@ -202,11 +198,11 @@ namespace game
             double wallPerpDist;
             // Calculate distance projected on camera direction (Euclidean distance will give fisheye effect!)
             if (side == WallHitSide::HORIZONTAL)
-                wallPerpDist = (gridPosition.x - player_.position().x
-                                + (1 - stepDirection.x) / 2) / rayDirection.x;
+                wallPerpDist = (gridPosition.x - player_->position().x
+                    + (1 - stepDirection.x) / 2) / rayDirection.x;
             else
-                wallPerpDist = (gridPosition.y - player_.position().y
-                                + (1 - stepDirection.y) / 2) / rayDirection.y;
+                wallPerpDist = (gridPosition.y - player_->position().y
+                    + (1 - stepDirection.y) / 2) / rayDirection.y;
 
 
             //Calculate height of line to draw on screen
