@@ -90,9 +90,8 @@ int main(int argc, char** argv)
 
 
     int fpsCounter{0};
-    double targetFPS{300.};
+    double targetFPS{144.};
     sf::Time targetFrameTime{sf::microseconds(1'000'000. / targetFPS)};
-    cout << targetFrameTime.asMicroseconds() << endl;
     sf::Time lastFrameTime;
     game::GameTime::deltaTime_ = lastFrameTime.asMicroseconds() / 1000.f;
     
@@ -123,7 +122,6 @@ int main(int argc, char** argv)
         renderer.renderFrame();
 
         toFrameEnd = targetFrameTime - frameClock.getElapsedTime();
-        cout << toFrameEnd.asMicroseconds() << endl;
         if (toFrameEnd > sf::Time::Zero)
             sf::sleep(toFrameEnd);
 

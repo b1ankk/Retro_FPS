@@ -18,7 +18,7 @@ namespace game
         Renderer(const FPP_Player& player,
                  const int&        width,
                  const int&        height,
-                 std::unique_ptr
+                 std::shared_ptr
                  <sf::RenderWindow> renderWindow,
                  const SpriteManager& spriteManager,
                  const double&        renderDistance = 32.
@@ -38,7 +38,7 @@ namespace game
 
         int width_;  // width to render
         int height_; // height to render
-        std::unique_ptr
+        std::shared_ptr
         <sf::RenderWindow> const renderWindow_;
 
         const SpriteManager& spriteManager_;
