@@ -27,9 +27,14 @@ namespace game
         void loadSpriteInfo(SpriteManager&);
         void loadSprites();
 
+
+    public:
+        const SpriteManager& spriteManager() const
+        {
+            return spriteManager_;
+        }
+
+
     };
 
-    
-
-    
 }

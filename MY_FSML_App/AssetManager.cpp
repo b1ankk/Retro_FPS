@@ -62,7 +62,6 @@ namespace game
         std::cout << "Sprites' info loaded" << std::endl;
     }
 
-
     void AssetManager::loadSprites()
     {
         spriteManager_.loadAllSprites();
