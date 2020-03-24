@@ -67,7 +67,7 @@ namespace game
         }
 
         if (direction.x != 0 || direction.y != 0)
-            player_.move(direction, movementSpeed_ / 1000. * game::GameTime::deltaTime());
+            player_.move(direction, movementSpeed_ / 1000. * GameTime::deltaTime());
     }
 }
 

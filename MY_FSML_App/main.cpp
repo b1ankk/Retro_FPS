@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Sleep.hpp>
 #include "AssetManager.h"
 #include "FPP_Player.h"
@@ -10,6 +11,7 @@ using namespace std;
 
 namespace game
 {
+    
 
     constexpr int MAP_WIDTH  = 24;
     constexpr int MAP_HEIGHT = 24;
@@ -43,7 +45,7 @@ namespace game
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
     };
 
-    sf::RenderWindow* g_windowPtr{};
+    
 }
 
 int main(int argc, char** argv)
@@ -59,7 +61,6 @@ int main(int argc, char** argv)
     // Window initialization
     sf::RenderWindow window{sf::VideoMode{WINDOW_WIDTH, WINDOW_HEIGHT},
         "MyGame"/*, sf::Style::Fullscreen*/};
-    game::g_windowPtr = &window;
 
     // Player object
     game::FPP_Player player{
@@ -73,17 +74,26 @@ int main(int argc, char** argv)
     game::Renderer renderer{
         player,
         WINDOW_WIDTH,
-        WINDOW_HEIGHT
+        WINDOW_HEIGHT,
+        std::shared_ptr<sf::RenderWindow>(&window),
+        assetManager.spriteManager(),
     };
 
     game::InputHandler inputHandler{window, player};
     inputHandler.setMouseLookSensitivityX(100);
     inputHandler.setMovementSpeed(5);
 
+
+
+
+
+
+
     int fpsCounter{0};
-    double targetFPS{144.};
-    sf::Time targetFrameTime{sf::microseconds(1'000'000 / targetFPS)};
-    sf::Time lastFrameTime{};
+    double targetFPS{300.};
+    sf::Time targetFrameTime{sf::microseconds(1'000'000. / targetFPS)};
+    cout << targetFrameTime.asMicroseconds() << endl;
+    sf::Time lastFrameTime;
     game::GameTime::deltaTime_ = lastFrameTime.asMicroseconds() / 1000.f;
     
 
@@ -110,11 +120,10 @@ int main(int argc, char** argv)
         }
         inputHandler.handleInput();
 
-        window.clear(sf::Color::Black);
         renderer.renderFrame();
-        window.display();
 
         toFrameEnd = targetFrameTime - frameClock.getElapsedTime();
+        cout << toFrameEnd.asMicroseconds() << endl;
         if (toFrameEnd > sf::Time::Zero)
             sf::sleep(toFrameEnd);
 
