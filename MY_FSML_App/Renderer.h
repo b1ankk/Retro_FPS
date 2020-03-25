@@ -11,12 +11,12 @@ namespace game
     class Renderer
     {
     public:
-        Renderer(std::shared_ptr<const FPP_Player> player,
-                 const int&                        width,
-                 const int&                        height,
-                 std::shared_ptr<sf::RenderWindow> renderWindow,
-                 const SpriteManager&              spriteManager,
-                 const double&                     renderDistance = 32.
+        Renderer(std::shared_ptr<const FPP_Player>          player,
+                 const int&                                 width,
+                 const int&                                 height,
+                 std::shared_ptr<sf::RenderWindow>          renderWindow,
+                 std::shared_ptr<const SpriteManager> spriteManager,
+                 const double&                              renderDistance = 32.
         );
 
         ~Renderer();
@@ -31,13 +31,13 @@ namespace game
     private:
         // FIELDS
 
-        int width_;  // width to render
-        int height_; // height to render
+        int                               width_;  // width to render
+        int                               height_; // height to render
         std::shared_ptr<sf::RenderWindow> renderWindow_;
         // sf::RenderWindow&        renderWindow_;
 
-        const SpriteManager& spriteManager_;
-        sf::Uint8*           screenBuffer_{};
+        std::shared_ptr<const SpriteManager> spriteManager_;
+        sf::Uint8*                                 screenBuffer_{};
 
         std::shared_ptr<const FPP_Player> player_; // player object 
         const sf::Vector2d&               plane_;  // camera plane
@@ -47,7 +47,6 @@ namespace game
         // ENUMS & CONSTANTS
 
         enum class WallHitSide { NONE, VERTICAL, HORIZONTAL };
-
 
 
         // METHODS

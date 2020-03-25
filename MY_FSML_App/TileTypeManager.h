@@ -10,7 +10,7 @@ namespace game
     public:
 
         void loadTileTypeInfo(std::string, std::shared_ptr<game::TileType>);
-        void loadAllTileTypes(const SpriteManager&);
+        void loadAllTileTypes(const std::shared_ptr<const SpriteManager>&);
 
     private:
 

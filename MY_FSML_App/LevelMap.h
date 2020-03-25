@@ -14,23 +14,13 @@ namespace game
     class LevelMap
     {
     public:
-        // explicit LevelMap(const TileTypeManager& tileTypeManager) :
-        //     tileTypeManager_(tileTypeManager)
-        // {
-        // }
-
-
-
-        const auto& operator[](const unsigned& row) const 
-        {
-            return (TEST_MAP)[row];
-        }
-
+        
         void loadFromInts(const IntMap&);
         void loadFromTiles(TileMap);
 
+
     private:
-        const TileTypeManager& tileTypeManager_{};
+        std::shared_ptr<const game::TileTypeManager> tileTypeManager_{};
         MapDataPtr mapData_;
 
         const IntMap TEST_MAP
@@ -61,7 +51,25 @@ namespace game
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
         };
         
+    public:
 
+        // GETTERS & SETTERS
+
+        void setTileTypeManager(std::shared_ptr<const game::TileTypeManager> tileTypeManager)
+        {
+            tileTypeManager_ = std::move(tileTypeManager);
+
+        }
+
+        const auto& operator[](const unsigned& row) const
+        {
+            return (TEST_MAP)[row];
+        }
+
+        MapDataPtr mapData() const
+        {
+            return mapData_;
+        }
 
     };
 }

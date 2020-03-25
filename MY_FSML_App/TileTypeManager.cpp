@@ -12,12 +12,12 @@ namespace game
         );
     }
 
-    void TileTypeManager::loadAllTileTypes(const SpriteManager& spriteManager)
+    void TileTypeManager::loadAllTileTypes(const std::shared_ptr<const game::SpriteManager>& spriteManager)
     {
         for (auto& tileTypePair : tileTypesMap_)
         {
             tileTypePair.second->setSprite(
-                spriteManager.getSprite(tileTypePair.second->spriteName())
+                spriteManager->getSprite(tileTypePair.second->spriteName())
             );
             std::cout << "Loaded tileType: " << tileTypePair.first << std::endl;
         }

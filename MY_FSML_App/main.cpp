@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "LevelMap.h"
 #include "AssetManager.h"
+#include "Game.h"
 #include "GameTime.h"
 #include "InputHandler.h"
 #include "Renderer.h"
@@ -29,20 +30,23 @@ int main(int argc, char** argv)
 
     const sf::Vector2d INITIAL_PLAYER_POS{22, 12};
     const sf::Vector2d INITIAL_PLAYER_DIR{-1, 0};
-
-    // Window initialization
-    // std::shared_ptr<sf::RenderWindow> window = make_shared<sf::RenderWindow>(
-    //     sf::RenderWindow{sf::VideoMode{WINDOW_WIDTH, WINDOW_HEIGHT},
-    //                     "MyGame"/*, sf::Style::Fullscreen*/
-    //     }
-    // );
-    
+ 
     std::shared_ptr<sf::RenderWindow> window{
         new sf::RenderWindow{
             sf::VideoMode{WINDOW_WIDTH, WINDOW_HEIGHT},
-                       "MyGame"/*, sf::Style::Fullscreen*/
+            "MyGame"/*, sf::Style::Fullscreen*/
         }
     };
+
+    // LOAD ASSETS
+
+    game::AssetManager assetManager{"asset_info.json"};
+    assetManager.loadAssets();
+
+
+    // LOAD MAP
+
+    game::tempWorldMap.setTileTypeManager(assetManager.tileTypeManager());
     
     
     // Player object
@@ -53,9 +57,8 @@ int main(int argc, char** argv)
         }
     );
     
-    game::AssetManager assetManager{"asset_info.json"};
-    assetManager.loadAssets();
 
+    // World renderer
     game::Renderer renderer{
         player,
         WINDOW_WIDTH,
@@ -64,11 +67,10 @@ int main(int argc, char** argv)
         assetManager.spriteManager(),
     };
 
+    // Player input handler
     game::InputHandler inputHandler{window, player};
     inputHandler.setMouseLookSensitivityX(100);
     inputHandler.setMovementSpeed(5);
-
-
 
 
 

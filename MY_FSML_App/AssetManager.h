@@ -23,20 +23,35 @@ namespace game
 
         // SPRITE MANAGEMENT
 
-        SpriteManager spriteManager_;
+        std::shared_ptr<game::SpriteManager> spriteManager_{
+            std::make_shared<game::SpriteManager>(
+                game::SpriteManager{}
+            )
+        };
+        // SpriteManager spriteManager_;
         void loadSpriteInfo();
         void loadSprites();
 
         // TILE TYPE MANAGEMENT
 
-        TileTypeManager tileTypeManager_;
+        std::shared_ptr<game::TileTypeManager> tileTypeManager_{
+            std::make_shared<game::TileTypeManager>(
+                game::TileTypeManager{}
+            )
+        };
+        // TileTypeManager tileTypeManager_;
         void loadTileTypeInfo();
         void loadTileTypes();
 
     public:
-        const SpriteManager& spriteManager() const
+        std::shared_ptr<const game::SpriteManager> spriteManager() const
         {
             return spriteManager_;
+        }
+
+        std::shared_ptr<const game::TileTypeManager> tileTypeManager() const
+        {
+            return tileTypeManager_;
         }
 
 

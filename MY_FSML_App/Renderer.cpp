@@ -1,17 +1,20 @@
 #include "Renderer.h"
 
+#include <utility>
+
 namespace game
 {
-    Renderer::Renderer(std::shared_ptr<const FPP_Player> player,
-                       const int&                        width,
-                       const int&                        height,
-                       std::shared_ptr<sf::RenderWindow> renderWindow,
-                       const SpriteManager&              spriteManager,
-                       const double&                     renderDistance) :
+    Renderer::Renderer(std::shared_ptr<const FPP_Player>          player,
+                       const int&                                 width,
+                       const int&                                 height,
+                       std::shared_ptr<sf::RenderWindow>          renderWindow,
+                       std::shared_ptr
+                       <const SpriteManager> spriteManager,
+                       const double&                              renderDistance) :
         width_(width),
         height_(height),
         renderWindow_(std::move(renderWindow)),
-        spriteManager_(spriteManager),
+        spriteManager_(std::move(spriteManager)),
         screenBuffer_(new sf::Uint8[width_ * 4LL * height_]),
         player_(std::move(player)),
         plane_(player_->cameraPlane()),

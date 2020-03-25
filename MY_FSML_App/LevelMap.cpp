@@ -1,9 +1,13 @@
 #include "LevelMap.h"
 
+#include <cassert>
+
 namespace game
 {
     void LevelMap::loadFromInts(const IntMap& ints)
     {
+        assert(tileTypeManager_ != nullptr && "LevelMap::titleTypeManager_ cannot be nullptr when loading");
+
         TileMap newTileMap = TileMap(ints.size());
         for (size_t i = 0; i < ints.size(); ++i)
         {
@@ -12,7 +16,7 @@ namespace game
             {
                 newTileMap[i].push_back(
                     MapTile{
-                        tileTypeManager_.getTypeForId(ints[i][j]),
+                        tileTypeManager_->getTypeForId(ints[i][j]),
                         sf::Vector2i{static_cast<int>(j), static_cast<int>(i)}
                     }
                 );

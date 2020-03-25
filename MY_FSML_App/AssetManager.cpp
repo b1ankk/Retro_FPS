@@ -51,7 +51,7 @@ namespace game
         for (rapidjson::Value::ConstValueIterator itr = spriteInfo.Begin();
              itr != spriteInfo.End(); ++itr)
         {
-            spriteManager_.loadSpriteInfo(
+            spriteManager_->loadSpriteInfo(
                 (*itr)["name"].GetString(),
                 (*itr)["path"].GetString()
             );
@@ -62,7 +62,7 @@ namespace game
 
     void AssetManager::loadSprites()
     {
-        spriteManager_.loadAllSprites();
+        spriteManager_->loadAllSprites();
     }
 
     void AssetManager::loadTileTypeInfo()
@@ -83,7 +83,7 @@ namespace game
                 )
             };
 
-            tileTypeManager_.loadTileTypeInfo(tileName, tileType);
+            tileTypeManager_->loadTileTypeInfo(tileName, tileType);
         }
 
         std::cout << "TileType' info loaded" << std::endl;
@@ -91,7 +91,7 @@ namespace game
 
     void AssetManager::loadTileTypes()
     {
-        tileTypeManager_.loadAllTileTypes(spriteManager_);
+        tileTypeManager_->loadAllTileTypes(spriteManager_);
     }
 
 
