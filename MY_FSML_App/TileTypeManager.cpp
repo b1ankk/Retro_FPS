@@ -1,6 +1,5 @@
 #include "TileTypeManager.h"
 
-#include <ostream>
 
 namespace game
 {

@@ -1,8 +1,6 @@
 #pragma once
+
 #include <memory>
-#include <string>
-#include <utility>
-#include <vector>
 
 #include "SpriteWrapper.h"
 
@@ -12,7 +10,6 @@ namespace game
     {
     public:
 
-        //TODO TileType
         explicit TileType(std::string name,
                           std::string spriteName,
                           const bool isTraversable = false, 
@@ -23,9 +20,6 @@ namespace game
               isTraversable_(isTraversable)
         {
         }
-
-        
-        
 
 
     private:

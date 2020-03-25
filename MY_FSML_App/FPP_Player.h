@@ -1,8 +1,4 @@
 #pragma once
-#include <iostream>
-#include <ostream>
-#include <SFML/Graphics.hpp>
-
 
 #include "LevelMap.h"
 #include "vector_additions.h"

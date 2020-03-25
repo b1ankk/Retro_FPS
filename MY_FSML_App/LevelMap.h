@@ -1,26 +1,39 @@
 #pragma once
-#include <utility>
+
 #include <vector>
+
+#include "MapTile.h"
+#include "TileTypeManager.h"
 
 namespace game
 {
+    using IntMap = std::vector<std::vector<int>>;
+    using TileMap = std::vector<std::vector<MapTile>>;
+    using MapDataPtr = std::shared_ptr<const game::TileMap>;
+
     class LevelMap
     {
     public:
-        LevelMap() = default;
+        // explicit LevelMap(const TileTypeManager& tileTypeManager) :
+        //     tileTypeManager_(tileTypeManager)
+        // {
+        // }
 
-        explicit LevelMap(std::vector<std::vector<int>> vectors)
-            : map_(std::move(vectors))
+
+
+        const auto& operator[](const unsigned& row) const 
         {
+            return (TEST_MAP)[row];
         }
 
-        const std::vector<int>& operator[](const unsigned& row)
-        {
-            return map_[row];
-        }
+        void loadFromInts(const IntMap&);
+        void loadFromTiles(TileMap);
 
     private:
-        std::vector<std::vector<int>> map_
+        const TileTypeManager& tileTypeManager_{};
+        MapDataPtr mapData_;
+
+        const IntMap TEST_MAP
         {
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
             {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -47,6 +60,7 @@ namespace game
             {1, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
         };
+        
 
 
     };

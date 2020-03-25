@@ -1,8 +1,6 @@
 #include "SpriteWrapper.h"
 
 #include <iostream>
-#include <ostream>
-#include <utility>
 
 namespace game
 {

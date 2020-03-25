@@ -3,7 +3,6 @@
 #include <rapidjson/document.h>
 #include <unordered_map>
 
-#include "SpriteManager.h"
 #include "TileTypeManager.h"
 
 
@@ -28,7 +27,7 @@ namespace game
         void loadSpriteInfo();
         void loadSprites();
 
-        // TODO TILE TYPE MANAGEMENT
+        // TILE TYPE MANAGEMENT
 
         TileTypeManager tileTypeManager_;
         void loadTileTypeInfo();

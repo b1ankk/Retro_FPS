@@ -1,14 +1,10 @@
 #include <fstream>
 #include <sstream>
-#include <string>
+#include <ostream>
+
 #include <rapidjson/document.h>
 
 #include "AssetManager.h"
-#include <iostream>
-#include <memory>
-#include <ostream>
-#include <utility>
-
 
 
 namespace game

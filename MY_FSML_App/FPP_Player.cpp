@@ -1,7 +1,7 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
+
 #include "FPP_Player.h"
-#include "vector_additions.h"
 
 
 namespace game

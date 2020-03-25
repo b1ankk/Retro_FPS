@@ -1,7 +1,4 @@
 #pragma once
-#include <memory>
-#include <ostream>
-#include <unordered_map>
 
 #include "SpriteManager.h"
 #include "TileType.h"
@@ -22,7 +19,7 @@ namespace game
 
 
     public:
-        std::shared_ptr<TileType> getTypeForId(const size_t& id)
+        std::shared_ptr<TileType> getTypeForId(const size_t& id) const
         {
             if (id < tileTypeOrder_.size())
                 return tileTypeOrder_[id];
@@ -31,7 +28,7 @@ namespace game
                 + std::to_string(id)};
         }
 
-        std::shared_ptr<TileType> getTypeForName(const std::string& name)
+        std::shared_ptr<TileType> getTypeForName(const std::string& name) const
         {
             try
             {

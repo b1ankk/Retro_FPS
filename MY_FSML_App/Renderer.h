@@ -1,13 +1,8 @@
 #pragma once
-#include <array>
-#include <ostream>
+
 #include <SFML/Graphics/RenderWindow.hpp>
-#include <string>
 
 #include "FPP_Player.h"
-#include "LevelMap.h"
-#include "SpriteManager.h"
-#include "vector_additions.h"
 
 namespace game
 {
@@ -53,10 +48,6 @@ namespace game
 
         enum class WallHitSide { NONE, VERTICAL, HORIZONTAL };
 
-        std::array<std::string, 1> spriteNames
-        {
-            "wolfensteinBricks"
-        };
 
 
         // METHODS

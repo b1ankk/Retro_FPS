@@ -1,12 +1,9 @@
 #include <SFML/Graphics.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/System/Sleep.hpp>
 #include "LevelMap.h"
 #include "AssetManager.h"
-#include "FPP_Player.h"
+#include "GameTime.h"
 #include "InputHandler.h"
 #include "Renderer.h"
-#include "GameTime.h"
 
 
 using namespace std;

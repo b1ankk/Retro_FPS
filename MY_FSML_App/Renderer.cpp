@@ -1,10 +1,4 @@
-#include <cmath>
 #include "Renderer.h"
-
-#include <SFML/Graphics/Image.hpp>
-#include <utility>
-
-#include "vector_additions.h"
 
 namespace game
 {

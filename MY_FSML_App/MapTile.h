@@ -1,8 +1,5 @@
 #pragma once
-#include <memory>
-#include <string>
 
-#include "SpriteWrapper.h"
 #include "TileType.h"
 
 namespace game
@@ -10,16 +7,33 @@ namespace game
     class MapTile
     {
     public:
-        // TODO MapTile
-
+        MapTile(std::shared_ptr<const TileType> tileType,
+                const sf::Vector2i& position)
+            : tileType_(std::move(tileType)),
+              position(position)
+        {
+        }
 
     private:
-        std::shared_ptr<TileType> tileType_;
-
+        std::shared_ptr<const TileType> tileType_;
+        sf::Vector2i position{};
 
     public:
         // GETTERS & SETTERS
+        int id() const
+        {
+            return tileType_->id();
+        }
 
+        std::string name() const
+        {
+            return tileType_->name();
+        }
+
+        std::string spriteName() const
+        {
+            return tileType_->spriteName();
+        }
 
         bool isIsTraversable() const
         {

@@ -1,6 +1,6 @@
-#include "InputHandler.h"
+#include <SFML/Graphics.hpp>
 
-#include <utility>
+#include "InputHandler.h"
 #include "GameTime.h"
 
 namespace game
