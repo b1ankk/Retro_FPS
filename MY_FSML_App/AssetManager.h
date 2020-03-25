@@ -4,6 +4,7 @@
 #include <unordered_map>
 
 #include "SpriteManager.h"
+#include "TileTypeManager.h"
 
 
 namespace game
@@ -24,9 +25,14 @@ namespace game
         // SPRITE MANAGEMENT
 
         SpriteManager spriteManager_;
-        void loadSpriteInfo(SpriteManager&);
+        void loadSpriteInfo();
         void loadSprites();
 
+        // TODO TILE TYPE MANAGEMENT
+
+        TileTypeManager tileTypeManager_;
+        void loadTileTypeInfo();
+        void loadTileTypes();
 
     public:
         const SpriteManager& spriteManager() const

@@ -6,9 +6,8 @@
 
 namespace game
 {
-
     SpriteWrapper::SpriteWrapper(std::string imagePath,
-                               std::string imageName) :
+                                 std::string imageName) :
         imagePath_(std::move(imagePath)),
         imageName_(std::move(imageName))
     {
@@ -21,7 +20,4 @@ namespace game
         isLoaded_ = true;
         std::cout << "Sprite loaded: " << imageName_ << std::endl;
     }
-
-
-    
 }

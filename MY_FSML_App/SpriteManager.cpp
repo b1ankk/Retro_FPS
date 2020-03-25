@@ -1,5 +1,6 @@
 #include <iostream>
 #include <ostream>
+#include <utility>
 
 #include "SpriteWrapper.h"
 #include "SpriteManager.h"
@@ -8,12 +9,17 @@ namespace game
 {
     void SpriteManager::loadSpriteInfo(std::string imageName, std::string imagePath)
     {
-        SpriteWrapper spriteWrapper{
-            std::move(imagePath), std::move(imageName)
+        std::shared_ptr<SpriteWrapper> spriteWrapper{
+            std::make_shared<SpriteWrapper>(
+                SpriteWrapper{
+                    std::move(imagePath),
+                    std::move(imageName)
+                }
+            )
         };
 
         spritesMap_.insert(
-            {spriteWrapper.getImageName(), std::move(spriteWrapper)}
+            {spriteWrapper->getImageName(), std::move(spriteWrapper)}
         );
 
     }
@@ -24,11 +30,11 @@ namespace game
         {
             try
             {
-                sprite.second.load();
+                sprite.second->load();
             }
             catch (...)
             {
-                std::cerr << "Error loading file: " << sprite.second.getImagePath() << std::endl;
+                std::cerr << "Error loading file: " << sprite.second->getImagePath() << std::endl;
             }
         }
     }

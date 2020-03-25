@@ -5,12 +5,13 @@
 #include <string>
 
 #include "FPP_Player.h"
+#include "LevelMap.h"
 #include "SpriteManager.h"
 #include "vector_additions.h"
 
 namespace game
 {
-    extern std::vector<std::vector<int>> tempWorldMap;
+    extern game::LevelMap tempWorldMap;
 
     class Renderer
     {

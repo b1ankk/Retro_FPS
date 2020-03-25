@@ -5,6 +5,14 @@
         "name": "wolfensteinBricks",
         "path": "wolfenstein_bricks.png"
       }
+    ],
+    "tile_types": [
+      {
+        "name": "brickWall",
+        "sprite_name": "wolfensteinBricks",
+        "traversable": false
+      }
     ]
+    
   }
 }

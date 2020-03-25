@@ -36,16 +36,18 @@ namespace game
 
         assetInfo_.Parse(fileContents.c_str());
 
-        loadSpriteInfo(this->spriteManager_);
+        loadSpriteInfo();
+        loadTileTypeInfo();
     }
 
 
     void AssetManager::loadAssets()
     {
         loadSprites();
+        loadTileTypes();
     }
 
-    void AssetManager::loadSpriteInfo(SpriteManager& spriteManager)
+    void AssetManager::loadSpriteInfo()
     {
         rapidjson::Value& spriteInfo = assetInfo_["assets"]["sprites"];
         assert(spriteInfo.IsArray());
@@ -53,7 +55,7 @@ namespace game
         for (rapidjson::Value::ConstValueIterator itr = spriteInfo.Begin();
              itr != spriteInfo.End(); ++itr)
         {
-            spriteManager.loadSpriteInfo(
+            spriteManager_.loadSpriteInfo(
                 (*itr)["name"].GetString(),
                 (*itr)["path"].GetString()
             );
@@ -66,4 +68,37 @@ namespace game
     {
         spriteManager_.loadAllSprites();
     }
+
+    void AssetManager::loadTileTypeInfo()
+    {
+        rapidjson::Value& spriteInfo = assetInfo_["assets"]["tile_types"];
+        assert(spriteInfo.IsArray());
+
+        for (rapidjson::Value::ConstValueIterator itr = spriteInfo.Begin();
+             itr != spriteInfo.End(); ++itr)
+        {
+            std::string tileName{(*itr)["name"].GetString()};
+            const std::shared_ptr<TileType> tileType{
+                std::make_shared<TileType>(
+                    tileName,
+                    (*itr)["sprite_name"].GetString(),
+                    (*itr)["traversable"].GetBool()
+
+                )
+            };
+
+            tileTypeManager_.loadTileTypeInfo(tileName, tileType);
+        }
+
+        std::cout << "TileType' info loaded" << std::endl;
+    }
+
+    void AssetManager::loadTileTypes()
+    {
+        tileTypeManager_.loadAllTileTypes(spriteManager_);
+    }
+
+
+
+
 }

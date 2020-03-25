@@ -3,13 +3,15 @@
 #include <ostream>
 #include <SFML/Graphics.hpp>
 
+
+#include "LevelMap.h"
 #include "vector_additions.h"
 
 
 
 namespace game
 {
-    extern std::vector<std::vector<int>> tempWorldMap;
+    extern LevelMap tempWorldMap;
 
     class FPP_Player
     {

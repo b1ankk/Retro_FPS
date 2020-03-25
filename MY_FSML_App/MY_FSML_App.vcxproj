@@ -153,23 +153,31 @@
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="FPP_Player.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="LevelMap.cpp" />
+    <ClCompile Include="MapTile.cpp" />
     <ClCompile Include="SpriteManager.cpp" />
     <ClCompile Include="SpriteWrapper.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="GameTime.cpp" />
+    <ClCompile Include="TileType.cpp" />
+    <ClCompile Include="TileTypeManager.cpp" />
     <ClCompile Include="vector_additions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="FPP_Player.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="LevelMap.h" />
+    <ClInclude Include="MapTile.h" />
     <ClInclude Include="SpriteManager.h" />
     <ClInclude Include="SpriteWrapper.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="GameTime.h" />
+    <ClInclude Include="TileType.h" />
+    <ClInclude Include="TileTypeManager.h" />
     <ClInclude Include="vector_additions.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
