@@ -20,7 +20,7 @@ namespace game
 
     public:
         // GETTERS & SETTERS
-        int id() const
+        int typeId() const
         {
             return tileType_->id();
         }
@@ -40,6 +40,10 @@ namespace game
             return tileType_->isTraversable();
         }
 
+        const sf::Image& image() const
+        {
+            return tileType_->image()->image();
+        }
         
     };
 

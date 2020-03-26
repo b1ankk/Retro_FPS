@@ -6,17 +6,18 @@
 
 namespace game
 {
-    extern game::LevelMap tempWorldMap;
+    
 
     class Renderer
     {
     public:
-        Renderer(std::shared_ptr<const FPP_Player>          player,
-                 const int&                                 width,
-                 const int&                                 height,
-                 std::shared_ptr<sf::RenderWindow>          renderWindow,
+        Renderer(std::shared_ptr<const FPP_Player>    player,
+                 const int&                           width,
+                 const int&                           height,
+                 std::shared_ptr<sf::RenderWindow>    renderWindow,
                  std::shared_ptr<const SpriteManager> spriteManager,
-                 const double&                              renderDistance = 32.
+                 std::shared_ptr<const LevelMap>      levelMap,
+                 const double&                        renderDistance = 32.
         );
 
         ~Renderer();
@@ -24,8 +25,9 @@ namespace game
         void renderFrame()
         {
             renderWindow_->clear(sf::Color::Black);
-            drawPrimitiveWorld();
+            drawTexturedWorld();
             renderWindow_->display();
+
         }
 
     private:
@@ -37,10 +39,13 @@ namespace game
         // sf::RenderWindow&        renderWindow_;
 
         std::shared_ptr<const SpriteManager> spriteManager_;
-        sf::Uint8*                                 screenBuffer_{};
+        size_t                               screenBufferLength_{};
+        sf::Uint8*                           screenBuffer_{};
+        sf::Uint8*                           screenClearBuffer_{nullptr};
 
         std::shared_ptr<const FPP_Player> player_; // player object 
         const sf::Vector2d&               plane_;  // camera plane
+        std::shared_ptr<const LevelMap>   levelMap_;
 
         double renderDistance_;
 

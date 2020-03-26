@@ -1,31 +1,55 @@
+#include <SFML/Graphics.hpp>
+
 #include "Renderer.h"
 
+#include <cstring>
+#include <fstream>
 #include <utility>
 
 namespace game
 {
-    Renderer::Renderer(std::shared_ptr<const FPP_Player>          player,
-                       const int&                                 width,
-                       const int&                                 height,
-                       std::shared_ptr<sf::RenderWindow>          renderWindow,
+    Renderer::Renderer(std::shared_ptr<const FPP_Player> player,
+                       const int&                        width,
+                       const int&                        height,
+                       std::shared_ptr<sf::RenderWindow> renderWindow,
                        std::shared_ptr
-                       <const SpriteManager> spriteManager,
-                       const double&                              renderDistance) :
+                       <const SpriteManager>           spriteManager,
+                       std::shared_ptr<const LevelMap> levelMap,
+                       const double&                   renderDistance) :
         width_(width),
         height_(height),
         renderWindow_(std::move(renderWindow)),
         spriteManager_(std::move(spriteManager)),
-        screenBuffer_(new sf::Uint8[width_ * 4LL * height_]),
+        screenBufferLength_(width_ * 4LLU * height_),
+        screenBuffer_(new sf::Uint8[screenBufferLength_]{0}),
+        screenClearBuffer_(new sf::Uint8[screenBufferLength_]{0}),
         player_(std::move(player)),
         plane_(player_->cameraPlane()),
+        levelMap_(std::move(levelMap)),
         renderDistance_(renderDistance)
     {
+        // std::fill(screenBuffer_, screenBuffer_ + screenBufferLength_, 0xff);
+
+        const sf::Uint32 mask = 0xff;
+        for (sf::Uint8* ptr = screenBuffer_,
+             *endPtr = screenBuffer_ + screenBufferLength_;
+             ptr < endPtr;
+             ptr += 4)
+        {
+            ptr[0] = static_cast<sf::Uint8>(mask >> 24u);
+            ptr[1] = static_cast<sf::Uint8>(mask >> 16u);
+            ptr[2] = static_cast<sf::Uint8>(mask >> 8u);
+            ptr[3] = static_cast<sf::Uint8>(mask);
+
+        }
+
     }
 
 
     Renderer::~Renderer()
     {
         delete[] screenBuffer_;
+        delete[] screenClearBuffer_;
     }
 
 
@@ -95,7 +119,7 @@ namespace game
                     side = WallHitSide::VERTICAL;
                 }
                 // Check if ray has hit a wall
-                if (tempWorldMap[gridPosition.x][gridPosition.y] > 0)
+                if ((*levelMap_)[gridPosition.x][gridPosition.y] > 0)
                     hit = true;
             }
 
@@ -110,7 +134,7 @@ namespace game
 
 
             //Calculate height of line to draw on screen
-            int lineHeight = static_cast<int>(height_ / wallPerpDist);
+            const int lineHeight = static_cast<int>(height_ / wallPerpDist);
 
             //calculate lowest and highest pixel to fill in current stripe
             int drawStart = -lineHeight / 2 + height_ / 2 /*+ static_cast<int>(verticalOffset)*/;
@@ -119,11 +143,122 @@ namespace game
             int drawEnd = lineHeight / 2 + height_ / 2 /*+ static_cast<int>(verticalOffset)*/;
             if (drawEnd >= height_)
                 drawEnd = height_ - 1;
+
+
+            const game::MapTile tile = (*levelMap_->mapData())[gridPosition.x][gridPosition.y];
+
+            if (tile.typeId() != 0)
+            {
+                const sf::Image& image = tile.image(); // image to use in rendering
+                const sf::Vector2i imageSize{
+                    static_cast<int>(image.getSize().x),
+                    static_cast<int>(image.getSize().y)
+                };
+
+                double wallHitX; // where the wall was hit
+                if (side == WallHitSide::HORIZONTAL)
+                    wallHitX = player_->position().y + wallPerpDist * rayDirection.y;
+                else
+                    wallHitX = player_->position().x + wallPerpDist * rayDirection.x;
+                wallHitX -= floor(wallHitX);
+
+                int imageX = static_cast<int>(wallHitX * imageSize.x);
+                if (side == WallHitSide::HORIZONTAL && rayDirection.x > 0 ||
+                    side == WallHitSide::VERTICAL && rayDirection.y < 0)
+                    imageX = imageSize.x - imageX - 1;
+
+
+                const double step = 1.0 * imageSize.y / lineHeight; // image texture increase for screen pixel
+
+                double imageYPos = (drawStart - height_ / 2 + lineHeight / 2) * step;
+
+                int imageY = static_cast<int>(imageYPos)& (imageSize.y - 1);
+                sf::Uint8* imagePtr =
+                    const_cast<sf::Uint8*>(image.getPixelsPtr()) + imageY * 4LLU * imageSize.x + 4LLU * imageX;
+
+                sf::Uint8* screenPtr{};
+
+                bool once{true};
+                // static size_t imagePtrStep = imageSize.x * 4LLU;
+                for (int y = drawStart; y < drawEnd; ++y, screenPtr += 4LLU * width_)
+                {
+                    if (once)
+                    {
+                        screenPtr = (screenBuffer_ + y * 4LLU * width_ + x * 4LLU);
+                        once = false;
+                    }
+                    int old = imageY;
+                    imageY = static_cast<int>(imageYPos) & (imageSize.y - 1);
+                    imageYPos += step;
+                    // sf::Uint32 color = image.getPixel(imageX, imageY).toInteger();
+                    
+
+
+                    // if (side == WallHitSide::VERTICAL)
+                    //     color >>= 1;
+
+                    // *(screenBuffer_ + y * 4LLU * width_ + x * 4LLU) = color >> 24;
+                    // *(screenBuffer_ + y * 4LLU * width_ + x * 4LLU + 1) = color >> 16;
+                    // *(screenBuffer_ + y * 4LLU * width_ + x * 4LLU + 2) = color >> 8;
+                    // *(screenBuffer_ + y * 4LLU * width_ + x * 4LLU + 3) = color;
+
+                    
+                    if (old != imageY)
+                        imagePtr += imageSize.x * 4LLU * (imageY - old);
+
+                    
+                    std::memcpy(
+                        (screenPtr),
+                        imagePtr, 4
+                    );
+
+                    
+                }
+
+                
+            }
+
+            
+
+            
+                
         }
+
+        sf::Image frame;
+        frame.create(width_, height_, screenBuffer_);
+        sf::Texture texture;
+        // texture.setSrgb(true);
+        texture.loadFromImage(frame);
+        sf::Sprite sprite{texture};
+        sprite.scale(1, 1);
+
+
+        renderWindow_->draw(sprite);
+        
+
+        std::memcpy(screenBuffer_, screenClearBuffer_, screenBufferLength_);
+
+
+        // int mask = 0xff;
+        // for (auto ptr = screenBuffer_,
+        //      end = screenBuffer_ + screenBufferLength_;
+        //      ptr < end;
+        //      ptr += 4)
+        // {
+        //     std::memcpy(
+        //         (ptr),
+        //         &mask, 4
+        //     );
+        // }
+
+
+
     }
 
     void Renderer::drawPrimitiveWorld()
     {
+        renderWindow_->clear(sf::Color::Black);
+
         for (int x = 0; x < width_; ++x)
         {
             // calculate ray position and direction
@@ -188,7 +323,7 @@ namespace game
                     side = WallHitSide::VERTICAL;
                 }
                 // Check if ray has hit a wall
-                if (tempWorldMap[gridPosition.x][gridPosition.y] > 0)
+                if ((*levelMap_)[gridPosition.x][gridPosition.y] > 0)
                     hit = true;
             }
 
@@ -217,7 +352,7 @@ namespace game
             sf::Color color;
 
             //TODO change world map handling
-            switch (tempWorldMap[gridPosition.x][gridPosition.y])
+            switch ((*levelMap_)[gridPosition.x][gridPosition.y])
             {
                 case 1:
                     color = sf::Color::Red;

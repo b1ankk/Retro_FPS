@@ -2,17 +2,87 @@
   "assets": {
     "sprites": [
       {
-        "name": "wolfensteinBricks",
-        "path": "wolfenstein_bricks.png"
+        "name": "wolf_blue_bricks",
+        "path": "sprites\\wolf_blue_bricks.png"
+      },
+      {
+        "name": "wolf_bricks",
+        "path": "sprites\\wolf_bricks.png"
+      },
+      {
+        "name": "wolf_gobelin",
+        "path": "sprites\\wolf_gobelin.png"
+      },
+      {
+        "name": "wolf_mossy_bricks",
+        "path": "sprites\\wolf_mossy_bricks.png"
+      },
+      {
+        "name": "wolf_pink",
+        "path": "sprites\\wolf_pink.png"
+      },
+      {
+        "name": "wolf_stone",
+        "path": "sprites\\wolf_stone.png"
+      },
+      {
+        "name": "wolf_stone_bricks",
+        "path": "sprites\\wolf_stone_bricks.png"
+      },
+      {
+        "name": "wolf_wood",
+        "path": "sprites\\wolf_wood.png"
       }
     ],
     "tile_types": [
       {
-        "name": "brickWall",
-        "sprite_name": "wolfensteinBricks",
+        "id": 1,
+        "name": "wolf_blue_bricks_wall",
+        "sprite_name": "wolf_blue_bricks",
+        "traversable": false
+      },
+      {
+        "id": 2,
+        "name": "wolf_bricks_wall",
+        "sprite_name": "wolf_bricks",
+        "traversable": false
+      },
+      {
+        "id": 3,
+        "name": "wolf_gobelin_wall",
+        "sprite_name": "wolf_gobelin",
+        "traversable": false
+      },
+      {
+        "id": 4,
+        "name": "wolf_mossy_bricks_wall",
+        "sprite_name": "wolf_mossy_bricks",
+        "traversable": false
+      },
+      {
+        "id": 5,
+        "name": "wolf_pink_wall",
+        "sprite_name": "wolf_pink",
+        "traversable": false
+      },
+      {
+        "id": 6,
+        "name": "wolf_stone_wall",
+        "sprite_name": "wolf_stone",
+        "traversable": false
+      },
+      {
+        "id": 7,
+        "name": "wolf_stone_bricks_wall",
+        "sprite_name": "wolf_stone_bricks",
+        "traversable": false
+      },
+      {
+        "id": 8,
+        "name": "wolf_wood_wall",
+        "sprite_name": "wolf_wood",
         "traversable": false
       }
     ]
-    
   }
 }

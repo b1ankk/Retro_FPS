@@ -16,8 +16,6 @@ namespace game
     constexpr int MAP_WIDTH  = 24;
     constexpr int MAP_HEIGHT = 24;
 
-    game::LevelMap tempWorldMap;
-
     
 }
 
@@ -30,11 +28,14 @@ int main(int argc, char** argv)
 
     const sf::Vector2d INITIAL_PLAYER_POS{22, 12};
     const sf::Vector2d INITIAL_PLAYER_DIR{-1, 0};
- 
+
+    sf::ContextSettings cs;
+    cs.depthBits = 32;
+    cs.sRgbCapable = true;
     std::shared_ptr<sf::RenderWindow> window{
         new sf::RenderWindow{
             sf::VideoMode{WINDOW_WIDTH, WINDOW_HEIGHT},
-            "MyGame"/*, sf::Style::Fullscreen*/
+            "MyGame", sf::Style::Fullscreen, /*cs*/
         }
     };
 
@@ -44,16 +45,22 @@ int main(int argc, char** argv)
     assetManager.loadAssets();
 
 
-    // LOAD MAP
-
-    game::tempWorldMap.setTileTypeManager(assetManager.tileTypeManager());
+    // CREATE LEVEL MAP
+    game::LevelMapPtr levelMap{
+        make_shared<game::LevelMap>(
+                game::LevelMap{}
+        )
+    };
+    levelMap->setTileTypeManager(assetManager.tileTypeManager());
+    levelMap->loadFromInts(levelMap->TEST_MAP);
     
     
     // Player object
     std::shared_ptr<game::FPP_Player> player = std::make_shared<game::FPP_Player>(
         game::FPP_Player{
             INITIAL_PLAYER_POS,
-            INITIAL_PLAYER_DIR
+            INITIAL_PLAYER_DIR,
+            levelMap
         }
     );
     
@@ -61,15 +68,16 @@ int main(int argc, char** argv)
     // World renderer
     game::Renderer renderer{
         player,
-        WINDOW_WIDTH,
-        WINDOW_HEIGHT,
+        WINDOW_WIDTH / 1,
+        WINDOW_HEIGHT / 1,
         window,
         assetManager.spriteManager(),
+        levelMap
     };
 
     // Player input handler
     game::InputHandler inputHandler{window, player};
-    inputHandler.setMouseLookSensitivityX(100);
+    inputHandler.setMouseLookSensitivityX(150);
     inputHandler.setMovementSpeed(5);
 
 
@@ -109,6 +117,7 @@ int main(int argc, char** argv)
         inputHandler.handleInput();
 
         renderer.renderFrame();
+        
 
         toFrameEnd = targetFrameTime - frameClock.getElapsedTime();
         if (toFrameEnd > sf::Time::Zero)

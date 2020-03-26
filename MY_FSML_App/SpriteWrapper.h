@@ -39,7 +39,7 @@ namespace game
         /**
          * @return a const reference to the instance's image
          */
-        const sf::Image& getImage() const
+        const sf::Image& image() const
         {
             return image_;
         }

@@ -6,12 +6,14 @@
 
 namespace game
 {
-    FPP_Player::FPP_Player(const sf::Vector2d& position,
-                           const sf::Vector2d& direction,
-                           const sf::Vector2d& cameraPlane) :
+    FPP_Player::FPP_Player(const sf::Vector2d&             position,
+                           const sf::Vector2d&             direction,
+                           std::shared_ptr<game::LevelMap> levelMap,
+                           const sf::Vector2d&             cameraPlane) :
         position_(position),
         direction_(direction),
-        cameraPlane_(cameraPlane)
+        cameraPlane_(cameraPlane),
+        levelMap_(std::move(levelMap))
     {
     }
 
@@ -42,9 +44,22 @@ namespace game
         // TODO better collision system
 
 
-        if (tempWorldMap[static_cast<int>(newPosition.x)][static_cast<int>(position_.y)] == 0)
+        if ((*levelMap_->mapData())
+            [static_cast<size_t>(newPosition.x)][static_cast<int>(position_.y)].isIsTraversable())
+        {
             position_.x = newPosition.x;
-        if (tempWorldMap[static_cast<int>(position_.x)][static_cast<int>(newPosition.y)] == 0)
+        }
+
+        if ((*levelMap_->mapData())
+            [static_cast<int>(position_.x)][static_cast<int>(newPosition.y)].isIsTraversable())
+        {
             position_.y = newPosition.y;
+        }
+
+
+        // if (tempWorldMap[static_cast<int>(newPosition.x)][static_cast<int>(position_.y)] == 0)
+        //     position_.x = newPosition.x;
+        // if (tempWorldMap[static_cast<int>(position_.x)][static_cast<int>(newPosition.y)] == 0)
+        //     position_.y = newPosition.y;
     }
 }

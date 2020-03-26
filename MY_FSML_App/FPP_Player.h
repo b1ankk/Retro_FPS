@@ -7,13 +7,13 @@
 
 namespace game
 {
-    extern LevelMap tempWorldMap;
 
     class FPP_Player
     {
     public:
         FPP_Player(const sf::Vector2d& position,
                    const sf::Vector2d& direction,
+                   std::shared_ptr<game::LevelMap> levelMap,
                    const sf::Vector2d& cameraPlane = sf::Vector2d{0, 0.66});
             
 
@@ -41,6 +41,8 @@ namespace game
         sf::Vector2d position_{};   // position of the player
         sf::Vector2d direction_{};  // player's facing direction
         sf::Vector2d cameraPlane_{};
+
+        std::shared_ptr<game::LevelMap> levelMap_{};
 
     };
 }

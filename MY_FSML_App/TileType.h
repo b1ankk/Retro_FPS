@@ -61,5 +61,10 @@ namespace game
         {
             return isTraversable_;
         }
+
+        std::shared_ptr<const game::SpriteWrapper> image() const
+        {
+            return sprite_;
+        }
     };
 }
