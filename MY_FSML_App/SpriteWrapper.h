@@ -18,9 +18,14 @@ namespace game
         const std::string imagePath_;
         const std::string imageName_;
         sf::Image         image_{};
+        sf::Image         shadowImage_{};
 
         // FLAGS
         bool isLoaded_{}; // whether the image was loaded
+
+        // METHODS
+
+        void putShadow(sf::Image&, const sf::Uint8&);
 
     public:
         //  GETTERS & SETTERS
@@ -42,6 +47,11 @@ namespace game
         const sf::Image& image() const
         {
             return image_;
+        }
+
+        const sf::Image& shadowImage() const
+        {
+            return shadowImage_;
         }
 
         bool isLoaded() const

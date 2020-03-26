@@ -14,7 +14,7 @@ namespace game
         FPP_Player(const sf::Vector2d& position,
                    const sf::Vector2d& direction,
                    std::shared_ptr<game::LevelMap> levelMap,
-                   const sf::Vector2d& cameraPlane = sf::Vector2d{0, 0.66});
+                   const sf::Vector2d& cameraPlane = sf::Vector2d{0, 0.888888888888});
             
 
         void rotate(const double&);         // rotate camera in y axis

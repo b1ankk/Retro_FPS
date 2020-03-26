@@ -44,6 +44,11 @@ namespace game
         {
             return tileType_->image()->image();
         }
+
+        const sf::Image& shadowImage() const
+        {
+            return tileType_->image()->shadowImage();
+        }
         
     };
 

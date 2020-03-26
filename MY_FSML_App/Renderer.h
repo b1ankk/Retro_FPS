@@ -24,10 +24,9 @@ namespace game
 
         void renderFrame()
         {
-            renderWindow_->clear(sf::Color::Black);
+            renderWindow_->clear(sf::Color{0xff});
             drawTexturedWorld();
             renderWindow_->display();
-
         }
 
     private:

@@ -4,6 +4,7 @@
 
 #include <cstring>
 #include <fstream>
+#include <ostream>
 #include <utility>
 
 namespace game
@@ -30,16 +31,31 @@ namespace game
     {
         // std::fill(screenBuffer_, screenBuffer_ + screenBufferLength_, 0xff);
 
-        const sf::Uint32 mask = 0xff;
-        for (sf::Uint8* ptr = screenBuffer_,
-             *endPtr = screenBuffer_ + screenBufferLength_;
+        constexpr sf::Uint32 mask = 0xff303030;
+        constexpr sf::Uint32 mask2 = 0xff606060;
+        for (sf::Uint8* ptr = screenClearBuffer_,
+             *endPtr = screenClearBuffer_ + screenBufferLength_;
              ptr < endPtr;
              ptr += 4)
         {
-            ptr[0] = static_cast<sf::Uint8>(mask >> 24u);
-            ptr[1] = static_cast<sf::Uint8>(mask >> 16u);
-            ptr[2] = static_cast<sf::Uint8>(mask >> 8u);
-            ptr[3] = static_cast<sf::Uint8>(mask);
+            if (ptr < screenClearBuffer_ + screenBufferLength_ / 2)
+            {
+                memcpy(ptr, &mask, 4);
+
+                // ptr[0] = static_cast<sf::Uint8>(mask >> 24u);
+                // ptr[1] = static_cast<sf::Uint8>(mask >> 16u);
+                // ptr[2] = static_cast<sf::Uint8>(mask >> 8u);
+                // ptr[3] = static_cast<sf::Uint8>(mask);
+            }
+            else 
+            {
+                memcpy(ptr, &mask2, 4);
+
+                // ptr[0] = static_cast<sf::Uint8>(mask2 >> 24u);
+                // ptr[1] = static_cast<sf::Uint8>(mask2 >> 16u);
+                // ptr[2] = static_cast<sf::Uint8>(mask2 >> 8u);
+                // ptr[3] = static_cast<sf::Uint8>(mask2);
+            }
 
         }
 
@@ -150,6 +166,7 @@ namespace game
             if (tile.typeId() != 0)
             {
                 const sf::Image& image = tile.image(); // image to use in rendering
+                const sf::Image& shadowImage = tile.shadowImage(); // shadowed image used to imitate shading
                 const sf::Vector2i imageSize{
                     static_cast<int>(image.getSize().x),
                     static_cast<int>(image.getSize().y)
@@ -173,8 +190,22 @@ namespace game
                 double imageYPos = (drawStart - height_ / 2 + lineHeight / 2) * step;
 
                 int imageY = static_cast<int>(imageYPos)& (imageSize.y - 1);
-                sf::Uint8* imagePtr =
-                    const_cast<sf::Uint8*>(image.getPixelsPtr()) + imageY * 4LLU * imageSize.x + 4LLU * imageX;
+
+                
+
+                sf::Uint8* imagePtr;
+
+                if (side == WallHitSide::VERTICAL)
+                {
+                    imagePtr =
+                        const_cast<sf::Uint8*>(shadowImage.getPixelsPtr()) + imageY * 4LLU * imageSize.x + 4LLU * imageX;
+                }  
+                else
+                {
+                    imagePtr =
+                        const_cast<sf::Uint8*>(image.getPixelsPtr()) + imageY * 4LLU * imageSize.x + 4LLU * imageX;
+                }
+
 
                 sf::Uint8* screenPtr{};
 
@@ -209,7 +240,7 @@ namespace game
                     
                     std::memcpy(
                         (screenPtr),
-                        imagePtr, 4
+                        imagePtr, 3
                     );
 
                     
@@ -250,7 +281,6 @@ namespace game
         //         &mask, 4
         //     );
         // }
-
 
 
     }
