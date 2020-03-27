@@ -31,6 +31,7 @@ namespace game
     {
         // std::fill(screenBuffer_, screenBuffer_ + screenBufferLength_, 0xff);
 
+        // prepare cleared buffer for fast copy
         constexpr sf::Uint32 mask = 0xff303030;
         constexpr sf::Uint32 mask2 = 0xff606060;
         for (sf::Uint8* ptr = screenClearBuffer_,
@@ -41,22 +42,17 @@ namespace game
             if (ptr < screenClearBuffer_ + screenBufferLength_ / 2)
             {
                 memcpy(ptr, &mask, 4);
-
-                // ptr[0] = static_cast<sf::Uint8>(mask >> 24u);
-                // ptr[1] = static_cast<sf::Uint8>(mask >> 16u);
-                // ptr[2] = static_cast<sf::Uint8>(mask >> 8u);
-                // ptr[3] = static_cast<sf::Uint8>(mask);
             }
             else 
             {
                 memcpy(ptr, &mask2, 4);
-
-                // ptr[0] = static_cast<sf::Uint8>(mask2 >> 24u);
-                // ptr[1] = static_cast<sf::Uint8>(mask2 >> 16u);
-                // ptr[2] = static_cast<sf::Uint8>(mask2 >> 8u);
-                // ptr[3] = static_cast<sf::Uint8>(mask2);
             }
 
+        }
+
+        for (int i = 0; i <= THREADS; ++i)
+        {
+            renderThreadBounds_.push_back(width_ * i / THREADS);
         }
 
     }
@@ -69,9 +65,9 @@ namespace game
     }
 
 
-    void Renderer::drawTexturedWorld()
+    void Renderer::drawTexturedWorld(const int& start, const int& end)
     {
-        for (int x = 0; x < width_; ++x)
+        for (int x = start; x < end; ++x)
         {
             // calculate ray position and direction
             double cameraX = 2. * x / static_cast<double>(width_) - 1.; //x-coordinate in camera space
@@ -255,19 +251,7 @@ namespace game
                 
         }
 
-        sf::Image frame;
-        frame.create(width_, height_, screenBuffer_);
-        sf::Texture texture;
-        // texture.setSrgb(true);
-        texture.loadFromImage(frame);
-        sf::Sprite sprite{texture};
-        sprite.scale(1, 1);
-
-
-        renderWindow_->draw(sprite);
         
-
-        std::memcpy(screenBuffer_, screenClearBuffer_, screenBufferLength_);
 
 
         // int mask = 0xff;
