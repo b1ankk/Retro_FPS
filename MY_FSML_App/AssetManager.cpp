@@ -45,19 +45,26 @@ namespace game
 
     void AssetManager::loadSpriteInfo()
     {
-        rapidjson::Value& spriteInfo = assetInfo_["assets"]["sprites"];
-        assert(spriteInfo.IsArray());
+        const char* const subFolders[]{"wall", "entity"};
 
-        for (rapidjson::Value::ConstValueIterator itr = spriteInfo.Begin();
-             itr != spriteInfo.End(); ++itr)
+        for (const char* subFolder : subFolders)
         {
-            spriteManager_->loadSpriteInfo(
-                (*itr)["name"].GetString(),
-                (*itr)["path"].GetString()
-            );
-        }
+            rapidjson::Value& spriteInfo = assetInfo_["assets"]["sprites"][subFolder];
 
-        std::cout << "Sprites' info loaded" << std::endl;
+            assert(spriteInfo.IsArray());
+
+            for (rapidjson::Value::ConstValueIterator itr = spriteInfo.Begin();
+                 itr != spriteInfo.End(); ++itr)
+            {
+                spriteManager_->loadSpriteInfo(
+                    (*itr)["name"].GetString(),
+                    (*itr)["path"].GetString()
+                );
+            }
+
+            std::cout << "Sprites' info loaded" << std::endl;
+        }
+        
     }
 
     void AssetManager::loadSprites()
