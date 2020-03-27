@@ -64,7 +64,6 @@ int main(int argc, char** argv)
         }
     );
     
-
     // World renderer
     game::Renderer renderer{
         player,
@@ -85,7 +84,17 @@ int main(int argc, char** argv)
 
 
     int fpsCounter{0};
+    int lastFps{0};
+
+    renderer.setFpsPointer(std::shared_ptr<int>{&lastFps});
+    renderer.setFPSCounter(true);
+
+
+
     double targetFPS{144.};
+
+
+
     sf::Time targetFrameTime{
         sf::microseconds(static_cast<sf::Int64>(1'000'000. / targetFPS))
     };
@@ -133,6 +142,7 @@ int main(int argc, char** argv)
         {
             fpsClock.restart();
             std::cout << "FPS: " << fpsCounter << std::endl;
+            lastFps = fpsCounter;
             fpsCounter = 0;
         }
     }

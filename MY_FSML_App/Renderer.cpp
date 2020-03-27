@@ -5,6 +5,8 @@
 #include <cstring>
 #include <fstream>
 #include <ostream>
+#include <SFML/Graphics/RenderStates.hpp>
+#include <stdexcept>
 #include <utility>
 
 namespace game
@@ -62,6 +64,50 @@ namespace game
     {
         delete[] screenBuffer_;
         delete[] screenClearBuffer_;
+    }
+
+    void Renderer::renderFrame()
+    {
+        renderWindow_->clear(sf::Color{0xff});
+
+        std::vector<std::future<void>> futures;
+        futures.reserve(THREADS);
+        for (int i = 0; i < THREADS; ++i)
+        {
+            futures.push_back(
+                std::async(
+                    std::launch::async,
+                    [this](const int& start, const int& end) { drawTexturedWorld(start, end); },
+                    renderThreadBounds_[i],
+                    renderThreadBounds_[i + 1]
+                )
+            );
+        }
+
+        for (const auto& f : futures)
+            f.wait();
+
+        sf::Image frame;
+        frame.create(width_, height_, screenBuffer_);
+        sf::Texture texture;
+        // texture.setSrgb(true);
+        texture.loadFromImage(frame);
+        sf::Sprite sprite{texture};
+        sprite.scale(1, 1);
+
+        if (drawFpsCounter_)
+            drawFPS();
+
+        renderWindow_->draw(sprite);
+
+        
+        std::memcpy(screenBuffer_, screenClearBuffer_, screenBufferLength_);
+
+        if (fpsCounter_)
+            drawFPS();
+
+
+        renderWindow_->display();
     }
 
 
@@ -268,6 +314,35 @@ namespace game
 
 
     }
+
+    
+
+    void Renderer::drawFPS()
+    {
+        //TODO better text rendering implementation
+
+        static std::unique_ptr<sf::Font> font{nullptr};
+        static sf::Text text;
+
+        if (font == nullptr)
+        {
+            font = std::make_unique<sf::Font>(sf::Font{});
+            if (!font->loadFromFile("assets\\fonts\\Pixeled.ttf"))
+            {
+                std::cerr << "Error occured trying to read font: assets\\fonts\\VCR_OSD_MONO_1.001.tff";
+                throw std::runtime_error("Error occured trying to read font: assets\\fonts\\VCR_OSD_MONO_1.001.tff");
+            }
+            text.setFont(*font);
+            text.setCharacterSize(34);
+            text.setFillColor(sf::Color::White);
+        }
+        
+        text.setString("FPS: " + std::to_string(*fpsCounter_));
+        sf::RenderStates rs{};
+        rs.transform.translate(10, 20);
+        renderWindow_->draw(text, rs);
+    }
+    
 
     void Renderer::drawPrimitiveWorld()
     {

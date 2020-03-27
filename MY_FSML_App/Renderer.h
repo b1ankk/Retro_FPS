@@ -26,42 +26,9 @@ namespace game
 
         ~Renderer();
 
-        void renderFrame()
-        {
-            renderWindow_->clear(sf::Color{0xff});
-
-            std::vector<std::future<void>> futures;
-            futures.reserve(THREADS);
-            for (int i = 0; i < THREADS; ++i)
-            {
-                futures.push_back(
-                    std::async(std::launch::async,
-                    [this] (const int& start, const int& end){drawTexturedWorld(start, end); },
-                    renderThreadBounds_[i], 
-                    renderThreadBounds_[i + 1])
-                );
-            }
-
-            for (const auto& f : futures)
-                f.wait();
-
-            sf::Image frame;
-            frame.create(width_, height_, screenBuffer_);
-            sf::Texture texture;
-            // texture.setSrgb(true);
-            texture.loadFromImage(frame);
-            sf::Sprite sprite{texture};
-            sprite.scale(1, 1);
+        void renderFrame();
 
 
-            renderWindow_->draw(sprite);
-
-
-            std::memcpy(screenBuffer_, screenClearBuffer_, screenBufferLength_);
-
-
-            renderWindow_->display();
-        }
 
     private:
         // FIELDS
@@ -80,7 +47,13 @@ namespace game
         const sf::Vector2d&               plane_;    // camera plane
         std::shared_ptr<const LevelMap>   levelMap_; // map of the level
 
-        double renderDistance_;
+        std::shared_ptr<int> fpsCounter_{nullptr};
+        double renderDistance_{32.};
+
+        // FLAGS
+
+        bool drawFpsCounter_{};
+
 
         // ENUMS & CONSTANTS
 
@@ -92,5 +65,25 @@ namespace game
         void drawPrimitiveWorld();
 
         void drawTexturedWorld(const int& start, const int& end);
+
+        void drawFPS();
+
+
+    public:
+        bool idDrawfpsCounter() const
+        {
+            return drawFpsCounter_;
+        }
+
+        void setFPSCounter(bool renderFpsCounter)
+        {
+            drawFpsCounter_ = renderFpsCounter;
+        }
+
+
+        void setFpsPointer(std::shared_ptr<int> fpsCounter)
+        {
+            fpsCounter_ = std::move(fpsCounter);
+        }
     };
 }
