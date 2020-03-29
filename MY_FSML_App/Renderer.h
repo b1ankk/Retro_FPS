@@ -38,10 +38,14 @@ namespace game
         std::shared_ptr<sf::RenderWindow> renderWindow_;
         // sf::RenderWindow&        renderWindow_;
 
+        // Screen buffer operations
+
         std::shared_ptr<const SpriteManager> spriteManager_;
         size_t                               screenBufferLength_{};
         sf::Uint8*                           screenBuffer_{};
         sf::Uint8*                           screenClearBuffer_{nullptr};
+
+        // Data holders
 
         std::shared_ptr<const FPP_Player> player_;   // player object 
         const sf::Vector2d&               plane_;    // camera plane
@@ -49,6 +53,13 @@ namespace game
 
         std::shared_ptr<int> fpsCounter_{nullptr};
         double renderDistance_{32.};
+
+        // Rendering objects
+
+        sf::Image frame_{};
+        sf::VertexArray vertices_{};
+        sf::Texture texture_{};
+        sf::RenderStates renderStates_{};
 
         // FLAGS
 
@@ -68,14 +79,16 @@ namespace game
 
         void drawFPS();
 
+        void initVertices();
+
 
     public:
-        bool idDrawfpsCounter() const
+        bool ifDrawFpsCounter() const
         {
             return drawFpsCounter_;
         }
 
-        void setFPSCounter(bool renderFpsCounter)
+        void setFpsCounter(bool renderFpsCounter)
         {
             drawFpsCounter_ = renderFpsCounter;
         }

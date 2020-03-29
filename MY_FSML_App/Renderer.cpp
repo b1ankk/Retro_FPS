@@ -4,6 +4,7 @@
 
 #include <cstring>
 #include <fstream>
+#include <iterator>
 #include <ostream>
 #include <SFML/Graphics/RenderStates.hpp>
 #include <stdexcept>
@@ -29,7 +30,8 @@ namespace game
         player_(std::move(player)),
         plane_(player_->cameraPlane()),
         levelMap_(std::move(levelMap)),
-        renderDistance_(renderDistance)
+        renderDistance_(renderDistance),
+        vertices_(sf::PrimitiveType::Quads)
     {
         // std::fill(screenBuffer_, screenBuffer_ + screenBufferLength_, 0xff);
 
@@ -57,6 +59,11 @@ namespace game
             renderThreadBounds_.push_back(width_ * i / THREADS);
         }
 
+        initVertices();
+
+        // Set up render states
+        renderStates_.texture = &texture_;
+        // renderStates_.transform.scale(1, 1);
     }
 
 
@@ -66,20 +73,53 @@ namespace game
         delete[] screenClearBuffer_;
     }
 
+    void Renderer::initVertices()
+    {
+        vertices_.append(
+            sf::Vertex{
+                {0, 0},
+                sf::Color::White,
+                {0, 0}
+            }
+        );
+        vertices_.append(
+            sf::Vertex{
+                {(float)width_, 0},
+                sf::Color::White,
+                {(float)width_, 0}
+            }
+        );
+        vertices_.append(
+            sf::Vertex{
+                {(float)width_, (float)height_},
+                sf::Color::White,
+                {(float)width_, (float)height_}
+            }
+        );
+        vertices_.append(
+            sf::Vertex{
+                {0, (float)height_},
+                sf::Color::White,
+                {0, (float)height_}
+            }
+        );
+    }
+
+
     void Renderer::renderFrame()
     {
         renderWindow_->clear(sf::Color{0xff});
 
         std::vector<std::future<void>> futures;
         futures.reserve(THREADS);
-        for (int i = 0; i < THREADS; ++i)
+        for (size_t i = 0; i < THREADS; ++i)
         {
             futures.push_back(
                 std::async(
                     std::launch::async,
                     [this](const int& start, const int& end) { drawTexturedWorld(start, end); },
                     renderThreadBounds_[i],
-                    renderThreadBounds_[i + 1]
+                    renderThreadBounds_[i + 1LLU]
                 )
             );
         }
@@ -87,18 +127,26 @@ namespace game
         for (const auto& f : futures)
             f.wait();
 
-        sf::Image frame;
-        frame.create(width_, height_, screenBuffer_);
-        sf::Texture texture;
+        frame_.create(width_, height_, screenBuffer_);
+        texture_.loadFromImage(frame_);
         // texture.setSrgb(true);
-        texture.loadFromImage(frame);
-        sf::Sprite sprite{texture};
-        sprite.scale(1, 1);
+        // texture.setSmooth(true);
+
+
+        
+
+        // sf::RenderStates renderStates;
+        // renderStates.texture = &texture_;
+        // renderStates.transform.scale(0.5, 0.5);
+
+        // sf::Sprite sprite{texture};
+        // // sprite.scale(1, 1);
+
 
         if (drawFpsCounter_)
             drawFPS();
 
-        renderWindow_->draw(sprite);
+        renderWindow_->draw(vertices_, renderStates_);
 
         
         std::memcpy(screenBuffer_, screenClearBuffer_, screenBufferLength_);

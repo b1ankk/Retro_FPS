@@ -30,8 +30,9 @@ int main(int argc, char** argv)
     const sf::Vector2d INITIAL_PLAYER_DIR{-1, 0};
 
     sf::ContextSettings cs;
-    cs.depthBits = 32;
-    cs.sRgbCapable = true;
+    // cs.depthBits = 32;
+    // cs.sRgbCapable = true;
+    
     std::shared_ptr<sf::RenderWindow> window{
         new sf::RenderWindow{
             sf::VideoMode{WINDOW_WIDTH, WINDOW_HEIGHT},
@@ -87,7 +88,7 @@ int main(int argc, char** argv)
     int lastFps{0};
 
     renderer.setFpsPointer(std::shared_ptr<int>{&lastFps});
-    renderer.setFPSCounter(true);
+    renderer.setFpsCounter(true);
 
 
 
