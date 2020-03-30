@@ -92,7 +92,7 @@ int main(int argc, char** argv)
 
 
 
-    double targetFPS{144.};
+    double targetFPS{300.};
 
 
 

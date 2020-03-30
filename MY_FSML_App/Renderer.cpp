@@ -53,6 +53,8 @@ namespace game
             }
 
         }
+        std::memcpy(screenBuffer_, screenClearBuffer_, screenBufferLength_);
+
 
         for (int i = 0; i <= THREADS; ++i)
         {
