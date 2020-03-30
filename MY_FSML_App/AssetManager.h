@@ -3,6 +3,8 @@
 #include <rapidjson/document.h>
 #include <unordered_map>
 
+
+#include "TextureManager.h"
 #include "TileTypeManager.h"
 
 
@@ -28,7 +30,6 @@ namespace game
                 game::SpriteManager{}
             )
         };
-        // SpriteManager spriteManager_;
         void loadSpriteInfo();
         void loadSprites();
 
@@ -39,9 +40,13 @@ namespace game
                 game::TileTypeManager{}
             )
         };
-        // TileTypeManager tileTypeManager_;
         void loadTileTypeInfo();
         void loadTileTypes();
+
+        // TEXTURE MANAGEMENT
+
+        std::shared_ptr<game::TextureManager> textureManager_;
+
 
     public:
         std::shared_ptr<const game::SpriteManager> spriteManager() const
@@ -54,6 +59,10 @@ namespace game
             return tileTypeManager_;
         }
 
+        std::shared_ptr<game::TextureManager> textureManager() const
+        {
+            return textureManager_;
+        }
 
     };
 

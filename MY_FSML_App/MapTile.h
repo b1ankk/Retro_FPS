@@ -35,7 +35,7 @@ namespace game
             return tileType_->spriteName();
         }
 
-        bool isIsTraversable() const
+        bool isTraversable() const
         {
             return tileType_->isTraversable();
         }

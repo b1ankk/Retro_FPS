@@ -45,13 +45,13 @@ namespace game
 
 
         if ((*levelMap_->mapData())
-            [static_cast<size_t>(newPosition.x)][static_cast<int>(position_.y)].isIsTraversable())
+            [static_cast<size_t>(newPosition.x)][static_cast<int>(position_.y)].isTraversable())
         {
             position_.x = newPosition.x;
         }
 
         if ((*levelMap_->mapData())
-            [static_cast<int>(position_.x)][static_cast<int>(newPosition.y)].isIsTraversable())
+            [static_cast<int>(position_.x)][static_cast<int>(newPosition.y)].isTraversable())
         {
             position_.y = newPosition.y;
         }

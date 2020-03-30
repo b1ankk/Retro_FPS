@@ -86,23 +86,23 @@ namespace game
         );
         vertices_.append(
             sf::Vertex{
-                {(float)width_, 0},
+                {static_cast<float>(width_), 0},
                 sf::Color::White,
-                {(float)width_, 0}
+                {static_cast<float>(width_), 0}
             }
         );
         vertices_.append(
             sf::Vertex{
-                {(float)width_, (float)height_},
+                {static_cast<float>(width_), static_cast<float>(height_)},
                 sf::Color::White,
-                {(float)width_, (float)height_}
+                {static_cast<float>(width_), static_cast<float>(height_)}
             }
         );
         vertices_.append(
             sf::Vertex{
-                {0, (float)height_},
+                {0, static_cast<float>(height_)},
                 sf::Color::White,
-                {0, (float)height_}
+                {0, static_cast<float>(height_)}
             }
         );
     }

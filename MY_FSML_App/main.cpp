@@ -94,7 +94,7 @@ int main(int argc, char** argv)
 
     double targetFPS{300.};
 
-
+    
 
     sf::Time targetFrameTime{
         sf::microseconds(static_cast<sf::Int64>(1'000'000. / targetFPS))

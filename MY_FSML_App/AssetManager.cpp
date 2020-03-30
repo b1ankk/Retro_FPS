@@ -13,6 +13,12 @@ namespace game
         assetInfoFilePath_(std::move(assetInfoFilePath))
     {
         loadAssetInfo();
+
+        textureManager_ = {
+            std::make_shared<game::TextureManager>(
+                game::TextureManager{spriteManager_}
+            )
+        };
     }
 
     void AssetManager::loadAssetInfo()

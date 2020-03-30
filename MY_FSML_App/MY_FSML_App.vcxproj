@@ -139,6 +139,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);SFML_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\ttemk\source\vs_libs\SFML-2.5.1\include;C:\Users\ttemk\source\vs_libs\rapidjson-master\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -151,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="FPP_Player.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="LevelMap.cpp" />
@@ -161,12 +163,14 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="GameTime.cpp" />
+    <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="TileType.cpp" />
     <ClCompile Include="TileTypeManager.cpp" />
     <ClCompile Include="vector_additions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetManager.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="FPP_Player.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="LevelMap.h" />
@@ -176,6 +180,7 @@
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="GameTime.h" />
+    <ClInclude Include="TextureManager.h" />
     <ClInclude Include="TileType.h" />
     <ClInclude Include="TileTypeManager.h" />
     <ClInclude Include="vector_additions.h" />
