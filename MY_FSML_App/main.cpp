@@ -1,23 +1,18 @@
 #include <SFML/Graphics.hpp>
-#include "LevelMap.h"
+#include <iostream>
+
+
 #include "AssetManager.h"
-#include "Game.h"
+#include "FPP_Player.h"
 #include "GameTime.h"
 #include "InputHandler.h"
+#include "LevelMap.h"
 #include "Renderer.h"
+#include "vector_additions.h"
+
 
 
 using namespace std;
-
-namespace game
-{
-    
-
-    constexpr int MAP_WIDTH  = 24;
-    constexpr int MAP_HEIGHT = 24;
-
-    
-}
 
 int main(int argc, char** argv)
 {
@@ -47,7 +42,7 @@ int main(int argc, char** argv)
 
 
     // CREATE LEVEL MAP
-    game::LevelMapPtr levelMap{
+    std::shared_ptr<game::LevelMap> levelMap{
         make_shared<game::LevelMap>(
                 game::LevelMap{}
         )

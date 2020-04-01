@@ -3,6 +3,9 @@
 
 #include "FPP_Player.h"
 
+#include "LevelMap.h"
+#include "MapTile.h"
+
 
 namespace game
 {

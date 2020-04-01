@@ -1,9 +1,14 @@
 #pragma once
 
+#include <SFML/Graphics.hpp>
+#include <memory>
+
 #include "TileType.h"
+#include "SpriteWrapper.h"
 
 namespace game
 {
+
     class MapTile
     {
     public:

@@ -1,15 +1,13 @@
 #pragma once
 #include <memory>
 #include <SFML/Graphics/Texture.hpp>
-#include <string>
-#include <utility>
 
-
+#include "SpriteWrapper.h"
 #include "SpriteManager.h"
-
 
 namespace game
 {
+    
 
     // If need be fetches the image form SpriteManager, converts it to a texture, saves it internally and returns a sharedPointer to it.
     class TextureManager

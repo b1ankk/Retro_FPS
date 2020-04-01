@@ -1,6 +1,7 @@
 #pragma once
-
 #include <SFML/Graphics/Image.hpp>
+#include <string>
+
 
 namespace game
 {

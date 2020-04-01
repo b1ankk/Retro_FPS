@@ -1,35 +1,20 @@
 #pragma once
 
 #include <memory>
-#include <SFML/Graphics/Sprite.hpp>
+#include <unordered_map>
 
 
-#include "SpriteManager.h"
-#include "TileType.h"
+
 
 namespace game
 {
+    class SpriteManager;
+    class TileType;
+
     class TileTypeManager
     {
     public:
-        TileTypeManager()
-        {
-            TileType voidTileType{
-                "void_tile",
-                "none",
-                true
-            };
-            voidTileType.setSprite(nullptr);
-
-            std::shared_ptr<TileType> voidTileTypePtr{
-                std::make_shared<TileType>(
-                    std::move(voidTileType)
-                )
-            };
-
-            tileTypeOrder_.push_back(voidTileTypePtr);
-            tileTypesMap_.insert({"none", std::move(voidTileTypePtr)});
-        }
+        TileTypeManager();
 
 
         void loadTileTypeInfo(std::string, std::shared_ptr<game::TileType>);
@@ -42,27 +27,8 @@ namespace game
 
 
     public:
-        std::shared_ptr<TileType> getTypeForId(const size_t& id) const
-        {
-            if (id < tileTypeOrder_.size())
-                return tileTypeOrder_[id];
+        std::shared_ptr<TileType> getTypeForId(const size_t& id) const;
 
-            throw std::out_of_range{
-                "No TileType found, for id: "
-                + std::to_string(id)
-            };
-        }
-
-        std::shared_ptr<TileType> getTypeForName(const std::string& name) const
-        {
-            try
-            {
-                return tileTypesMap_.at(name);
-            }
-            catch (const std::out_of_range&)
-            {
-                throw std::out_of_range("No TileType found, for name: " + name);
-            }
-        }
+        std::shared_ptr<TileType> getTypeForName(const std::string& name) const;
     };
 }

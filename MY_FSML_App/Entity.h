@@ -1,11 +1,10 @@
 #pragma once
+
 #include <memory>
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Transformable.hpp>
 #include <SFML/Graphics/VertexArray.hpp>
-
-
 
 #include "vector_additions.h"
 

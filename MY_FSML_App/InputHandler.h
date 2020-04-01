@@ -1,12 +1,15 @@
 #pragma once
-
-#include <SFML/Graphics/RenderWindow.hpp>
-
-#include "FPP_Player.h"
+#include "vector_additions.h"
 
 
 namespace game
 {
+
+
+    class FPP_Player;
+
+
+
     class InputHandler
     {
     public:

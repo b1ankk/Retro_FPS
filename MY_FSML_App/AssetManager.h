@@ -1,15 +1,18 @@
 #pragma once
 
 #include <rapidjson/document.h>
-#include <unordered_map>
 
-
-#include "TextureManager.h"
+#include "SpriteManager.h"
 #include "TileTypeManager.h"
 
 
 namespace game
 {
+    class TextureManager;
+
+
+
+
     class AssetManager
     {
     public:

@@ -1,6 +1,6 @@
 #pragma once
-
 #include <SFML/System/Vector2.hpp>
+
 
 namespace sf
 {
@@ -27,5 +27,6 @@ namespace game
 
         return vNormalized;
     }
+    
 
 }

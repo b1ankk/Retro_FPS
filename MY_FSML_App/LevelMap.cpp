@@ -1,6 +1,10 @@
 #include "LevelMap.h"
 
 #include <cassert>
+#include <SFML/System/Vector2.hpp>
+
+#include "MapTile.h"
+#include "TileTypeManager.h"
 
 namespace game
 {

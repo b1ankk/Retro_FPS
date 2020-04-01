@@ -1,7 +1,10 @@
 #include <SFML/Graphics.hpp>
 
 #include "InputHandler.h"
+
+#include "FPP_Player.h"
 #include "GameTime.h"
+
 
 namespace game
 {

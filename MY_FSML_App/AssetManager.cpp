@@ -5,7 +5,8 @@
 #include <rapidjson/document.h>
 
 #include "AssetManager.h"
-
+#include "TextureManager.h"
+#include "TileType.h"
 
 namespace game
 {

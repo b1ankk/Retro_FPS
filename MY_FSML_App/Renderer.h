@@ -1,14 +1,17 @@
 #pragma once
 
-#include <future>
-#include <SFML/Graphics/RenderWindow.hpp>
-#include <vector>
+#include <SFML/Graphics.hpp>
+#include <memory>
 
-
-#include "FPP_Player.h"
+#include "vector_additions.h"
 
 namespace game
 {
+    class FPP_Player;
+    class SpriteManager;
+    class LevelMap;
+
+
     class Renderer
     {
         static constexpr int THREADS = 16;

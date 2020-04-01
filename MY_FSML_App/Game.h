@@ -1,9 +1,5 @@
 #pragma once
-#include <SFML/Graphics/RenderWindow.hpp>
 
-#include "AssetManager.h"
-#include "FPP_Player.h"
-#include "LevelMap.h"
 
 namespace game
 {
@@ -12,10 +8,10 @@ namespace game
     // using AssetManagerPtr = std::shared_ptr<game::AssetManager>;
     // using LevelMapPtr = std::shared_ptr<game::LevelMap>;
 
-    typedef std::shared_ptr<sf::RenderWindow> WindowPtr;
-    typedef std::shared_ptr<game::FPP_Player> PlayerPtr;
-    typedef std::shared_ptr<game::AssetManager> AssetManagerPtr;
-    typedef std::shared_ptr<game::LevelMap> LevelMapPtr;
+    // typedef std::shared_ptr<sf::RenderWindow> WindowPtr;
+    // typedef std::shared_ptr<game::FPP_Player> PlayerPtr;
+    // typedef std::shared_ptr<game::AssetManager> AssetManagerPtr;
+    // typedef std::shared_ptr<game::LevelMap> LevelMapPtr;
 
 
     

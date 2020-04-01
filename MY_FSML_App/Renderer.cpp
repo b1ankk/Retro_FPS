@@ -1,14 +1,12 @@
-#include <SFML/Graphics.hpp>
-
 #include "Renderer.h"
 
-#include <cstring>
-#include <fstream>
-#include <iterator>
-#include <ostream>
-#include <SFML/Graphics/RenderStates.hpp>
-#include <stdexcept>
-#include <utility>
+#include <future>
+#include <iostream>
+
+
+#include "FPP_Player.h"
+#include "LevelMap.h"
+#include "MapTile.h"
 
 namespace game
 {

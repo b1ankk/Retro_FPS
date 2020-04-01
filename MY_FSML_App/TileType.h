@@ -1,11 +1,14 @@
 #pragma once
-
 #include <memory>
+#include <string>
+#include <vector>
 
-#include "SpriteWrapper.h"
 
 namespace game
 {
+    class SpriteWrapper;
+
+
     class TileType
     {
     public:

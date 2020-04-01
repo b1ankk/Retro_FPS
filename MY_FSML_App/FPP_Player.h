@@ -1,12 +1,12 @@
 #pragma once
+#include <memory>
 
-#include "LevelMap.h"
 #include "vector_additions.h"
-
-
 
 namespace game
 {
+    class LevelMap;
+
 
     class FPP_Player
     {

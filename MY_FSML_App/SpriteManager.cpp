@@ -1,5 +1,7 @@
 #include "SpriteManager.h"
 
+#include "SpriteWrapper.h"
+
 namespace game
 {
     void SpriteManager::loadSpriteInfo(std::string imageName, std::string imagePath)

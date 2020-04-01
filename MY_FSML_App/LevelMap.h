@@ -1,12 +1,15 @@
 #pragma once
 
 #include <vector>
-
-#include "MapTile.h"
-#include "TileTypeManager.h"
+#include <memory>
 
 namespace game
 {
+    class MapTile;
+    class TileTypeManager;
+    class FPP_Player;
+
+
     using IntMap = std::vector<std::vector<int>>;
     using TileMap = std::vector<std::vector<MapTile>>;
     using MapDataPtr = std::shared_ptr<const game::TileMap>;
@@ -14,7 +17,6 @@ namespace game
     class LevelMap
     {
     public:
-        
         void loadFromInts(const IntMap&);
         void loadFromTiles(TileMap);
 
@@ -23,11 +25,16 @@ namespace game
         std::shared_ptr<const game::TileTypeManager> tileTypeManager_{};
         MapDataPtr mapData_;
 
-        
+        std::shared_ptr<game::FPP_Player> player_;
         
     public:
 
         // GETTERS & SETTERS
+
+        void setPlayer(std::shared_ptr<game::FPP_Player> player)
+        {
+            player_ = std::move(player);
+        }
 
         void setTileTypeManager(std::shared_ptr<const game::TileTypeManager> tileTypeManager)
         {
