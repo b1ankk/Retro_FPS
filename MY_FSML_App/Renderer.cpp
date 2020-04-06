@@ -369,6 +369,8 @@ namespace game
 
     void Renderer::drawEntities()
     {
+        // TODO drawing entities can be more optimized
+
         levelMap_->entities().updateToPos(player_->position());
         const sf::Vector2d sightBoundRight = player_->direction() + plane_;
         const sf::Vector2d sightBoundLeft = player_->direction() - plane_;
