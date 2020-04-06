@@ -34,9 +34,9 @@ namespace game
         std::sort(
             entities_.begin(),
             entities_.end(),
-            [](const std::shared_ptr<game::Entity>& left, const std::shared_ptr<game::Entity>& right)
+            [](std::shared_ptr<game::Entity>& left, std::shared_ptr<game::Entity>& right)
             {
-                return right->distanceToPlayer_ - left->distanceToPlayer_;
+                return right->distanceToPlayer_ - left->distanceToPlayer_ < 0;
             }
         );
     }

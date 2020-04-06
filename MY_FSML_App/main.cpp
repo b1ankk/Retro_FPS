@@ -13,15 +13,13 @@
 #include "vector_additions.h"
 
 
-
-
 using namespace std;
 
 int main(int argc, char** argv)
 {
     // CONSTANTS
-    constexpr int WINDOW_WIDTH{1920};
-    constexpr int WINDOW_HEIGHT{1080};
+    constexpr int  WINDOW_WIDTH{1920};
+    constexpr int  WINDOW_HEIGHT{1080};
     const sf::Time SECOND{sf::seconds(1.f)};
 
     const sf::Vector2d INITIAL_PLAYER_POS{22, 12};
@@ -30,11 +28,13 @@ int main(int argc, char** argv)
     sf::ContextSettings cs;
     // cs.depthBits = 32;
     // cs.sRgbCapable = true;
-    
+
     std::shared_ptr<sf::RenderWindow> window{
         new sf::RenderWindow{
             sf::VideoMode{WINDOW_WIDTH, WINDOW_HEIGHT},
-            "MyGame", sf::Style::Fullscreen, /*cs*/
+            "MyGame",
+            sf::Style::Fullscreen,
+            /*cs*/
         }
     };
 
@@ -46,32 +46,25 @@ int main(int argc, char** argv)
 
     // CREATE LEVEL MAP
     std::shared_ptr<game::LevelMap> levelMap{
-        make_shared<game::LevelMap>(
-                game::LevelMap{}
-        )
+        make_shared<game::LevelMap>()
     };
     levelMap->setTileTypeManager(assetManager.tileTypeManager());
     levelMap->loadFromInts(levelMap->TEST_MAP);
 
     levelMap->entities().add(
         make_shared<game::Entity>(
-            game::Entity{
-                assetManager.textureManager()->getTextureForName("barrel"),
-                {15, 15}
-            }
-        )
-    );
-    levelMap->entities().add(
-        make_shared<game::Entity>(
-            game::Entity{
-                assetManager.textureManager()->getTextureForName("barrel"),
-                {14, 8}
-            }
+            assetManager.textureManager()->getTextureForName("barrel"),
+            sf::Vector2d{15, 15}
         )
     );
 
-    
-    
+    std::shared_ptr<game::Entity> e = make_shared<game::Entity>(
+        assetManager.textureManager()->getTextureForName("barrel"),
+        sf::Vector2d{14, 8}
+    );
+    levelMap->entities().add(e);
+
+
     // Player object
     std::shared_ptr<game::FPP_Player> player = std::make_shared<game::FPP_Player>(
         game::FPP_Player{
@@ -81,7 +74,7 @@ int main(int argc, char** argv)
         }
     );
     levelMap->setPlayer(player);
-    
+
     // World renderer
     game::Renderer renderer{
         player,
@@ -98,9 +91,6 @@ int main(int argc, char** argv)
     inputHandler.setMovementSpeed(5);
 
 
-
-
-
     int fpsCounter{0};
     int lastFps{0};
 
@@ -108,17 +98,15 @@ int main(int argc, char** argv)
     renderer.setFpsCounter(true);
 
 
-
     double targetFPS{300.};
 
-    
 
     sf::Time targetFrameTime{
         sf::microseconds(static_cast<sf::Int64>(1'000'000. / targetFPS))
     };
     sf::Time lastFrameTime;
     game::GameTime::deltaTime_ = lastFrameTime.asMicroseconds() / 1000.f;
-    
+
 
     sf::Clock fpsClock;
     sf::Clock frameClock;
@@ -144,7 +132,7 @@ int main(int argc, char** argv)
         inputHandler.handleInput();
 
         renderer.renderFrame();
-        
+
 
         toFrameEnd = targetFrameTime - frameClock.getElapsedTime();
         if (toFrameEnd > sf::Time::Zero)
@@ -152,7 +140,7 @@ int main(int argc, char** argv)
 
         ++fpsCounter;
 
-        lastFrameTime = frameClock.getElapsedTime();
+        lastFrameTime              = frameClock.getElapsedTime();
         game::GameTime::deltaTime_ = lastFrameTime.asMicroseconds() / 1000.;
         frameClock.restart();
 
@@ -160,14 +148,8 @@ int main(int argc, char** argv)
         {
             fpsClock.restart();
             std::cout << "FPS: " << fpsCounter << std::endl;
-            lastFps = fpsCounter;
+            lastFps    = fpsCounter;
             fpsCounter = 0;
         }
     }
-
 }
-
-
-
-
-

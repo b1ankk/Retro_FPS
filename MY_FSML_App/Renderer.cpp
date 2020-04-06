@@ -392,7 +392,7 @@ namespace game
                 
                 
                 // entity->scale(1 / entity->distanceToPlayer(), 1 / entity->distanceToPlayer());
-                entity->setOrigin(32, 16);
+                // entity->setOrigin(32, 16);
                 //
                 // double invDet = 1.0 / (plane_.x * player_->direction().y - player_->direction().x * plane_.y); //required for correct matrix multiplication
                 //

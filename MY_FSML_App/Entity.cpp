@@ -14,6 +14,8 @@ namespace game
         vertices_(std::move(vertices)),
         mapPosition_(mapPosition)
     {
+        sf::Color color{0, 0, 0};
+
         // if no vertices passed create default square with imageSize as size
         if (vertices_.getVertexCount() == 0)
         {
