@@ -3,6 +3,8 @@
 #include <vector>
 #include <memory>
 
+#include "EntityVector.h"
+
 namespace game
 {
     class MapTile;
@@ -23,9 +25,11 @@ namespace game
 
     private:
         std::shared_ptr<const game::TileTypeManager> tileTypeManager_{};
-        MapDataPtr mapData_;
+        MapDataPtr mapData_{};
+        game::EntityVector entities_{};
 
         std::shared_ptr<game::FPP_Player> player_;
+        
         
     public:
 
@@ -50,6 +54,11 @@ namespace game
         MapDataPtr mapData() const
         {
             return mapData_;
+        }
+
+        game::EntityVector& entities()
+        {
+            return entities_;
         }
 
 

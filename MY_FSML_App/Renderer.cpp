@@ -2,11 +2,15 @@
 
 #include <future>
 #include <iostream>
+#include <ostream>
+
 
 
 #include "FPP_Player.h"
 #include "LevelMap.h"
 #include "MapTile.h"
+#include "EntityVector.h"
+#include "Entity.h"
 
 namespace game
 {
@@ -16,7 +20,7 @@ namespace game
                        std::shared_ptr<sf::RenderWindow> renderWindow,
                        std::shared_ptr
                        <const SpriteManager>           spriteManager,
-                       std::shared_ptr<const LevelMap> levelMap,
+                       std::shared_ptr<LevelMap> levelMap,
                        const double&                   renderDistance) :
         width_(width),
         height_(height),
@@ -143,15 +147,15 @@ namespace game
         // // sprite.scale(1, 1);
 
 
-        if (drawFpsCounter_)
-            drawFPS();
+        
 
         renderWindow_->draw(vertices_, renderStates_);
 
+        drawEntities();
         
         std::memcpy(screenBuffer_, screenClearBuffer_, screenBufferLength_);
 
-        if (fpsCounter_)
+        if (drawFpsCounter_)
             drawFPS();
 
 
@@ -363,7 +367,93 @@ namespace game
 
     }
 
-    
+    void Renderer::drawEntities()
+    {
+        levelMap_->entities().updateToPos(player_->position());
+        const sf::Vector2d sightBoundRight = player_->direction() + plane_;
+        const sf::Vector2d sightBoundLeft = player_->direction() - plane_;
+        // std::cout << player_->position().x << " " << player_->position().y << std::endl;
+
+        for (auto& entity : levelMap_->entities())
+        {
+            const sf::Vector2d relativePosToPlayer = entity->mapPosition() - player_->position();
+
+            // value describing on what side of the left screen bound is the entity, and how much
+            double relToLeft = sightBoundLeft.x * -relativePosToPlayer.y +
+                               sightBoundLeft.y * relativePosToPlayer.x;
+            // value describing on what side of the right screen bound is the entity, and how much
+            double relToRight = sightBoundRight.x * -relativePosToPlayer.y +
+                                sightBoundRight.y * relativePosToPlayer.x;
+
+            if ((relToLeft >= -1 && relToRight <= 1))
+            {
+                // std::cout << "On screen space!" << std::endl;
+                
+                
+                
+                // entity->scale(1 / entity->distanceToPlayer(), 1 / entity->distanceToPlayer());
+                entity->setOrigin(32, 16);
+                //
+                // double invDet = 1.0 / (plane_.x * player_->direction().y - player_->direction().x * plane_.y); //required for correct matrix multiplication
+                //
+                // double transformX = invDet * (player_->direction().y * entity->mapPosition().x - player_->direction().x * entity->mapPosition().y);
+                // double transformY = invDet * (-plane_.y * entity->mapPosition().x + plane_.x * entity->mapPosition().y); //this is actually the depth inside the screen, that what Z is in 3D
+                //
+                // int spriteScreenX = int((width_ / 2) * (1 + transformX / transformY));
+                // // int spriteHeight = abs(int(height_ / (transformY))); //using 'transformY' instead of the real distance prevents fisheye
+                //
+                // entity->setPosition(spriteScreenX, height_ / 2);
+
+                const double Dx = player_->direction().x;
+                const double Dy = player_->direction().y;
+                const double Px = plane_.x;
+                const double Py = plane_.y;
+                const double Vx = relativePosToPlayer.x;
+                const double Vy = relativePosToPlayer.y;
+                //
+                // double x = Vx * (Dx * Py - Dy * Px) / (Py * Vx - Px * Vy);
+                // double y = (Vy / Vx) * x;
+                //
+                // double dist = sqrt(pow(-Px + Dx - x, 2) + pow(-Py + Dy - y, 2));
+                // double P_length = sqrt(Px * Px + Py * Py);
+                // double position = (dist / (2 * P_length)) * width_;
+                //
+                // if (relToLeft < 0)
+                //     position = -position;
+
+                const double invDet = 1.0 / (Px * Dy - Dx * Py);
+                const double transformY = invDet * (-Py * Vx + Px * Vy);
+                if (transformY < 0)
+                    continue;
+                const double transformX = invDet * (Dy * Vx - Dx * Vy);
+               
+                const double position = (1 + transformX / transformY) * width_ / 2;
+
+                entity->setPosition(position, height_ / 2);
+
+
+                // double perpDistance = sqrt(pow(x - Vx, 2) + pow(y - Vy, 2));
+                // const double perpDistance = (-Py * Vx + Px * Vy) / (Px * Dy - Dx * Py);
+                entity->setScale(((height_ / transformY) / 64.),
+                                 (height_ / transformY) / 64.);
+                // entity->setScale(height_ / sqrt(entity->distanceToPlayer()) / 64.,
+                // height_ / sqrt(entity->distanceToPlayer()) / 64.);
+
+                
+                renderWindow_->draw(*entity);
+
+
+                // auto sum = plane_ + player_->direction();
+                // auto myPerpDif = relativePosToPlayer - player_->direction();
+                // double len = sum.x * sum.x + sum.y * sum.y;
+                // double x = normalizeVector2(relativePosToPlayer).x * len;
+                // entity->setPosition(width_ / 2, height_ / 2);
+                // // entity->setScale(width_ / entity->distanceToPlayer(), width_ / entity->distanceToPlayer());
+                // renderWindow_->draw(*entity);
+            }
+        }
+    }
+
 
     void Renderer::drawFPS()
     {
@@ -384,8 +474,22 @@ namespace game
             text.setCharacterSize(34);
             text.setFillColor(sf::Color::White);
         }
+
+        char s[80];
+        snprintf(s, 80,"FPS: %d\nx: %2.2f\ny: %2.2f\ndir_x: %g\ndir_y: %g",
+                 *fpsCounter_,
+                 player_->position().x, player_->position().y,
+                 player_->direction().x, player_->direction().y);
+
+        // text.setString("FPS: " + std::to_string(*fpsCounter_) +
+        //                "\nx: " + std::to_string(player_->position().x) +
+        //                "  y: " + std::to_string(player_->position().y) +
+        //                "\ndir_x: " + std::to_string(player_->direction().x) +
+        //                "\ndir_y: " + std::to_string(player_->direction().y));
+
+        text.setString(s);
         
-        text.setString("FPS: " + std::to_string(*fpsCounter_));
+        
         sf::RenderStates rs{};
         rs.transform.translate(10, 20);
         renderWindow_->draw(text, rs);
@@ -532,4 +636,6 @@ namespace game
             renderWindow_->draw(vertices, 2, sf::Lines);
         }
     }
+
+
 }

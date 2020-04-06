@@ -23,7 +23,7 @@ namespace game
                  const int&                           height,
                  std::shared_ptr<sf::RenderWindow>    renderWindow,
                  std::shared_ptr<const SpriteManager> spriteManager,
-                 std::shared_ptr<const LevelMap>      levelMap,
+                 std::shared_ptr<LevelMap>      levelMap,
                  const double&                        renderDistance = 32.
         );
 
@@ -52,7 +52,7 @@ namespace game
 
         std::shared_ptr<const FPP_Player> player_;   // player object 
         const sf::Vector2d&               plane_;    // camera plane
-        std::shared_ptr<const LevelMap>   levelMap_; // map of the level
+        std::shared_ptr<LevelMap>   levelMap_; // map of the level
 
         std::shared_ptr<int> fpsCounter_{nullptr};
         double renderDistance_{32.};
@@ -79,6 +79,8 @@ namespace game
         void drawPrimitiveWorld();
 
         void drawTexturedWorld(const int& start, const int& end);
+
+        void drawEntities();
 
         void drawFPS();
 

@@ -14,6 +14,7 @@ namespace game
         vertices_(std::move(vertices)),
         mapPosition_(mapPosition)
     {
+        // if no vertices passed create default square with imageSize as size
         if (vertices_.getVertexCount() == 0)
         {
             vertices_.append(
@@ -44,7 +45,14 @@ namespace game
                     {0, static_cast<float>(imageSize_.y)}
                 }
             );
+
+            // set default origin as the middle of the entity
+            sf::Transformable::setOrigin(imageSize_.x / 2, imageSize_.y / 2);
+
+            
         }
+
+
     }
 
     void game::Entity::draw(sf::RenderTarget& target, sf::RenderStates states) const

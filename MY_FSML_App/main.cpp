@@ -3,12 +3,15 @@
 
 
 #include "AssetManager.h"
+#include "Entity.h"
 #include "FPP_Player.h"
 #include "GameTime.h"
 #include "InputHandler.h"
 #include "LevelMap.h"
 #include "Renderer.h"
+#include "TextureManager.h"
 #include "vector_additions.h"
+
 
 
 
@@ -49,6 +52,24 @@ int main(int argc, char** argv)
     };
     levelMap->setTileTypeManager(assetManager.tileTypeManager());
     levelMap->loadFromInts(levelMap->TEST_MAP);
+
+    levelMap->entities().add(
+        make_shared<game::Entity>(
+            game::Entity{
+                assetManager.textureManager()->getTextureForName("barrel"),
+                {15, 15}
+            }
+        )
+    );
+    levelMap->entities().add(
+        make_shared<game::Entity>(
+            game::Entity{
+                assetManager.textureManager()->getTextureForName("barrel"),
+                {14, 8}
+            }
+        )
+    );
+
     
     
     // Player object
@@ -59,6 +80,7 @@ int main(int argc, char** argv)
             levelMap
         }
     );
+    levelMap->setPlayer(player);
     
     // World renderer
     game::Renderer renderer{
