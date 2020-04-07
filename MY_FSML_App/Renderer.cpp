@@ -361,6 +361,11 @@ namespace game
 
         const double oldLeft{left};
 
+        int resultL{-1};
+        int resultR{-1};
+        bool foundL{false};
+        bool foundR{false};
+
         if (left < 0)
             left = 0;
         else if (left >= perpWallDistances_.size())
@@ -378,10 +383,7 @@ namespace game
         double rightPtr = end;
 
 
-        int resultL{-1};
-        int resultR{-1};
-        bool foundL{false};
-        bool foundR{false};
+        
 
 
         while (leftPtr <= end && !foundL)
@@ -434,8 +436,10 @@ namespace game
                 const double position   = (1 + transformX / transformY) * width_ / 2;
 
 
-                if (position > -entity->imageSize().x  &&  
-                    position < static_cast<double>(width_) + entity->imageSize().x)
+                // if ((position >= 0 -entity->imageSize().x &&
+                //      position < static_cast<double>(width_) + entity->imageSize().x* &&
+                //      transformY >= 0) ||
+                //     (position >= width_ || position < 0) && transformY > 0)
                 {
                     assert(perpWallDistances_.size() == size_t(width_));
 
