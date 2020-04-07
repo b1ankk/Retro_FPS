@@ -71,8 +71,17 @@ namespace game
             direction.y -= rotatedDirectionY;
         }
 
+
+        // TODO a more proper implementation of walk and run
+        // sprint and walk
+        double multiplier{1.};
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+            multiplier = 2.;
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
+            multiplier = 0.25;
+
         if (direction.x != 0 || direction.y != 0)
-            player_->move(direction, movementSpeed_ / 1000. * GameTime::deltaTime());
+            player_->move(direction, movementSpeed_ / 1000. * multiplier * GameTime::deltaTime());
     }
 }
 

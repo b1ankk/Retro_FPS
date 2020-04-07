@@ -64,6 +64,8 @@ namespace game
         sf::Texture texture_{};
         sf::RenderStates renderStates_{};
 
+        std::vector<double> perpWallDistances_;
+
         // FLAGS
 
         bool drawFpsCounter_{};
@@ -85,6 +87,8 @@ namespace game
         void drawFPS();
 
         void initVertices();
+
+        std::pair<double, double> findTransitionPoint(double left, double right, const double perpDist);
 
 
     public:

@@ -33,10 +33,12 @@ namespace game
             mapPosition_ += normalizeVector2(direction) * distance;
         }
 
+        void resetVertices();
+
     private:
         friend EntityVector;
 
-
+ 
         std::shared_ptr<const sf::Texture> texture_;
         sf::Vector2i                       imageSize_;
         sf::VertexArray                    vertices_{sf::PrimitiveType::Quads};
@@ -64,6 +66,11 @@ namespace game
         double distanceToPlayer() const
         {
             return distanceToPlayer_;
+        }
+
+        sf::Vector2i imageSize() const
+        {
+            return imageSize_;
         }
     };
 }

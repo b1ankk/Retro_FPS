@@ -1,9 +1,12 @@
 #include "Renderer.h"
 
+
+
+#include <algorithm>
+#include <cassert>
 #include <future>
 #include <iostream>
 #include <ostream>
-
 
 
 #include "FPP_Player.h"
@@ -19,9 +22,9 @@ namespace game
                        const int&                        height,
                        std::shared_ptr<sf::RenderWindow> renderWindow,
                        std::shared_ptr
-                       <const SpriteManager>           spriteManager,
+                       <const SpriteManager>     spriteManager,
                        std::shared_ptr<LevelMap> levelMap,
-                       const double&                   renderDistance) :
+                       const double&             renderDistance) :
         width_(width),
         height_(height),
         renderWindow_(std::move(renderWindow)),
@@ -33,15 +36,16 @@ namespace game
         plane_(player_->cameraPlane()),
         levelMap_(std::move(levelMap)),
         renderDistance_(renderDistance),
-        vertices_(sf::PrimitiveType::Quads)
+        vertices_(sf::PrimitiveType::Quads),
+        perpWallDistances_(width_)
     {
         // std::fill(screenBuffer_, screenBuffer_ + screenBufferLength_, 0xff);
 
         // prepare cleared buffer for fast copy
-        constexpr sf::Uint32 mask = 0xff303030;
+        constexpr sf::Uint32 mask  = 0xff303030;
         constexpr sf::Uint32 mask2 = 0xff606060;
-        for (sf::Uint8* ptr = screenClearBuffer_,
-             *endPtr = screenClearBuffer_ + screenBufferLength_;
+        for (sf::Uint8 * ptr    = screenClearBuffer_,
+                       * endPtr = screenClearBuffer_ + screenBufferLength_;
              ptr < endPtr;
              ptr += 4)
         {
@@ -49,11 +53,10 @@ namespace game
             {
                 memcpy(ptr, &mask, 4);
             }
-            else 
+            else
             {
                 memcpy(ptr, &mask2, 4);
             }
-
         }
         std::memcpy(screenBuffer_, screenClearBuffer_, screenBufferLength_);
 
@@ -134,10 +137,8 @@ namespace game
         frame_.create(width_, height_, screenBuffer_);
         texture_.loadFromImage(frame_);
         // texture.setSrgb(true);
-        // texture.setSmooth(true);
+        // texture_.setSmooth(true);
 
-
-        
 
         // sf::RenderStates renderStates;
         // renderStates.texture = &texture_;
@@ -147,12 +148,10 @@ namespace game
         // // sprite.scale(1, 1);
 
 
-        
-
         renderWindow_->draw(vertices_, renderStates_);
 
         drawEntities();
-        
+
         std::memcpy(screenBuffer_, screenClearBuffer_, screenBufferLength_);
 
         if (drawFpsCounter_)
@@ -242,7 +241,7 @@ namespace game
                 wallPerpDist = (gridPosition.y - player_->position().y
                     + (1 - stepDirection.y) / 2) / rayDirection.y;
 
-
+            perpWallDistances_[x] = wallPerpDist;
             //Calculate height of line to draw on screen
             const int lineHeight = static_cast<int>(height_ / wallPerpDist);
 
@@ -259,8 +258,8 @@ namespace game
 
             if (tile.typeId() != 0)
             {
-                const sf::Image& image = tile.image(); // image to use in rendering
-                const sf::Image& shadowImage = tile.shadowImage(); // shadowed image used to imitate shading
+                const sf::Image&   image       = tile.image();       // image to use in rendering
+                const sf::Image&   shadowImage = tile.shadowImage(); // shadowed image used to imitate shading
                 const sf::Vector2i imageSize{
                     static_cast<int>(image.getSize().x),
                     static_cast<int>(image.getSize().y)
@@ -283,21 +282,21 @@ namespace game
 
                 double imageYPos = (drawStart - height_ / 2 + lineHeight / 2) * step;
 
-                int imageY = static_cast<int>(imageYPos)& (imageSize.y - 1);
+                int imageY = static_cast<int>(imageYPos) & (imageSize.y - 1);
 
-                
 
                 sf::Uint8* imagePtr;
 
                 if (side == WallHitSide::VERTICAL)
                 {
                     imagePtr =
-                        const_cast<sf::Uint8*>(shadowImage.getPixelsPtr()) + imageY * 4LLU * imageSize.x + 4LLU * imageX;
-                }  
+                            const_cast<sf::Uint8*>(shadowImage.getPixelsPtr()) + imageY * 4LLU * imageSize.x + 4LLU *
+                            imageX;
+                }
                 else
                 {
                     imagePtr =
-                        const_cast<sf::Uint8*>(image.getPixelsPtr()) + imageY * 4LLU * imageSize.x + 4LLU * imageX;
+                            const_cast<sf::Uint8*>(image.getPixelsPtr()) + imageY * 4LLU * imageSize.x + 4LLU * imageX;
                 }
 
 
@@ -310,13 +309,12 @@ namespace game
                     if (once)
                     {
                         screenPtr = (screenBuffer_ + y * 4LLU * width_ + x * 4LLU);
-                        once = false;
+                        once      = false;
                     }
                     int old = imageY;
-                    imageY = static_cast<int>(imageYPos) & (imageSize.y - 1);
+                    imageY  = static_cast<int>(imageYPos) & (imageSize.y - 1);
                     imageYPos += step;
                     // sf::Uint32 color = image.getPixel(imageX, imageY).toInteger();
-                    
 
 
                     // if (side == WallHitSide::VERTICAL)
@@ -327,29 +325,19 @@ namespace game
                     // *(screenBuffer_ + y * 4LLU * width_ + x * 4LLU + 2) = color >> 8;
                     // *(screenBuffer_ + y * 4LLU * width_ + x * 4LLU + 3) = color;
 
-                    
+
                     if (old != imageY)
                         imagePtr += imageSize.x * 4LLU * (imageY - old);
 
-                    
+
                     std::memcpy(
                         (screenPtr),
-                        imagePtr, 3
+                        imagePtr,
+                        3
                     );
-
-                    
                 }
-
-                
             }
-
-            
-
-            
-                
         }
-
-        
 
 
         // int mask = 0xff;
@@ -363,8 +351,60 @@ namespace game
         //         &mask, 4
         //     );
         // }
+    }
+
+    
+    std::pair<double, double> Renderer::findTransitionPoint(double left, double right, const double perpDist)
+    {
+        if (right < left)
+            return {-1, -1};
+
+        const double oldLeft{left};
+
+        if (left < 0)
+            left = 0;
+        else if (left >= perpWallDistances_.size())
+            left = perpWallDistances_.size() - 1LLU;
+
+        if (right < 0)
+            right = 0;
+        else if (right >= perpWallDistances_.size())
+            right = perpWallDistances_.size() - 1LLU;
+
+        const double start = left;
+        const double end = right;
+
+        double leftPtr = start;
+        double rightPtr = end;
 
 
+        int resultL{-1};
+        int resultR{-1};
+        bool foundL{false};
+        bool foundR{false};
+
+
+        while (leftPtr <= end && !foundL)
+        {
+            if (perpWallDistances_[leftPtr] > perpDist)
+            {
+                resultL = leftPtr - oldLeft - 1;
+                foundL = true;
+            }
+            leftPtr++;
+        }
+
+        while (rightPtr >= 0 && !foundR)
+        {
+            if (perpWallDistances_[rightPtr] > perpDist)
+            {
+                resultR = rightPtr - oldLeft + 2;
+                foundR = true;
+            }
+            rightPtr--;
+        }
+
+        return std::make_pair(resultL, resultR);
     }
 
     void Renderer::drawEntities()
@@ -372,89 +412,95 @@ namespace game
         // TODO drawing entities can be more optimized
 
         levelMap_->entities().updateToPos(player_->position());
-        const sf::Vector2d sightBoundRight = player_->direction() + plane_;
-        const sf::Vector2d sightBoundLeft = player_->direction() - plane_;
-        // std::cout << player_->position().x << " " << player_->position().y << std::endl;
+
+        const double Dx = player_->direction().x;
+        const double Dy = player_->direction().y;
+        const double Px = plane_.x;
+        const double Py = plane_.y;
 
         for (auto& entity : levelMap_->entities())
         {
             const sf::Vector2d relativePosToPlayer = entity->mapPosition() - player_->position();
 
-            // value describing on what side of the left screen bound is the entity, and how much
-            double relToLeft = sightBoundLeft.x * -relativePosToPlayer.y +
-                               sightBoundLeft.y * relativePosToPlayer.x;
-            // value describing on what side of the right screen bound is the entity, and how much
-            double relToRight = sightBoundRight.x * -relativePosToPlayer.y +
-                                sightBoundRight.y * relativePosToPlayer.x;
+            const double Vx = relativePosToPlayer.x;
+            const double Vy = relativePosToPlayer.y;
 
-            if ((relToLeft >= -1 && relToRight <= 1))
+            const double invDet     = 1.0 / (Px * Dy - Dx * Py);
+            const double transformY = invDet * (-Py * Vx + Px * Vy);
+
+            if (transformY > 0)
             {
-                // std::cout << "On screen space!" << std::endl;
-                
-                
-                
-                // entity->scale(1 / entity->distanceToPlayer(), 1 / entity->distanceToPlayer());
-                // entity->setOrigin(32, 16);
-                //
-                // double invDet = 1.0 / (plane_.x * player_->direction().y - player_->direction().x * plane_.y); //required for correct matrix multiplication
-                //
-                // double transformX = invDet * (player_->direction().y * entity->mapPosition().x - player_->direction().x * entity->mapPosition().y);
-                // double transformY = invDet * (-plane_.y * entity->mapPosition().x + plane_.x * entity->mapPosition().y); //this is actually the depth inside the screen, that what Z is in 3D
-                //
-                // int spriteScreenX = int((width_ / 2) * (1 + transformX / transformY));
-                // // int spriteHeight = abs(int(height_ / (transformY))); //using 'transformY' instead of the real distance prevents fisheye
-                //
-                // entity->setPosition(spriteScreenX, height_ / 2);
-
-                const double Dx = player_->direction().x;
-                const double Dy = player_->direction().y;
-                const double Px = plane_.x;
-                const double Py = plane_.y;
-                const double Vx = relativePosToPlayer.x;
-                const double Vy = relativePosToPlayer.y;
-                //
-                // double x = Vx * (Dx * Py - Dy * Px) / (Py * Vx - Px * Vy);
-                // double y = (Vy / Vx) * x;
-                //
-                // double dist = sqrt(pow(-Px + Dx - x, 2) + pow(-Py + Dy - y, 2));
-                // double P_length = sqrt(Px * Px + Py * Py);
-                // double position = (dist / (2 * P_length)) * width_;
-                //
-                // if (relToLeft < 0)
-                //     position = -position;
-
-                const double invDet = 1.0 / (Px * Dy - Dx * Py);
-                const double transformY = invDet * (-Py * Vx + Px * Vy);
-                if (transformY < 0)
-                    continue;
                 const double transformX = invDet * (Dy * Vx - Dx * Vy);
-               
-                const double position = (1 + transformX / transformY) * width_ / 2;
-
-                entity->setPosition(position, height_ / 2);
+                const double position   = (1 + transformX / transformY) * width_ / 2;
 
 
-                // double perpDistance = sqrt(pow(x - Vx, 2) + pow(y - Vy, 2));
-                // const double perpDistance = (-Py * Vx + Px * Vy) / (Px * Dy - Dx * Py);
-                entity->setScale(((height_ / transformY) / 64.),
-                                 (height_ / transformY) / 64.);
-                // entity->setScale(height_ / sqrt(entity->distanceToPlayer()) / 64.,
-                // height_ / sqrt(entity->distanceToPlayer()) / 64.);
+                if (position > -entity->imageSize().x  &&  
+                    position < static_cast<double>(width_) + entity->imageSize().x)
+                {
+                    assert(perpWallDistances_.size() == size_t(width_));
 
-                
-                renderWindow_->draw(*entity);
+                    
+
+                    double scale = (height_ / transformY) / 64.;
+
+                    entity->resetVertices();
 
 
-                // auto sum = plane_ + player_->direction();
-                // auto myPerpDif = relativePosToPlayer - player_->direction();
-                // double len = sum.x * sum.x + sum.y * sum.y;
-                // double x = normalizeVector2(relativePosToPlayer).x * len;
-                // entity->setPosition(width_ / 2, height_ / 2);
-                // // entity->setScale(width_ / entity->distanceToPlayer(), width_ / entity->distanceToPlayer());
-                // renderWindow_->draw(*entity);
+                    double left = /*std::max(*/position - (entity->imageSize().x * scale) / 2./*, 0.)*/;
+                    double right = /*std::min(*/position + (entity->imageSize().x * scale) / 2./*, double(width_))*/;
+
+
+                    auto borders = findTransitionPoint(
+                        left, right,
+                        transformY);
+                    // std::cout << borders.first << " " << borders.second << std::endl;
+
+                    if (borders.first >= 0)
+                    {
+                        entity->vertices()[0] = sf::Vertex{
+                            {float(/*int*/(borders.first / scale)), 0},
+                            sf::Color::White,
+                            {float(/*int*/(borders.first / scale)), 0}
+                        };
+
+                        entity->vertices()[3] = sf::Vertex{
+                            {float(/*int*/(borders.first / scale)), entity->vertices()[3].position.y},
+                            sf::Color::White,
+                            {float(/*int*/(borders.first / scale)), entity->vertices()[3].texCoords.y}
+                        };
+                    }
+                    if (borders.second >= 0)
+                    {
+                        entity->vertices()[1] = sf::Vertex{
+                            {float(/*ceil*/(borders.second / scale)), 0},
+                            sf::Color::White,
+                            {float(/*ceil*/(borders.second / scale)), 0}
+                        };
+                        entity->vertices()[2] = sf::Vertex{
+                            {float(/*ceil*/(borders.second / scale)), entity->vertices()[2].position.y},
+                            sf::Color::White,
+                            {float(/*ceil*/(borders.second / scale)), entity->vertices()[2].texCoords.y}
+                        };
+                    }
+                    else continue;
+
+                    // if (position >= 0 && position < perpWallDistances_.size() &&
+                    //     transformY >= perpWallDistances_[static_cast<int>(position)])
+                    //     continue;
+
+                    entity->setPosition(position, height_ / 2);
+
+                    entity->setScale(
+                        ((height_ / transformY) / 64.),
+                        (height_ / transformY) / 64.
+                    );
+
+                    renderWindow_->draw(*entity);
+                }
             }
         }
     }
+
 
 
     void Renderer::drawFPS()
@@ -462,7 +508,7 @@ namespace game
         //TODO better text rendering implementation
 
         static std::unique_ptr<sf::Font> font{nullptr};
-        static sf::Text text;
+        static sf::Text                  text;
 
         if (font == nullptr)
         {
@@ -478,10 +524,16 @@ namespace game
         }
 
         char s[80];
-        snprintf(s, 80,"FPS: %d\nx: %2.2f\ny: %2.2f\ndir_x: %g\ndir_y: %g",
-                 *fpsCounter_,
-                 player_->position().x, player_->position().y,
-                 player_->direction().x, player_->direction().y);
+        snprintf(
+            s,
+            80,
+            "FPS: %d\nx: %2.2f\ny: %2.2f\ndir_x: %g\ndir_y: %g",
+            *fpsCounter_,
+            player_->position().x,
+            player_->position().y,
+            player_->direction().x,
+            player_->direction().y
+        );
 
         // text.setString("FPS: " + std::to_string(*fpsCounter_) +
         //                "\nx: " + std::to_string(player_->position().x) +
@@ -490,13 +542,13 @@ namespace game
         //                "\ndir_y: " + std::to_string(player_->direction().y));
 
         text.setString(s);
-        
-        
+
+
         sf::RenderStates rs{};
         rs.transform.translate(10, 20);
         renderWindow_->draw(text, rs);
     }
-    
+
 
     void Renderer::drawPrimitiveWorld()
     {
@@ -638,6 +690,4 @@ namespace game
             renderWindow_->draw(vertices, 2, sf::Lines);
         }
     }
-
-
 }

@@ -67,6 +67,35 @@ namespace game
         target.draw(vertices_, states);
     }
 
-
-    
+    void Entity::resetVertices()
+    {
+        vertices_[0] = (
+            sf::Vertex{
+                {0, 0},
+                sf::Color::White,
+                {0, 0}
+            }
+        );
+        vertices_[1] = (
+            sf::Vertex{
+                {static_cast<float>(imageSize_.x), 0},
+                sf::Color::White,
+                {static_cast<float>(imageSize_.x), 0}
+            }
+        );
+        vertices_[2] = (
+            sf::Vertex{
+                {static_cast<float>(imageSize_.x), static_cast<float>(imageSize_.y)},
+                sf::Color::White,
+                {static_cast<float>(imageSize_.x), static_cast<float>(imageSize_.y)}
+            }
+        );
+        vertices_[3] = (
+            sf::Vertex{
+                {0, static_cast<float>(imageSize_.y)},
+                sf::Color::White,
+                {0, static_cast<float>(imageSize_.y)}
+            }
+        );
+    }
 }
