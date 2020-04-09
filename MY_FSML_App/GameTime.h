@@ -4,10 +4,16 @@ int main(int argc, char** argv);
 
 namespace game
 {
+    class Game;
+
     class GameTime
     {
     public:
-        friend int ::main(int argc, char** argv);
+        GameTime() = delete;
+        GameTime(const GameTime&) = delete;
+        ~GameTime() = default;
+
+        friend Game;
 
         static double deltaTime()
         {
@@ -15,7 +21,7 @@ namespace game
         }
 
     private:
-        GameTime() = default;
+        // GameTime() = default;
 
         static double deltaTime_;
 

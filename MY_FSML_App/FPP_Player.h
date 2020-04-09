@@ -1,6 +1,6 @@
 #pragma once
-#include <memory>
 
+#include "Game.h"
 #include "vector_additions.h"
 
 namespace game
@@ -11,10 +11,11 @@ namespace game
     class FPP_Player
     {
     public:
+        FPP_Player(const FPP_Player&) = delete;
+        ~FPP_Player() = default;
         FPP_Player(const sf::Vector2d& position,
                    const sf::Vector2d& direction,
-                   std::shared_ptr<game::LevelMap> levelMap,
-                   const sf::Vector2d& cameraPlane = sf::Vector2d{0, 0.888888888888});
+                   const sf::Vector2d& cameraPlane = sf::Vector2d{0, 0.8888888888888888});
             
 
         void rotate(const double&);         // rotate camera in y axis
@@ -23,16 +24,20 @@ namespace game
 
         // GETTERS AND SETTERS
 
-        const sf::Vector2d& position() const
+        [[nodiscard]]
+        sf::Vector2d position() const
         {
             return position_;
         }
 
-        const sf::Vector2d& direction() const
+        [[nodiscard]]
+        sf::Vector2d direction() const
         {
             return direction_;
         }
-        const sf::Vector2d& cameraPlane() const
+
+        [[nodiscard]]
+        sf::Vector2d cameraPlane() const
         {
             return cameraPlane_;
         }
@@ -41,9 +46,6 @@ namespace game
         sf::Vector2d position_{};   // position of the player
         sf::Vector2d direction_{};  // player's facing direction
         sf::Vector2d cameraPlane_{};
-
-        std::shared_ptr<game::LevelMap> levelMap_{};
-
     };
 }
 

@@ -25,31 +25,38 @@ namespace game
 
     public:
         // GETTERS & SETTERS
+
+        [[nodiscard]]
         int typeId() const
         {
             return tileType_->id();
         }
 
+        [[nodiscard]]
         std::string name() const
         {
             return tileType_->name();
         }
 
+        [[nodiscard]]
         std::string spriteName() const
         {
             return tileType_->spriteName();
         }
 
+        [[nodiscard]]
         bool isTraversable() const
         {
             return tileType_->isTraversable();
         }
 
+        [[nodiscard]]
         const sf::Image& image() const
         {
             return tileType_->image()->image();
         }
 
+        [[nodiscard]]
         const sf::Image& shadowImage() const
         {
             return tileType_->image()->shadowImage();

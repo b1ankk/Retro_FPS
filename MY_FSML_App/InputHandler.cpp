@@ -8,24 +8,23 @@
 
 namespace game
 {
-    InputHandler::InputHandler(std::shared_ptr<sf::RenderWindow> window,
-                               std::shared_ptr<FPP_Player> player) :
-        window_(std::move(window)),
-        player_(std::move(player))
+    InputHandler::InputHandler()/* :
+        window_(GAME::WINDOW),
+        player_(GAME::PLAYER)*/
     {
         setup();
     }
 
     void InputHandler::setup()
     {
-        window_->setMouseCursorVisible(false);
-        sf::Mouse::setPosition(screenMiddle_, *window_);
+        Game::get().window()->setMouseCursorVisible(false);
+        sf::Mouse::setPosition(Game::SCREEN_MIDDLE, *Game::get().window());
     }
 
 
     void InputHandler::handleInput()
     {
-        if (!window_->hasFocus())
+        if (!Game::get().window()->hasFocus())
             return;
 
         handleMouseLook();
@@ -36,14 +35,14 @@ namespace game
     void InputHandler::handleMouseLook()
     {
         // X-AXIS LOOK
-        int offsetX = sf::Mouse::getPosition(*window_).x - screenMiddle_.x;
-        double degrees = static_cast<double>(offsetX) / window_->getSize().x * mouseLookSensitivity_.x;
-        player_->rotate(degrees);
+        int offsetX = sf::Mouse::getPosition(*Game::get().window()).x - Game::SCREEN_MIDDLE.x;
+        double degrees = static_cast<double>(offsetX) / Game::get().window()->getSize().x * mouseLookSensitivity_.x;
+        Game::get().player()->rotate(degrees);
  
         // TODO Y-AXIS LOOK
 
 
-        sf::Mouse::setPosition(screenMiddle_, *window_);
+        sf::Mouse::setPosition(Game::SCREEN_MIDDLE, *Game::get().window());
     }
 
     void InputHandler::handleKeyMovement()
@@ -51,21 +50,21 @@ namespace game
         sf::Vector2d direction{};
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-            direction += player_->direction();
+            direction += Game::get().player()->direction();
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-            direction -= player_->direction();
+            direction -= Game::get().player()->direction();
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         {
-            double rotatedDirectionX = player_->direction().y;
-            double rotatedDirectionY = -player_->direction().x;
+            double rotatedDirectionX = Game::get().player()->direction().y;
+            double rotatedDirectionY = -Game::get().player()->direction().x;
 
             direction.x += rotatedDirectionX;
             direction.y += rotatedDirectionY;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
-            double rotatedDirectionX = player_->direction().y;
-            double rotatedDirectionY = -player_->direction().x;
+            double rotatedDirectionX = Game::get().player()->direction().y;
+            double rotatedDirectionY = -Game::get().player()->direction().x;
 
             direction.x -= rotatedDirectionX;
             direction.y -= rotatedDirectionY;
@@ -81,7 +80,7 @@ namespace game
             multiplier = 0.25;
 
         if (direction.x != 0 || direction.y != 0)
-            player_->move(direction, movementSpeed_ / 1000. * multiplier * GameTime::deltaTime());
+            Game::get().player()->move(direction, movementSpeed_ / 1000. * multiplier * GameTime::deltaTime());
     }
 }
 

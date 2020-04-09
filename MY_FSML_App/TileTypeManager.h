@@ -3,7 +3,7 @@
 #include <memory>
 #include <unordered_map>
 
-
+#include "GameObjRef.h"
 
 
 namespace game
@@ -14,11 +14,13 @@ namespace game
     class TileTypeManager
     {
     public:
+        TileTypeManager(const TileTypeManager&) = delete;
         TileTypeManager();
+        ~TileTypeManager() = default;
 
 
         void loadTileTypeInfo(std::string, std::shared_ptr<game::TileType>);
-        void loadAllTileTypes(const std::shared_ptr<const SpriteManager>&);
+        void loadAllTileTypes(GameObjRef<SpriteManager>);
 
     private:
 
@@ -27,8 +29,10 @@ namespace game
 
 
     public:
+        [[nodiscard]]
         std::shared_ptr<TileType> getTypeForId(const size_t& id) const;
 
+        [[nodiscard]]
         std::shared_ptr<TileType> getTypeForName(const std::string& name) const;
     };
 }

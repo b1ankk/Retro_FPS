@@ -171,10 +171,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetManager.h" />
+    <ClInclude Include="GameObjRef.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityVector.h" />
     <ClInclude Include="FPP_Player.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GAME_REFS.h" />
     <ClInclude Include="LevelMap.h" />
     <ClInclude Include="MapTile.h" />
     <ClInclude Include="SpriteManager.h" />

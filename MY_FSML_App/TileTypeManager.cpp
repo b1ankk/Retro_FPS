@@ -35,7 +35,7 @@ namespace game
         );
     }
 
-    void TileTypeManager::loadAllTileTypes(const std::shared_ptr<const game::SpriteManager>& spriteManager)
+    void TileTypeManager::loadAllTileTypes(GameObjRef<game::SpriteManager> spriteManager)
     {
         for (auto& tileTypePair : tileTypesMap_)
         {

@@ -1,8 +1,5 @@
 #include "Renderer.h"
 
-
-
-#include <algorithm>
 #include <cassert>
 #include <future>
 #include <iostream>
@@ -12,29 +9,18 @@
 #include "FPP_Player.h"
 #include "LevelMap.h"
 #include "MapTile.h"
-#include "EntityVector.h"
 #include "Entity.h"
 
 namespace game
 {
-    Renderer::Renderer(std::shared_ptr<const FPP_Player> player,
-                       const int&                        width,
+    Renderer::Renderer(const int&                        width,
                        const int&                        height,
-                       std::shared_ptr<sf::RenderWindow> renderWindow,
-                       std::shared_ptr
-                       <const SpriteManager>     spriteManager,
-                       std::shared_ptr<LevelMap> levelMap,
                        const double&             renderDistance) :
         width_(width),
         height_(height),
-        renderWindow_(std::move(renderWindow)),
-        spriteManager_(std::move(spriteManager)),
         screenBufferLength_(width_ * 4LLU * height_),
         screenBuffer_(new sf::Uint8[screenBufferLength_]{0}),
         screenClearBuffer_(new sf::Uint8[screenBufferLength_]{0}),
-        player_(std::move(player)),
-        plane_(player_->cameraPlane()),
-        levelMap_(std::move(levelMap)),
         renderDistance_(renderDistance),
         vertices_(sf::PrimitiveType::Quads),
         perpWallDistances_(width_)
@@ -115,7 +101,7 @@ namespace game
 
     void Renderer::renderFrame()
     {
-        renderWindow_->clear(sf::Color{0xff});
+        Game::get().window()->clear(sf::Color{0xff});
 
         std::vector<std::future<void>> futures;
         futures.reserve(THREADS);
@@ -148,7 +134,7 @@ namespace game
         // // sprite.scale(1, 1);
 
 
-        renderWindow_->draw(vertices_, renderStates_);
+        Game::get().window()->draw(vertices_, renderStates_);
 
         drawEntities();
 
@@ -158,7 +144,7 @@ namespace game
             drawFPS();
 
 
-        renderWindow_->display();
+        Game::get().window()->display();
     }
 
 
@@ -170,12 +156,12 @@ namespace game
             double cameraX = 2. * x / static_cast<double>(width_) - 1.; //x-coordinate in camera space
 
             sf::Vector2d rayDirection{
-                player_->direction().x + plane_.x * cameraX,
-                player_->direction().y + plane_.y * cameraX
+                Game::get().player()->direction().x + Game::get().player()->cameraPlane().x * cameraX,
+                Game::get().player()->direction().y + Game::get().player()->cameraPlane().y * cameraX
             };
 
             // get player's position on the grid
-            sf::Vector2i gridPosition = static_cast<sf::Vector2i>(player_->position());
+            sf::Vector2i gridPosition = static_cast<sf::Vector2i>(Game::get().player()->position());
 
             // length of ray from one x or y-side to next x or y-side
             // not a Vector2!!! but separate values
@@ -191,22 +177,22 @@ namespace game
             if (rayDirection.x < 0)
             {
                 stepDirection.x = -1;
-                sideDistX       = (player_->position().x - gridPosition.x) * deltaDistX;
+                sideDistX       = (Game::get().player()->position().x - gridPosition.x) * deltaDistX;
             }
             else
             {
                 stepDirection.x = 1;
-                sideDistX       = (gridPosition.x + 1.0 - player_->position().x) * deltaDistX;
+                sideDistX       = (gridPosition.x + 1.0 - Game::get().player()->position().x) * deltaDistX;
             }
             if (rayDirection.y < 0)
             {
                 stepDirection.y = -1;
-                sideDistY       = (player_->position().y - gridPosition.y) * deltaDistY;
+                sideDistY       = (Game::get().player()->position().y - gridPosition.y) * deltaDistY;
             }
             else
             {
                 stepDirection.y = 1;
-                sideDistY       = (gridPosition.y + 1.0 - player_->position().y) * deltaDistY;
+                sideDistY       = (gridPosition.y + 1.0 - Game::get().player()->position().y) * deltaDistY;
             }
 
             bool        hit = false;
@@ -228,17 +214,17 @@ namespace game
                     side = WallHitSide::VERTICAL;
                 }
                 // Check if ray has hit a wall
-                if ((*levelMap_)[gridPosition.x][gridPosition.y] > 0)
+                if ((*Game::get().levelMap())[gridPosition.x][gridPosition.y] > 0)
                     hit = true;
             }
 
             double wallPerpDist;
             // Calculate distance projected on camera direction (Euclidean distance will give fisheye effect!)
             if (side == WallHitSide::HORIZONTAL)
-                wallPerpDist = (gridPosition.x - player_->position().x
+                wallPerpDist = (gridPosition.x - Game::get().player()->position().x
                     + (1 - stepDirection.x) / 2) / rayDirection.x;
             else
-                wallPerpDist = (gridPosition.y - player_->position().y
+                wallPerpDist = (gridPosition.y - Game::get().player()->position().y
                     + (1 - stepDirection.y) / 2) / rayDirection.y;
 
             perpWallDistances_[x] = wallPerpDist;
@@ -254,7 +240,7 @@ namespace game
                 drawEnd = height_ - 1;
 
 
-            const game::MapTile tile = (*levelMap_->mapData())[gridPosition.x][gridPosition.y];
+            const game::MapTile tile = (*Game::get().levelMap()->mapData())[gridPosition.x][gridPosition.y];
 
             if (tile.typeId() != 0)
             {
@@ -267,9 +253,9 @@ namespace game
 
                 double wallHitX; // where the wall was hit
                 if (side == WallHitSide::HORIZONTAL)
-                    wallHitX = player_->position().y + wallPerpDist * rayDirection.y;
+                    wallHitX = Game::get().player()->position().y + wallPerpDist * rayDirection.y;
                 else
-                    wallHitX = player_->position().x + wallPerpDist * rayDirection.x;
+                    wallHitX = Game::get().player()->position().x + wallPerpDist * rayDirection.x;
                 wallHitX -= floor(wallHitX);
 
                 int imageX = static_cast<int>(wallHitX * imageSize.x);
@@ -411,18 +397,16 @@ namespace game
 
     void Renderer::drawEntities()
     {
-        // TODO drawing entities can be more optimized
+        Game::get().levelMap()->entities().updateToPos(Game::get().player()->position());
 
-        levelMap_->entities().updateToPos(player_->position());
+        const double Dx = Game::get().player()->direction().x;
+        const double Dy = Game::get().player()->direction().y;
+        const double Px = Game::get().player()->cameraPlane().x;
+        const double Py = Game::get().player()->cameraPlane().y;
 
-        const double Dx = player_->direction().x;
-        const double Dy = player_->direction().y;
-        const double Px = plane_.x;
-        const double Py = plane_.y;
-
-        for (auto& entity : levelMap_->entities())
+        for (auto& entity : Game::get().levelMap()->entities())
         {
-            const sf::Vector2d relativePosToPlayer = entity->mapPosition() - player_->position();
+            const sf::Vector2d relativePosToPlayer = entity->mapPosition() - Game::get().player()->position();
 
             const double Vx = relativePosToPlayer.x;
             const double Vy = relativePosToPlayer.y;
@@ -434,73 +418,60 @@ namespace game
             {
                 const double transformX = invDet * (Dy * Vx - Dx * Vy);
                 const double position   = (1 + transformX / transformY) * width_ / 2;
+                const double scale = (height_ / transformY) / 64.;
 
 
-                // if ((position >= 0 -entity->imageSize().x &&
-                //      position < static_cast<double>(width_) + entity->imageSize().x* &&
-                //      transformY >= 0) ||
-                //     (position >= width_ || position < 0) && transformY > 0)
+                entity->resetVertices();
+
+                assert(perpWallDistances_.size() == size_t(width_));
+                const double left = position - (entity->imageSize().x * scale) / 2.;
+                const double right = position + (entity->imageSize().x * scale) / 2.;
+
+
+                const auto borders = findTransitionPoint(
+                    left, right, transformY);
+
+                bool transformed{false};
+                if (borders.first >= 0)
                 {
-                    assert(perpWallDistances_.size() == size_t(width_));
+                    entity->vertices()[0] = sf::Vertex{
+                        {float((borders.first / scale)), entity->vertices()[0].position.y},
+                        entity->vertices()[0].color,
+                        {float((borders.first / scale)), entity->vertices()[0].texCoords.y}
+                    };
 
-                    
+                    entity->vertices()[3] = sf::Vertex{
+                        {float((borders.first / scale)), entity->vertices()[3].position.y},
+                        entity->vertices()[3].color,
+                        {float((borders.first / scale)), entity->vertices()[3].texCoords.y}
+                    };
 
-                    double scale = (height_ / transformY) / 64.;
-
-                    entity->resetVertices();
-
-
-                    double left = /*std::max(*/position - (entity->imageSize().x * scale) / 2./*, 0.)*/;
-                    double right = /*std::min(*/position + (entity->imageSize().x * scale) / 2./*, double(width_))*/;
-
-
-                    auto borders = findTransitionPoint(
-                        left, right,
-                        transformY);
-                    // std::cout << borders.first << " " << borders.second << std::endl;
-
-                    if (borders.first >= 0)
-                    {
-                        entity->vertices()[0] = sf::Vertex{
-                            {float(/*int*/(borders.first / scale)), 0},
-                            sf::Color::White,
-                            {float(/*int*/(borders.first / scale)), 0}
-                        };
-
-                        entity->vertices()[3] = sf::Vertex{
-                            {float(/*int*/(borders.first / scale)), entity->vertices()[3].position.y},
-                            sf::Color::White,
-                            {float(/*int*/(borders.first / scale)), entity->vertices()[3].texCoords.y}
-                        };
-                    }
-                    if (borders.second >= 0)
-                    {
-                        entity->vertices()[1] = sf::Vertex{
-                            {float(/*ceil*/(borders.second / scale)), 0},
-                            sf::Color::White,
-                            {float(/*ceil*/(borders.second / scale)), 0}
-                        };
-                        entity->vertices()[2] = sf::Vertex{
-                            {float(/*ceil*/(borders.second / scale)), entity->vertices()[2].position.y},
-                            sf::Color::White,
-                            {float(/*ceil*/(borders.second / scale)), entity->vertices()[2].texCoords.y}
-                        };
-                    }
-                    else continue;
-
-                    // if (position >= 0 && position < perpWallDistances_.size() &&
-                    //     transformY >= perpWallDistances_[static_cast<int>(position)])
-                    //     continue;
-
-                    entity->setPosition(position, height_ / 2);
-
-                    entity->setScale(
-                        ((height_ / transformY) / 64.),
-                        (height_ / transformY) / 64.
-                    );
-
-                    renderWindow_->draw(*entity);
+                    transformed = true;
                 }
+                if (borders.second >= 0)
+                {
+                    entity->vertices()[1] = sf::Vertex{
+                        {float((borders.second / scale)), entity->vertices()[1].position.y},
+                        entity->vertices()[1].color,
+                        {float((borders.second / scale)), entity->vertices()[1].texCoords.y}
+                    };
+                    entity->vertices()[2] = sf::Vertex{
+                        {float((borders.second / scale)), entity->vertices()[2].position.y},
+                        entity->vertices()[2].color,
+                        {float((borders.second / scale)), entity->vertices()[2].texCoords.y}
+                    };
+
+                    transformed = true;
+                }
+                if (!transformed) continue;;
+
+
+                entity->setPosition(position, height_ * entity->screenYPosition());
+
+                entity->setScale(scale, scale);
+
+                Game::get().window()->draw(*entity);
+                
             }
         }
     }
@@ -532,31 +503,31 @@ namespace game
             s,
             80,
             "FPS: %d\nx: %2.2f\ny: %2.2f\ndir_x: %g\ndir_y: %g",
-            *fpsCounter_,
-            player_->position().x,
-            player_->position().y,
-            player_->direction().x,
-            player_->direction().y
+            Game::get().fps(),
+            Game::get().player()->position().x,
+            Game::get().player()->position().y,
+            Game::get().player()->direction().x,
+            Game::get().player()->direction().y
         );
 
         // text.setString("FPS: " + std::to_string(*fpsCounter_) +
-        //                "\nx: " + std::to_string(player_->position().x) +
-        //                "  y: " + std::to_string(player_->position().y) +
-        //                "\ndir_x: " + std::to_string(player_->direction().x) +
-        //                "\ndir_y: " + std::to_string(player_->direction().y));
+        //                "\nx: " + std::to_string(Game::get().player()->position().x) +
+        //                "  y: " + std::to_string(Game::get().player()->position().y) +
+        //                "\ndir_x: " + std::to_string(Game::get().player()->direction().x) +
+        //                "\ndir_y: " + std::to_string(Game::get().player()->direction().y));
 
         text.setString(s);
 
 
         sf::RenderStates rs{};
         rs.transform.translate(10, 20);
-        renderWindow_->draw(text, rs);
+        Game::get().window()->draw(text, rs);
     }
 
 
     void Renderer::drawPrimitiveWorld()
     {
-        renderWindow_->clear(sf::Color::Black);
+        Game::get().window()->clear(sf::Color::Black);
 
         for (int x = 0; x < width_; ++x)
         {
@@ -564,12 +535,12 @@ namespace game
             double cameraX = 2. * x / static_cast<double>(width_) - 1.; //x-coordinate in camera space
 
             sf::Vector2d rayDirection{
-                player_->direction().x + plane_.x * cameraX,
-                player_->direction().y + plane_.y * cameraX
+                Game::get().player()->direction().x + Game::get().player()->cameraPlane().x * cameraX,
+                Game::get().player()->direction().y + Game::get().player()->cameraPlane().y * cameraX
             };
 
             // get player's position on the grid
-            sf::Vector2i gridPosition = static_cast<sf::Vector2i>(player_->position());
+            sf::Vector2i gridPosition = static_cast<sf::Vector2i>(Game::get().player()->position());
 
             // length of ray from one x or y-side to next x or y-side
             // not a Vector2!!! but separate values
@@ -585,22 +556,22 @@ namespace game
             if (rayDirection.x < 0)
             {
                 stepDirection.x = -1;
-                sideDistX       = (player_->position().x - gridPosition.x) * deltaDistX;
+                sideDistX       = (Game::get().player()->position().x - gridPosition.x) * deltaDistX;
             }
             else
             {
                 stepDirection.x = 1;
-                sideDistX       = (gridPosition.x + 1.0 - player_->position().x) * deltaDistX;
+                sideDistX       = (gridPosition.x + 1.0 - Game::get().player()->position().x) * deltaDistX;
             }
             if (rayDirection.y < 0)
             {
                 stepDirection.y = -1;
-                sideDistY       = (player_->position().y - gridPosition.y) * deltaDistY;
+                sideDistY       = (Game::get().player()->position().y - gridPosition.y) * deltaDistY;
             }
             else
             {
                 stepDirection.y = 1;
-                sideDistY       = (gridPosition.y + 1.0 - player_->position().y) * deltaDistY;
+                sideDistY       = (gridPosition.y + 1.0 - Game::get().player()->position().y) * deltaDistY;
             }
 
             bool        hit = false;
@@ -622,17 +593,17 @@ namespace game
                     side = WallHitSide::VERTICAL;
                 }
                 // Check if ray has hit a wall
-                if ((*levelMap_)[gridPosition.x][gridPosition.y] > 0)
+                if ((*Game::get().levelMap())[gridPosition.x][gridPosition.y] > 0)
                     hit = true;
             }
 
             double wallPerpDist;
             // Calculate distance projected on camera direction (Euclidean distance will give fisheye effect!)
             if (side == WallHitSide::HORIZONTAL)
-                wallPerpDist = (gridPosition.x - player_->position().x
+                wallPerpDist = (gridPosition.x - Game::get().player()->position().x
                     + (1 - stepDirection.x) / 2) / rayDirection.x;
             else
-                wallPerpDist = (gridPosition.y - player_->position().y
+                wallPerpDist = (gridPosition.y - Game::get().player()->position().y
                     + (1 - stepDirection.y) / 2) / rayDirection.y;
 
 
@@ -651,7 +622,7 @@ namespace game
             sf::Color color;
 
             //TODO change world map handling
-            switch ((*levelMap_)[gridPosition.x][gridPosition.y])
+            switch ((*Game::get().levelMap())[gridPosition.x][gridPosition.y])
             {
                 case 1:
                     color = sf::Color::Red;
@@ -691,7 +662,7 @@ namespace game
             };
 
 
-            renderWindow_->draw(vertices, 2, sf::Lines);
+            Game::get().window()->draw(vertices, 2, sf::Lines);
         }
     }
 }

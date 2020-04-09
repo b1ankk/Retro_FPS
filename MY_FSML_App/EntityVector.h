@@ -13,7 +13,9 @@ namespace game
     class EntityVector
     {
     public:
-
+        EntityVector(const EntityVector&) = delete;
+        EntityVector() = default;
+        ~EntityVector() = default;
 
         void add(std::shared_ptr<game::Entity> entity);
         void remove(const size_t& index);
@@ -26,12 +28,14 @@ namespace game
             sortEntities();
         }
 
-        auto begin()
+        [[nodiscard]]
+        auto begin() const
         {
             return entities_.begin();
         }
 
-        auto end()
+        [[nodiscard]]
+        auto end() const 
         {
             return entities_.end();
         }

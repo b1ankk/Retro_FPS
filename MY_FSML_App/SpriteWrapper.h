@@ -8,6 +8,8 @@ namespace game
     class SpriteWrapper
     {
     public:
+        // SpriteWrapper(const SpriteWrapper&) = delete;
+        ~SpriteWrapper() = default;
         SpriteWrapper(std::string imagePath,
                       std::string imageName);
 
@@ -32,11 +34,13 @@ namespace game
         //  GETTERS & SETTERS
 
 
+        [[nodiscard]]
         std::string getImagePath() const
         {
             return imagePath_;
         }
 
+        [[nodiscard]]
         std::string getImageName() const
         {
             return imageName_;
@@ -45,16 +49,19 @@ namespace game
         /**
          * @return a const reference to the instance's image
          */
+        [[nodiscard]]
         const sf::Image& image() const
         {
             return image_;
         }
 
+        [[nodiscard]]
         const sf::Image& shadowImage() const
         {
             return shadowImage_;
         }
 
+        [[nodiscard]]
         bool isLoaded() const
         {
             return isLoaded_;

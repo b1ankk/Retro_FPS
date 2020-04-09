@@ -6,36 +6,36 @@
 
 #include "AssetManager.h"
 #include "TextureManager.h"
+#include "TileTypeManager.h"
 #include "TileType.h"
 
 namespace game
 {
-    AssetManager::AssetManager(std::string assetInfoFilePath) :
-        assetInfoFilePath_(std::move(assetInfoFilePath))
+    using namespace std;
+
+    AssetManager::AssetManager(string assetInfoFilePath) :
+        assetInfoFilePath_(move(assetInfoFilePath)),
+        spriteManager_(make_shared<SpriteManager>()),
+        tileTypeManager_(make_shared<TileTypeManager>()),
+        textureManager_(make_shared<TextureManager>(spriteManager_))
     {
         loadAssetInfo();
-
-        textureManager_ = {
-            std::make_shared<game::TextureManager>(
-                game::TextureManager{spriteManager_}
-            )
-        };
     }
 
     void AssetManager::loadAssetInfo()
     {
-        std::ifstream file{assetInfoFilePath_};
+        ifstream file{assetInfoFilePath_};
 
         if (!file.good())
-            throw std::runtime_error{"Error reading file: " + assetInfoFilePath_};
+            throw runtime_error{"Error reading file: " + assetInfoFilePath_};
 
-        std::stringstream buffer;
+        stringstream buffer;
         buffer << file.rdbuf();
-        std::string fileContents = buffer.str();
+        string fileContents = buffer.str();
 
         file.close();
 
-        // std::cout << fileContents << std::endl;
+        // cout << fileContents << endl;
 
         assetInfo_.Parse(fileContents.c_str());
 
@@ -69,7 +69,7 @@ namespace game
                 );
             }
 
-            std::cout << "Sprites' info loaded" << std::endl;
+            cout << "Sprites' info loaded" << endl;
         }
         
     }
@@ -87,9 +87,9 @@ namespace game
         for (rapidjson::Value::ConstValueIterator itr = spriteInfo.Begin();
              itr != spriteInfo.End(); ++itr)
         {
-            std::string tileName{(*itr)["name"].GetString()};
-            const std::shared_ptr<TileType> tileType{
-                std::make_shared<TileType>(
+            string tileName{(*itr)["name"].GetString()};
+            const shared_ptr<TileType> tileType{
+                make_shared<TileType>(
                     tileName,
                     (*itr)["sprite_name"].GetString(),
                     (*itr)["traversable"].GetBool()
@@ -100,7 +100,7 @@ namespace game
             tileTypeManager_->loadTileTypeInfo(tileName, tileType);
         }
 
-        std::cout << "TileType' info loaded" << std::endl;
+        cout << "TileType' info loaded" << endl;
     }
 
     void AssetManager::loadTileTypes()

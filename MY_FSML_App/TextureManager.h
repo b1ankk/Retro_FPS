@@ -1,7 +1,10 @@
 #pragma once
 #include <memory>
+#include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
+
+#include "GameObjRef.h"
 #include "SpriteWrapper.h"
 #include "SpriteManager.h"
 
@@ -13,8 +16,10 @@ namespace game
     class TextureManager
     {
     public:
-        explicit TextureManager(std::shared_ptr<game::SpriteManager> spriteManager)
-            : spriteManager_(std::move(spriteManager))
+        TextureManager(const TextureManager&) = delete;
+        ~TextureManager() = default;
+        explicit TextureManager(GameObjRef<SpriteManager> spriteManager)
+            : spriteManager_(spriteManager)
         {
 
         }
@@ -40,7 +45,7 @@ namespace game
 
 
     private:
-        std::shared_ptr<game::SpriteManager> spriteManager_;
+        GameObjRef<SpriteManager> spriteManager_;
 
         std::unordered_map<std::string, std::shared_ptr<const sf::Texture>> textures_;
 

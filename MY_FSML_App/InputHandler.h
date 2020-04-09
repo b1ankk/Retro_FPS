@@ -1,41 +1,37 @@
 #pragma once
+
+#include "GameObjRef.h"
 #include "vector_additions.h"
+#include "Game.h"
+
+
+
 
 
 namespace game
 {
-
-
     class FPP_Player;
-
+    
 
 
     class InputHandler
     {
     public:
-        InputHandler(std::shared_ptr<sf::RenderWindow> window,
-                     std::shared_ptr<FPP_Player> player);
+        InputHandler(const InputHandler&) = delete;
+        InputHandler();
+        ~InputHandler() = default;
 
         void handleInput();
 
     private:
-        // REFERENCES
-        std::shared_ptr<sf::RenderWindow> window_;
-        std::shared_ptr<FPP_Player> player_;
 
         // FIELDS
 
         // bool cursorLocked_{true};
 
         sf::Vector2d mouseLookSensitivity_{1., 1.};
-        double movementSpeed_{1.};
+        double       movementSpeed_{1.};
 
-        sf::Vector2i screenMiddle_{
-            static_cast<int>(window_->getSize().x) / 2,
-            static_cast<int>(window_->getSize().y) / 2
-        };
-
-        
         // METHODS
         void setup();
 
@@ -45,12 +41,24 @@ namespace game
     public:
         // SETTERS & GETTERS
 
-        void setMouseLookSensitivityX(const double mouseLookSensitivityX)
+        [[nodiscard]]
+        auto mouseLookSensitivity() const
+        {
+            return mouseLookSensitivity_;
+        }
+
+        [[nodiscard]]
+        auto movementSpeed() const
+        {
+            return movementSpeed_;
+        }
+
+        void setMouseLookSensitivityX(const double& mouseLookSensitivityX)
         {
             mouseLookSensitivity_.x = mouseLookSensitivityX;
         }
 
-        void setMouseLookSensitivityY(const double mouseLookSensitivityY)
+        void setMouseLookSensitivityY(const double& mouseLookSensitivityY)
         {
             mouseLookSensitivity_.y = mouseLookSensitivityY;
         }
@@ -60,10 +68,9 @@ namespace game
             mouseLookSensitivity_ = mouseLookSensitivity;
         }
 
-        void setMovementSpeed(double movementSpeed)
+        void setMovementSpeed(const double& movementSpeed)
         {
             movementSpeed_ = movementSpeed;
         }
     };
 }
-

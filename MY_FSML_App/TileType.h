@@ -1,8 +1,6 @@
 #pragma once
 #include <memory>
 #include <string>
-#include <vector>
-
 
 namespace game
 {
@@ -12,7 +10,8 @@ namespace game
     class TileType
     {
     public:
-
+        // TileType(const TileType&) = delete;
+        ~TileType() = default;
         explicit TileType(std::string name,
                           std::string spriteName,
                           const bool isTraversable = false, 
@@ -34,10 +33,6 @@ namespace game
 
         static int nextId_;
 
-
-        static std::vector<std::shared_ptr<TileType>> tileTypes_;
-    
-
     public:
         void setSprite(std::shared_ptr<const SpriteWrapper> spriteWrapper)
         {
@@ -45,26 +40,31 @@ namespace game
         }
 
 
+        [[nodiscard]]
         int id() const
         {
             return id_;
         }
 
+        [[nodiscard]]
         std::string name() const
         {
             return name_;
         }
 
+        [[nodiscard]]
         std::string spriteName() const
         {
             return spriteName_;
         }
 
+        [[nodiscard]]
         bool isTraversable() const
         {
             return isTraversable_;
         }
 
+        [[nodiscard]]
         std::shared_ptr<const game::SpriteWrapper> image() const
         {
             return sprite_;

@@ -13,6 +13,9 @@ namespace game
     class SpriteManager
     {
     public:
+        SpriteManager() = default;
+        ~SpriteManager() = default;
+        SpriteManager(const SpriteManager&) = delete;
 
          /**
          * Loads a sprite's info and saves it into the internal unordered_map
@@ -26,6 +29,7 @@ namespace game
         */
         void loadAllSprites();
 
+        [[nodiscard]]
         std::shared_ptr<const SpriteWrapper> getSprite(const std::string& name) const
         {
             try
