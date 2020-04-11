@@ -4,7 +4,6 @@
 #include <memory>
 
 #include "EntityVector.h"
-#include "GAME_REFS.h"
 
 namespace game
 {

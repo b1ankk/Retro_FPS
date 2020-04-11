@@ -176,7 +176,6 @@
     <ClInclude Include="EntityVector.h" />
     <ClInclude Include="FPP_Player.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="GAME_REFS.h" />
     <ClInclude Include="LevelMap.h" />
     <ClInclude Include="MapTile.h" />
     <ClInclude Include="SpriteManager.h" />

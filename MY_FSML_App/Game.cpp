@@ -128,7 +128,7 @@ namespace game
         // TEST ENTITIES
         levelMap_->entities().add(
             make_shared<Entity>(
-                textureManager()->getTextureForName("barrel"),
+                textureManager()->getTextureForName("frogmon_stand"),
                 sf::Vector2d{15, 15}
             )
         );
@@ -139,19 +139,4 @@ namespace game
             )
         );
     }
-}
-
-
-namespace GAME
-{
-    // Game& INSTANCE = game::Game::get();
-    // GameObjRef<LevelMap>         LEVEL_MAP = INSTANCE.levelMap();
-    // GameObjRef<sf::RenderWindow> WINDOW = INSTANCE.window();
-    // GameObjRef<AssetManager>     ASSET_MANAGER = INSTANCE.assetManager();
-    // GameObjRef<SpriteManager>    SPRITE_MANAGER = INSTANCE.spriteManager();
-    // GameObjRef<TileTypeManager>  TILE_TYPE_MANAGER = INSTANCE.tileTypeManager();
-    // GameObjRef<TextureManager>   TEXTURE_MANAGER = INSTANCE.textureManager();
-    // GameObjRef<Renderer>         RENDERER = INSTANCE.renderer();
-    // GameObjRef<InputHandler>     INPUT_HANDLER = INSTANCE.inputHandler();
-    // GameObjRef<FPP_Player>       PLAYER            = INSTANCE.player();
 }

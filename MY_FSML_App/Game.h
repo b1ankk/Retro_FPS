@@ -2,7 +2,6 @@
 
 #include <memory>
 #include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/Graphics/Text.hpp>
 
 #include "EntityVector.h"
 #include "GameObjRef.h"
@@ -54,6 +53,8 @@ namespace game
         // FIELDS
         int lastFps_{};
 
+        double renderScale_{1.};
+
         // CONST INSTANCES
 
         std::shared_ptr<sf::RenderWindow> window_{};
@@ -65,7 +66,7 @@ namespace game
 
         // MUTABLE INSTANCES
 
-        std::shared_ptr<game::LevelMap> levelMap_{};
+        std::shared_ptr<LevelMap> levelMap_{};
 
 
         // METHODS
@@ -132,10 +133,12 @@ namespace game
         }
 
         [[nodiscard]]
-        int fps() const
+        const int& fps() const
         {
             return lastFps_;
         }
+
+
     };
 }
 

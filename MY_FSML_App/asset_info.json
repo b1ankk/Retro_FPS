@@ -47,10 +47,14 @@
         {
           "name": "column",
           "path": "assets\\sprites\\entity\\column.png"
+        },
+        {
+          "name": "frogmon_stand",
+          "path": "assets\\sprites\\entity\\frogmon_stand.png"
         }
       ]
     },
-    "tile_types": [
+        "tile_types": [
       {
         "id": 0,
         "name": "wolf_blue_bricks_wall",

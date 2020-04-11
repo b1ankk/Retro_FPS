@@ -19,6 +19,7 @@ namespace game
 
         Renderer(const int&    width,
                  const int&    height,
+                 const double& scale          = 1.,
                  const double& renderDistance = 32.
         );
 
@@ -30,17 +31,18 @@ namespace game
     private:
         // FIELDS
 
-        int                          width_{};  // width to render
-        int                          height_{}; // height to render
+        int width_{};  // width to render
+        int height_{}; // height to render
 
         // Screen buffer operations
 
-        size_t                    screenBufferLength_{};
-        sf::Uint8*                screenBuffer_{};
-        sf::Uint8*                screenClearBuffer_{nullptr};
+        size_t     screenBufferLength_{};
+        sf::Uint8* screenBuffer_{};
+        sf::Uint8* screenClearBuffer_{nullptr};
 
 
-        double               renderDistance_{32.};
+        double renderDistance_{32.};
+        double scale_{1.};
 
         // Rendering objects
 
@@ -87,6 +89,5 @@ namespace game
         {
             drawFpsCounter_ = renderFpsCounter;
         }
-
     };
 }

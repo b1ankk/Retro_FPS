@@ -13,11 +13,13 @@
 
 namespace game
 {
-    Renderer::Renderer(const int&                        width,
-                       const int&                        height,
-                       const double&             renderDistance) :
+    Renderer::Renderer(const int&    width,
+                       const int&    height,
+                       const double& scale,
+                       const double& renderDistance) :
         width_(width),
         height_(height),
+        scale_(scale),
         screenBufferLength_(width_ * 4LLU * height_),
         screenBuffer_(new sf::Uint8[screenBufferLength_]{0}),
         screenClearBuffer_(new sf::Uint8[screenBufferLength_]{0}),
@@ -56,7 +58,7 @@ namespace game
 
         // Set up render states
         renderStates_.texture = &texture_;
-        // renderStates_.transform.scale(1, 1);
+        // renderStates_.transform.scale(1. / scale, 1 / scale);
     }
 
 
@@ -339,7 +341,7 @@ namespace game
         // }
     }
 
-    
+
     std::pair<double, double> Renderer::findTransitionPoint(double left, double right, const double perpDist)
     {
         if (right < left)
@@ -347,8 +349,8 @@ namespace game
 
         const double oldLeft{left};
 
-        int resultL{-1};
-        int resultR{-1};
+        int  resultL{-1};
+        int  resultR{-1};
         bool foundL{false};
         bool foundR{false};
 
@@ -363,13 +365,10 @@ namespace game
             right = perpWallDistances_.size() - 1LLU;
 
         const double start = left;
-        const double end = right;
+        const double end   = right;
 
-        double leftPtr = start;
+        double leftPtr  = start;
         double rightPtr = end;
-
-
-        
 
 
         while (leftPtr <= end && !foundL)
@@ -377,7 +376,7 @@ namespace game
             if (perpWallDistances_[leftPtr] > perpDist)
             {
                 resultL = leftPtr - oldLeft - 1;
-                foundL = true;
+                foundL  = true;
             }
             leftPtr++;
         }
@@ -387,7 +386,7 @@ namespace game
             if (perpWallDistances_[rightPtr] > perpDist)
             {
                 resultR = rightPtr - oldLeft + 2;
-                foundR = true;
+                foundR  = true;
             }
             rightPtr--;
         }
@@ -418,18 +417,21 @@ namespace game
             {
                 const double transformX = invDet * (Dy * Vx - Dx * Vy);
                 const double position   = (1 + transformX / transformY) * width_ / 2;
-                const double scale = (height_ / transformY) / 64.;
+                const double scale      = (height_ / transformY) / 64.;
 
 
                 entity->resetVertices();
 
                 assert(perpWallDistances_.size() == size_t(width_));
-                const double left = position - (entity->imageSize().x * scale) / 2.;
+                const double left  = position - (entity->imageSize().x * scale) / 2.;
                 const double right = position + (entity->imageSize().x * scale) / 2.;
 
 
                 const auto borders = findTransitionPoint(
-                    left, right, transformY);
+                    left,
+                    right,
+                    transformY
+                );
 
                 bool transformed{false};
                 if (borders.first >= 0)
@@ -471,11 +473,9 @@ namespace game
                 entity->setScale(scale, scale);
 
                 Game::get().window()->draw(*entity);
-                
             }
         }
     }
-
 
 
     void Renderer::drawFPS()

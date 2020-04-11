@@ -116,9 +116,6 @@
     <ClInclude Include="AssetManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GAME_REFS.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GameObjRef.h">
       <Filter>Header Files</Filter>
     </ClInclude>
