@@ -2,6 +2,7 @@
 
 #include <rapidjson/document.h>
 
+
 #include "GameObjRef.h"
 
 
@@ -11,7 +12,7 @@ namespace game
     class SpriteManager;
     class TileTypeManager;
     class TextureManager;
-    
+    class AnimationManager;
 
 
 
@@ -43,9 +44,11 @@ namespace game
         void loadTileTypes();
 
         // TEXTURE MANAGEMENT
-
         const std::shared_ptr<TextureManager> textureManager_;
 
+        // ANIMATION MANAGEMENT
+        const std::shared_ptr<AnimationManager> animationManager_;
+        void loadAnimations();
 
     public:
 
@@ -67,6 +70,12 @@ namespace game
         GameObjRef<TextureManager> textureManager() const
         {
             return textureManager_;
+        }
+
+        [[nodiscard]]
+        GameObjRef<AnimationManager> animationManager() const
+        {
+            return animationManager_;
         }
 
     };

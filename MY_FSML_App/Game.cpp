@@ -1,10 +1,14 @@
 #include "Game.h"
 
+#include <thread>
+
+
 
 #include "AnimatedEntity.h"
 #include "Renderer.h"
 #include "LevelMap.h"
 #include "AssetManager.h"
+#include "AnimationManager.h"
 #include "FPP_Player.h"
 #include "InputHandler.h"
 #include "TextureManager.h"
@@ -52,6 +56,10 @@ namespace game
                     {
                         window_->close();
                         exit(0);
+                    }
+                    if (event.key.code == sf::Keyboard::F3)
+                    {
+                        renderer_->setDrawFpsCounter(!renderer_->ifDrawFpsCounter());
                     }
                 }
             }
@@ -146,31 +154,25 @@ namespace game
                 sf::Vector2d{20, 20}
             )
         };
-        Animation walkAnim{};
-        walkAnim.addFrame(
-            Animation::AnimationFrame{
-                textureManager()->getTextureForName("frogmon_walk_00"),
-                sf::seconds(0.3f)}
-        );
-        walkAnim.addFrame(
-            Animation::AnimationFrame{
-                textureManager()->getTextureForName("frogmon_walk_01"),
-                sf::seconds(0.6f)}
-        );
-        walkAnim.addFrame(
-            Animation::AnimationFrame{
-                textureManager()->getTextureForName("frogmon_walk_02"),
-                sf::seconds(0.9f)}
-        );
-        walkAnim.addFrame(
-            Animation::AnimationFrame{
-                textureManager()->getTextureForName("frogmon_walk_03"),
-                sf::seconds(1.2f)}
-        );
-        animEnt->addAnimation("frogmon_walk", std::move(walkAnim));
+        string animName = "frogmon_walk";
+        Animation anim = animationManager()->getAnimationForName(animName);
+        animEnt->addAnimation(animName, std::move(anim));
         animEnt->loopAnimation();
         levelMap_->entities().add(animEnt);
-        
+
+        std::this_thread::sleep_for(0.5s);
+
+        animEnt = {
+            make_shared<AnimatedEntity>(
+                textureManager()->getTextureForName("frogmon"),
+                sf::Vector2d{18, 20}
+            )
+        };
+        animName = "frogmon_walk";
+        anim = animationManager()->getAnimationForName(animName);
+        animEnt->addAnimation(animName, std::move(anim));
+        animEnt->loopAnimation();
+        levelMap_->entities().add(animEnt);
 
     }
 }

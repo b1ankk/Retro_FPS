@@ -109,6 +109,12 @@ namespace game
         }
 
         [[nodiscard]]
+        GameObjRef<AnimationManager> animationManager() const
+        {
+            return assetManager_->animationManager();
+        }
+
+        [[nodiscard]]
         GameObjRef<Renderer> renderer() const
         {
             return renderer_;

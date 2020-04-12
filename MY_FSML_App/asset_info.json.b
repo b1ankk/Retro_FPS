@@ -143,61 +143,6 @@
         "sprite_name": "wolf_wood",
         "traversable": false
       }
-    ],
-    "animations": {
-      "enemy": [
-        {
-          "name": "frogmon",
-          "anims": [
-            {
-              "anim_name": "die",
-              "frames": [
-                {
-                  "frame_name": "frogmon_die_00",
-                  "time": 0.4
-                },
-                {
-                  "frame_name": "frogmon_die_01",
-                  "time": 0.8
-                },
-                {
-                  "frame_name": "frogmon_die_02",
-                  "time": 1.2
-                },
-                {
-                  "frame_name": "frogmon_die_03",
-                  "time": 1.6
-                },
-                {
-                  "frame_name": "frogmon_die_04",
-                  "time": 2.0
-                }
-              ]
-            },
-            {
-              "anim_name": "walk",
-              "frames": [
-                {
-                  "frame_name": "frogmon_walk_00",
-                  "time": 0.4
-                },
-                {
-                  "frame_name": "frogmon_walk_01",
-                  "time": 0.8
-                },
-                {
-                  "frame_name": "frogmon_walk_02",
-                  "time": 1.2
-                },
-                {
-                  "frame_name": "frogmon_walk_03",
-                  "time": 1.6
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
+    ]
   }
 }
