@@ -15,11 +15,9 @@ namespace game
 {
     Renderer::Renderer(const int&    width,
                        const int&    height,
-                       const double& scale,
                        const double& renderDistance) :
         width_(width),
         height_(height),
-        scale_(scale),
         screenBufferLength_(width_ * 4LLU * height_),
         screenBuffer_(new sf::Uint8[screenBufferLength_]{0}),
         screenClearBuffer_(new sf::Uint8[screenBufferLength_]{0}),

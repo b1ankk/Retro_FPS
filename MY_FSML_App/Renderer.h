@@ -19,7 +19,6 @@ namespace game
 
         Renderer(const int&    width,
                  const int&    height,
-                 const double& scale          = 1.,
                  const double& renderDistance = 32.
         );
 
@@ -42,7 +41,6 @@ namespace game
 
 
         double renderDistance_{32.};
-        double scale_{1.};
 
         // Rendering objects
 

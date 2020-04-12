@@ -1,5 +1,7 @@
 #include "Game.h"
 
+
+#include "AnimatedEntity.h"
 #include "Renderer.h"
 #include "LevelMap.h"
 #include "AssetManager.h"
@@ -138,5 +140,37 @@ namespace game
                 sf::Vector2d{14, 8}
             )
         );
+        shared_ptr<AnimatedEntity> animEnt{
+            make_shared<AnimatedEntity>(
+                textureManager()->getTextureForName("frogmon"),
+                sf::Vector2d{20, 20}
+            )
+        };
+        Animation walkAnim{};
+        walkAnim.addFrame(
+            Animation::AnimationFrame{
+                textureManager()->getTextureForName("frogmon_walk_00"),
+                sf::seconds(0.3f)}
+        );
+        walkAnim.addFrame(
+            Animation::AnimationFrame{
+                textureManager()->getTextureForName("frogmon_walk_01"),
+                sf::seconds(0.6f)}
+        );
+        walkAnim.addFrame(
+            Animation::AnimationFrame{
+                textureManager()->getTextureForName("frogmon_walk_02"),
+                sf::seconds(0.9f)}
+        );
+        walkAnim.addFrame(
+            Animation::AnimationFrame{
+                textureManager()->getTextureForName("frogmon_walk_03"),
+                sf::seconds(1.2f)}
+        );
+        animEnt->addAnimation("frogmon_walk", std::move(walkAnim));
+        animEnt->loopAnimation();
+        levelMap_->entities().add(animEnt);
+        
+
     }
 }

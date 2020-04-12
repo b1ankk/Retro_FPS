@@ -23,8 +23,15 @@ namespace game
         // this is set to the texture's size in the constructor's body anyway
 
 
-        void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
         void resetVertices();
+
+    protected:
+        std::shared_ptr<const sf::Texture> texture_{};
+        sf::Vector2i                  imageSize_{};
+        sf::VertexArray               vertices_{sf::PrimitiveType::Quads};
+
+
+        void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     private:
         friend EntityVector;
@@ -39,9 +46,7 @@ namespace game
 
         // FIELDS
 
-        std::shared_ptr<const sf::Texture> texture_{};
-        sf::Vector2i                  imageSize_{};
-        sf::VertexArray               vertices_{sf::PrimitiveType::Quads};
+        
 
 
         sf::Vector2d mapPosition_{};

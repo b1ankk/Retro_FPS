@@ -51,50 +51,10 @@
         {
           "name": "frogmon_stand",
           "path": "assets\\sprites\\entity\\frogmon_stand.png"
-        },
-        {
-          "name": "frogmon",
-          "path": "assets\\sprites\\entity\\enemy\\frogmon\\frogmon.png"
-        },
-        {
-          "name": "frogmon_die_00",
-          "path": "assets\\sprites\\entity\\enemy\\frogmon\\anim_die\\frogmon_die_00.png"
-        },
-        {
-          "name": "frogmon_die_01",
-          "path": "assets\\sprites\\entity\\enemy\\frogmon\\anim_die\\frogmon_die_01.png"
-        },
-        {
-          "name": "frogmon_die_02",
-          "path": "assets\\sprites\\entity\\enemy\\frogmon\\anim_die\\frogmon_die_02.png"
-        },
-        {
-          "name": "frogmon_die_03",
-          "path": "assets\\sprites\\entity\\enemy\\frogmon\\anim_die\\frogmon_die_03.png"
-        },
-        {
-          "name": "frogmon_die_04",
-          "path": "assets\\sprites\\entity\\enemy\\frogmon\\anim_die\\frogmon_die_04.png"
-        },
-        {
-          "name": "frogmon_walk_00",
-          "path": "assets\\sprites\\entity\\enemy\\frogmon\\anim_walk\\frogmon_walk_00.png"
-        },
-        {
-          "name": "frogmon_walk_01",
-          "path": "assets\\sprites\\entity\\enemy\\frogmon\\anim_walk\\frogmon_walk_01.png"
-        },
-        {
-          "name": "frogmon_walk_02",
-          "path": "assets\\sprites\\entity\\enemy\\frogmon\\anim_walk\\frogmon_walk_02.png"
-        },
-        {
-          "name": "frogmon_walk_03",
-          "path": "assets\\sprites\\entity\\enemy\\frogmon\\anim_walk\\frogmon_walk_03.png"
         }
       ]
     },
-    "tile_types": [
+        "tile_types": [
       {
         "id": 0,
         "name": "wolf_blue_bricks_wall",
