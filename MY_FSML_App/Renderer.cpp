@@ -55,7 +55,7 @@ namespace game
         }
 
         initVertices();
-        initUI(width, height);
+        initUI();
 
         // Set up render states
         renderStates_.texture = &texture_;
@@ -69,7 +69,7 @@ namespace game
         delete[] screenClearBuffer_;
     }
 
-    void Renderer::initUI(int width, const int height)
+    void Renderer::initUI()
     {
         userInterface_ = std::make_shared<UserInterface>(
             width_,
