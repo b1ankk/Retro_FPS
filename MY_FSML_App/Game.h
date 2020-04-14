@@ -28,6 +28,9 @@ namespace game
         static const int WINDOW_HEIGHT{1080};
         static const sf::Vector2i SCREEN_MIDDLE;
 
+        static const int RENDERING_WIDTH;
+        static const int RENDERING_HEIGHT;
+
         const sf::Vector2d INITIAL_PLAYER_POS{22, 12};
         const sf::Vector2d INITIAL_PLAYER_DIR{-1, 0};
 
@@ -55,16 +58,13 @@ namespace game
 
         double renderScale_{1.};
 
-        // CONST INSTANCES
+        // INSTANCES
 
         std::shared_ptr<sf::RenderWindow> window_{};
         std::shared_ptr<AssetManager>     assetManager_{};
         std::shared_ptr<Renderer>         renderer_{};
         std::shared_ptr<InputHandler>     inputHandler_{};
         std::shared_ptr<FPP_Player>       player_{};
-
-
-        // MUTABLE INSTANCES
 
         std::shared_ptr<LevelMap> levelMap_{};
 

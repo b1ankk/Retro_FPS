@@ -2,6 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "UserInterface.h"
+
 namespace game
 {
     class FPP_Player;
@@ -33,7 +35,7 @@ namespace game
         int width_{};  // width to render
         int height_{}; // height to render
 
-        // Screen buffer operations
+        // Screen buffer operation fields
 
         size_t     screenBufferLength_{};
         sf::Uint8* screenBuffer_{};
@@ -49,9 +51,11 @@ namespace game
         sf::Texture      texture_{};
         sf::RenderStates renderStates_{};
 
+        std::shared_ptr<UserInterface> userInterface_;
+
         std::vector<double> perpWallDistances_;
 
-        // FLAGS
+        // SWITCHES
 
         bool drawFpsCounter_{};
 
@@ -73,6 +77,8 @@ namespace game
         void drawFPS();
 
         void initVertices();
+
+        void initUI(int, int);
 
         std::pair<double, double> findTransitionPoint(double left, double right, const double perpDist);
 

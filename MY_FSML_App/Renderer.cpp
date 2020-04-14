@@ -3,9 +3,11 @@
 #include <cassert>
 #include <future>
 #include <iostream>
+#include <memory>
 #include <ostream>
 
-
+#include "UserInterface.h"
+#include "UI_Element_Children.h"
 #include "FPP_Player.h"
 #include "LevelMap.h"
 #include "MapTile.h"
@@ -53,6 +55,7 @@ namespace game
         }
 
         initVertices();
+        initUI(width, height);
 
         // Set up render states
         renderStates_.texture = &texture_;
@@ -65,6 +68,49 @@ namespace game
         delete[] screenBuffer_;
         delete[] screenClearBuffer_;
     }
+
+    void Renderer::initUI(int width, const int height)
+    {
+        userInterface_ = std::make_shared<UserInterface>(
+            width_,
+            height_,
+            sf::Vector2i{0, 0}
+        );
+
+        // auto health = std::make_shared<HealthUIE>(
+        //     sf::Vector2i{80, 64},
+        //     sf::Vector2i{0, height_ - 64}
+        // );
+        auto health = std::make_shared<HealthUIE>(
+            sf::Vector2i{100, 64},
+            sf::Vector2i{0, height_ - 192}
+        );
+        health->setScale(3, 3);
+        userInterface_->addUI_Element(
+            health
+        );
+
+        auto ammo = std::make_shared<HealthUIE>(
+            sf::Vector2i{100, 64},
+            sf::Vector2i{width_ - 300, height_ - 192}
+        );
+        ammo->setScale(3, 3);
+        userInterface_->addUI_Element(
+            ammo
+        );
+
+        auto fill = std::make_shared<FillerUIE>(
+            sf::Vector2i{width_ / 3 - 200, 64},
+            sf::Vector2i{300, height_ - int(64 * 2.5)}
+        );
+        fill->setScale(3, 2.5);
+        userInterface_->addUI_Element(
+            fill
+        );
+
+
+    }
+
 
     void Renderer::initVertices()
     {
@@ -139,6 +185,8 @@ namespace game
         drawEntities();
 
         std::memcpy(screenBuffer_, screenClearBuffer_, screenBufferLength_);
+
+        Game::get().window()->draw(*userInterface_);
 
         if (drawFpsCounter_)
             drawFPS();

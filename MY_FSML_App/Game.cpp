@@ -19,7 +19,9 @@ namespace game
 {
     using namespace std;
 
-    const sf::Vector2i Game::SCREEN_MIDDLE{Game::WINDOW_WIDTH / 2, Game::WINDOW_HEIGHT / 2};
+    const sf::Vector2i Game::SCREEN_MIDDLE{WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2};
+    const int Game::RENDERING_WIDTH{WINDOW_WIDTH};
+    const int Game::RENDERING_HEIGHT{WINDOW_HEIGHT};
 
     void Game::start()
     {
@@ -92,7 +94,7 @@ namespace game
     {
         window_ = {
            make_shared<sf::RenderWindow>(
-               sf::VideoMode{game::Game::WINDOW_WIDTH, game::Game::WINDOW_HEIGHT},
+               sf::VideoMode{WINDOW_WIDTH, WINDOW_HEIGHT},
                "MyGame",
                sf::Style::Fullscreen
            )
@@ -102,8 +104,8 @@ namespace game
         };
         renderer_ = {
             make_shared<Renderer>(
-                WINDOW_WIDTH,
-                WINDOW_HEIGHT
+                RENDERING_WIDTH,
+                RENDERING_HEIGHT
             )
         };
         inputHandler_ = {

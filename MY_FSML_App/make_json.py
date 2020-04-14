@@ -25,7 +25,7 @@ def name_for_path(path, extension=''):
     if dotIndex > 0 and extension != '':
         extension = extension[dotIndex:]
     elif dotIndex == -1 and extension != '':
-        extension = '.'+extension
+        extension = '.' + extension
 
     first = path.rfind('\\') + 1
     last = path.rfind(extension)
@@ -49,6 +49,10 @@ data = \
                                 # }
                             ],
                         "entity":
+                            [
+
+                            ],
+                        "ui":
                             [
 
                             ]
@@ -130,6 +134,19 @@ for file in glob.iglob(pathRoot + pathSprites + 'entity/**/*.png', recursive=Tru
     # id_ += 1
     print(file)
 
+for file in glob.iglob(pathRoot + pathSprites + 'ui/**/*.png', recursive=True):
+    first = file.rfind('\\') + 1
+    last = file.rfind('.png')
+    name = file[first:last]
+    data["assets"]["sprites"]["ui"].append({"name": name, "path": file})
+    # data["assets"]["tile_types"].append({
+    #     "id": id_,
+    #     "name": name + "_wall",
+    #     "sprite_name": name,
+    #     "traversable": False
+    # })
+    # id_ += 1
+    print(file)
 
 for enemy_subfolder in glob.iglob(pathRoot + pathSprites + '/entity/enemy/*', recursive=True):
     print(enemy_subfolder)
@@ -159,7 +176,6 @@ for enemy_subfolder in glob.iglob(pathRoot + pathSprites + '/entity/enemy/*', re
                 }
             )
             endFrameTime += 0.4
-
 
 with open('asset_info.json', 'w') as outfile:
     json.dump(data, outfile, indent=2)

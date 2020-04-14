@@ -55,11 +55,13 @@ namespace game
 
 
         public:
+            [[nodiscard]]
             std::shared_ptr<const sf::Texture> texture() const
             {
                 return texture_;
             }
 
+            [[nodiscard]]
             const sf::Time& endTime() const
             {
                 return frameEnd_;

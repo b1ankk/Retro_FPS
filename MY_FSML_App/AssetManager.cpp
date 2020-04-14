@@ -56,7 +56,7 @@ namespace game
 
     void AssetManager::loadSpriteInfo()
     {
-        const char* const subFolders[]{"wall", "entity"};
+        const char* const subFolders[]{"wall", "entity", "ui"};
 
         for (const char* subFolder : subFolders)
         {
