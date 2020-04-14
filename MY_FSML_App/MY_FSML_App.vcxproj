@@ -186,7 +186,6 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="LevelMap.h" />
     <ClInclude Include="MapTile.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="SpriteManager.h" />
     <ClInclude Include="SpriteWrapper.h" />
     <ClInclude Include="InputHandler.h" />
