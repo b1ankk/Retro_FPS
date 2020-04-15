@@ -26,7 +26,7 @@ namespace game
         auto fill = Game::get().textureManager()->getTextureForName(fillTextureName);
         auto right = Game::get().textureManager()->getTextureForName(rightTextureName);
 
-        assert(size.x >= left->getSize().x + right->getSize().x);
+        assert(unsigned(size.x) >= left->getSize().x + right->getSize().x);
 
         sf::RectangleShape leftRect{static_cast<sf::Vector2f>(left->getSize())};
         sf::RectangleShape rightRect{static_cast<sf::Vector2f>(right->getSize())};

@@ -395,20 +395,20 @@ namespace game
 
         const double oldLeft{left};
 
-        int  resultL{-1};
-        int  resultR{-1};
+        double  resultL{-1};
+        double  resultR{-1};
         bool foundL{false};
         bool foundR{false};
 
         if (left < 0)
             left = 0;
         else if (left >= perpWallDistances_.size())
-            left = perpWallDistances_.size() - 1LLU;
+            left = perpWallDistances_.size() - 1.;
 
         if (right < 0)
             right = 0;
         else if (right >= perpWallDistances_.size())
-            right = perpWallDistances_.size() - 1LLU;
+            right = perpWallDistances_.size() - 1.;
 
         const double start = left;
         const double end   = right;
@@ -419,9 +419,9 @@ namespace game
 
         while (leftPtr <= end && !foundL)
         {
-            if (perpWallDistances_[leftPtr] > perpDist)
+            if (perpWallDistances_[static_cast<size_t>(leftPtr)] > perpDist)
             {
-                resultL = leftPtr - oldLeft - 1;
+                resultL = leftPtr - oldLeft - 0.5;
                 foundL  = true;
             }
             leftPtr++;
@@ -429,9 +429,9 @@ namespace game
 
         while (rightPtr >= 0 && !foundR)
         {
-            if (perpWallDistances_[rightPtr] > perpDist)
+            if (perpWallDistances_[static_cast<size_t>(rightPtr)] > perpDist)
             {
-                resultR = rightPtr - oldLeft + 2;
+                resultR = rightPtr - oldLeft + 0.5;
                 foundR  = true;
             }
             rightPtr--;
@@ -514,9 +514,10 @@ namespace game
                 if (!transformed) continue;;
 
 
-                entity->setPosition(position, height_ * entity->screenYPosition());
+                entity->setPosition(static_cast<float>(position), 
+                                    static_cast<float>(height_ * entity->screenYPosition()));
 
-                entity->setScale(scale, scale);
+                entity->setScale(static_cast<float>(scale), static_cast<float>(scale));
 
                 Game::get().window()->draw(*entity);
             }
@@ -526,7 +527,7 @@ namespace game
     sf::Text initFpsText()
     {
         sf::Text text;
-        text.setFont(*Game::get().fontManager()->getFontForId(0));
+        text.setFont(*Game::get().fontManager()->getFontForName("Pixeled"));
 
         text.setCharacterSize(34);
         text.setFillColor(sf::Color::White);
@@ -536,8 +537,6 @@ namespace game
 
     void Renderer::drawFPS()
     {
-        //TODO better text rendering implementation
-
         static sf::Text text = initFpsText();
 
         char s[80];
