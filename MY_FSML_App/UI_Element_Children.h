@@ -14,7 +14,7 @@ namespace game
         }
 
         void createTexture(std::unique_ptr<sf::Texture>&) const override;
-        // void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+        void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
     };
 
     class ArmorUIE : public UserInterface::UI_Element

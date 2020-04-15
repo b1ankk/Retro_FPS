@@ -100,16 +100,19 @@ data = \
                                 #         ]
                                 # }
                             ]
-                    }
-
+                    },
+                "fonts":
+                    [
+                        # "id": 0,
+                        # "name": "pixeled",
+                        # "path": "fonts\\Pixeled.tff"
+                    ]
             }
     }
 
 tileTypeId = 0
 for file in glob.iglob(pathRoot + pathSprites + 'wall/**/*.png', recursive=True):
-    first = file.rfind('\\') + 1
-    last = file.rfind('.png')
-    name = file[first:last]
+    name = name_for_path(file, 'png')
     data["assets"]["sprites"]["wall"].append({"name": name, "path": file})
     data["assets"]["tile_types"].append({
         "id": tileTypeId,
@@ -121,31 +124,13 @@ for file in glob.iglob(pathRoot + pathSprites + 'wall/**/*.png', recursive=True)
     print(file)
 
 for file in glob.iglob(pathRoot + pathSprites + 'entity/**/*.png', recursive=True):
-    first = file.rfind('\\') + 1
-    last = file.rfind('.png')
-    name = file[first:last]
+    name = name_for_path(file, 'png')
     data["assets"]["sprites"]["entity"].append({"name": name, "path": file})
-    # data["assets"]["tile_types"].append({
-    #     "id": id_,
-    #     "name": name + "_wall",
-    #     "sprite_name": name,
-    #     "traversable": False
-    # })
-    # id_ += 1
     print(file)
 
 for file in glob.iglob(pathRoot + pathSprites + 'ui/**/*.png', recursive=True):
-    first = file.rfind('\\') + 1
-    last = file.rfind('.png')
-    name = file[first:last]
+    name = name_for_path(file, 'png')
     data["assets"]["sprites"]["ui"].append({"name": name, "path": file})
-    # data["assets"]["tile_types"].append({
-    #     "id": id_,
-    #     "name": name + "_wall",
-    #     "sprite_name": name,
-    #     "traversable": False
-    # })
-    # id_ += 1
     print(file)
 
 for enemy_subfolder in glob.iglob(pathRoot + pathSprites + '/entity/enemy/*', recursive=True):
@@ -176,6 +161,20 @@ for enemy_subfolder in glob.iglob(pathRoot + pathSprites + '/entity/enemy/*', re
                 }
             )
             endFrameTime += 0.4
+
+
+fontId = 0
+for file in glob.iglob(pathRoot + 'fonts/*.ttf', recursive=True):
+    name = name_for_path(file, 'ttf')
+    data["assets"]["fonts"].append(
+        {
+            "id": fontId,
+            "name": name,
+            "path": file
+        }
+    )
+    fontId += 1
+    print(file)
 
 with open('asset_info.json', 'w') as outfile:
     json.dump(data, outfile, indent=2)

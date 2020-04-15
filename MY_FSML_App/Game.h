@@ -115,6 +115,13 @@ namespace game
         }
 
         [[nodiscard]]
+        GameObjRef<FontManager> fontManager() const
+        {
+            return assetManager_->fontManager();
+        }
+
+
+        [[nodiscard]]
         GameObjRef<Renderer> renderer() const
         {
             return renderer_;

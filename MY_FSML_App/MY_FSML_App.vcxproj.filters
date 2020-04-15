@@ -81,6 +81,9 @@
     <ClCompile Include="UI_Element_Children.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FontManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renderer.h">
@@ -147,6 +150,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI_Element_Children.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FontManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

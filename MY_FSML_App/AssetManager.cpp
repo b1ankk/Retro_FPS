@@ -20,7 +20,8 @@ namespace game
         spriteManager_(make_shared<SpriteManager>()),
         tileTypeManager_(make_shared<TileTypeManager>()),
         textureManager_(make_shared<TextureManager>(spriteManager_)),
-        animationManager_(make_shared<AnimationManager>())
+        animationManager_(make_shared<AnimationManager>()),
+        fontManager_(make_shared<FontManager>())
     {
         loadAssetInfo();
     }
@@ -52,6 +53,7 @@ namespace game
         loadSprites();
         loadTileTypes();
         loadAnimations();
+        loadFonts();
     }
 
     void AssetManager::loadSpriteInfo()
@@ -160,9 +162,36 @@ namespace game
 
             }
         
-            cout << "Animations' info loaded" << endl;
+            cout << "Animations loaded" << endl;
         }
     }
 
+    void AssetManager::loadFonts()
+    {
+        rapidjson::Value& fontsInfo = assetInfo_["assets"]["fonts"];
+        assert(fontsInfo.IsArray());
+        
+        for (rapidjson::Value::ConstValueIterator itr = fontsInfo.Begin();
+             itr < fontsInfo.End(); ++itr)
+        {
+            string fontName{(*itr)["name"].GetString()};
+            string path{(*itr)["path"].GetString()};
+        
+            std::shared_ptr<sf::Font> font = make_shared<sf::Font>();
+            if (!font->loadFromFile(path))
+            {
+                std::cerr << "Error occured reading font: " << path << std::endl;
+            }
+            else
+            {
+                fontManager_->addFont(
+                    std::move(fontName), std::move(font)
+                );
+                cout << "Loaded font: " << path << endl;
+            }
+        }
+        
+        cout << "Fonts loaded" << endl;
+    }
 
 }

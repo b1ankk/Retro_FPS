@@ -3,6 +3,8 @@
 #include <rapidjson/document.h>
 
 
+
+#include "FontManager.h"
 #include "GameObjRef.h"
 
 
@@ -50,6 +52,11 @@ namespace game
         const std::shared_ptr<AnimationManager> animationManager_;
         void loadAnimations();
 
+        // FONT MANAGEMENT
+        const std::shared_ptr<FontManager> fontManager_;
+        void loadFonts();
+
+
     public:
 
         // GETTERS & SETTERS
@@ -78,6 +85,11 @@ namespace game
             return animationManager_;
         }
 
+        [[nodiscard]]
+        GameObjRef<FontManager> fontManager() const
+        {
+            return fontManager_;
+        }
     };
 
 }

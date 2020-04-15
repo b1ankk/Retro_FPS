@@ -523,26 +523,22 @@ namespace game
         }
     }
 
+    sf::Text initFpsText()
+    {
+        sf::Text text;
+        text.setFont(*Game::get().fontManager()->getFontForId(0));
+
+        text.setCharacterSize(34);
+        text.setFillColor(sf::Color::White);
+
+        return text;
+    }
 
     void Renderer::drawFPS()
     {
         //TODO better text rendering implementation
 
-        static std::unique_ptr<sf::Font> font{nullptr};
-        static sf::Text                  text;
-
-        if (font == nullptr)
-        {
-            font = std::make_unique<sf::Font>(sf::Font{});
-            if (!font->loadFromFile("assets\\fonts\\Pixeled.ttf"))
-            {
-                std::cerr << "Error occured trying to read font: assets\\fonts\\VCR_OSD_MONO_1.001.tff";
-                throw std::runtime_error("Error occured trying to read font: assets\\fonts\\VCR_OSD_MONO_1.001.tff");
-            }
-            text.setFont(*font);
-            text.setCharacterSize(34);
-            text.setFillColor(sf::Color::White);
-        }
+        static sf::Text text = initFpsText();
 
         char s[80];
         snprintf(
@@ -556,14 +552,7 @@ namespace game
             Game::get().player()->direction().y
         );
 
-        // text.setString("FPS: " + std::to_string(*fpsCounter_) +
-        //                "\nx: " + std::to_string(Game::get().player()->position().x) +
-        //                "  y: " + std::to_string(Game::get().player()->position().y) +
-        //                "\ndir_x: " + std::to_string(Game::get().player()->direction().x) +
-        //                "\ndir_y: " + std::to_string(Game::get().player()->direction().y));
-
         text.setString(s);
-
 
         sf::RenderStates rs{};
         rs.transform.translate(10, 20);
