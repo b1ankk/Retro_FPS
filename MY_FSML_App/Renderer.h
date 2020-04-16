@@ -28,6 +28,8 @@ namespace game
 
         void renderFrame();
 
+        void initUI();
+
 
     private:
         // FIELDS
@@ -78,7 +80,6 @@ namespace game
 
         void initVertices();
 
-        void initUI();
 
         std::pair<double, double> findTransitionPoint(double left, double right, const double perpDist);
 

@@ -23,6 +23,8 @@ namespace game
     const int Game::RENDERING_WIDTH{WINDOW_WIDTH};
     const int Game::RENDERING_HEIGHT{WINDOW_HEIGHT};
 
+    const std::string Game::DEFAULT_FONT_NAME = "Pixeled";
+
     void Game::start()
     {
         setUpGame();
@@ -99,41 +101,37 @@ namespace game
                sf::Style::Fullscreen
            )
         };
+
         assetManager_ = {
             make_shared<AssetManager>("asset_info.json")
         };
+        assetManager_->loadAssets();
+
         renderer_ = {
             make_shared<Renderer>(
                 RENDERING_WIDTH,
                 RENDERING_HEIGHT
             )
         };
+        renderer_->initUI();
+
         inputHandler_ = {
             make_shared<InputHandler>()
         };
+        inputHandler_->setMouseLookSensitivityX(150);
+        inputHandler_->setMovementSpeed(5);
+
         player_ = {
             make_shared<FPP_Player>(
                 INITIAL_PLAYER_POS,
                 INITIAL_PLAYER_DIR
             )
         };
+
         levelMap_= {
             make_shared<LevelMap>()
         };
 
-        // shared_ptr<sf::RenderWindow> window(
-        //     new sf::RenderWindow{
-        //         sf::VideoMode{game::Game::WINDOW_WIDTH, game::Game::WINDOW_HEIGHT},
-        //         "MyGame",
-        //         sf::Style::Fullscreen,
-        //     }
-        // );
-        // window_ = std::move(window);
-
-        assetManager_->loadAssets();
-
-        inputHandler_->setMouseLookSensitivityX(150);
-        inputHandler_->setMovementSpeed(5);
 
         levelMap_->loadFromInts(levelMap_->TEST_MAP);
 

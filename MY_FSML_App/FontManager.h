@@ -28,7 +28,7 @@ namespace game
 
         std::shared_ptr<sf::Font> getFontForName(const std::string& name)
         {
-            return fonts_[name];
+            return fonts_.at(name);
         }
 
 

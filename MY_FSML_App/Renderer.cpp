@@ -55,7 +55,6 @@ namespace game
         }
 
         initVertices();
-        initUI();
 
         // Set up render states
         renderStates_.texture = &texture_;
@@ -81,29 +80,49 @@ namespace game
         //     sf::Vector2i{80, 64},
         //     sf::Vector2i{0, height_ - 64}
         // );
+
+        const int paneWidth = 100;
+        const int paneHeight = 64;
+        const float scalerX = 3.;
+        const float scalerY = 2.5;
+        const float scaledWidth = paneWidth * scalerX;
+        const float scaledHeight = paneHeight * scalerY;
+
         auto health = std::make_shared<HealthUIE>(
-            sf::Vector2i{100, 64},
-            sf::Vector2i{0, height_ - 192}
+            sf::Vector2i{paneWidth + 4, paneHeight},
+            sf::Vector2i{0, height_ - int(scaledHeight)}
         );
-        health->setScale(3, 3);
+        health->setScale(scalerX, scalerY);
         userInterface_->addUI_Element(
             health
         );
 
-        auto ammo = std::make_shared<HealthUIE>(
-            sf::Vector2i{100, 64},
-            sf::Vector2i{width_ - 300, height_ - 192}
+        auto armor = std::make_shared<ArmorUIE>(
+            sf::Vector2i{paneWidth - 4, paneHeight},
+            sf::Vector2i{static_cast<int>(scaledWidth + 4 * scalerX),
+                static_cast<int>(static_cast<float>(height_) - scaledHeight)}
         );
-        ammo->setScale(3, 3);
+        armor->setScale(scalerX, scalerY);
+        userInterface_->addUI_Element(
+            armor
+        );
+
+        auto ammo = std::make_shared<AmmoUIE>(
+            sf::Vector2i{paneWidth, paneHeight},
+            sf::Vector2i{static_cast<int>(static_cast<float>(width_) - scaledWidth),
+                height_ - int(scaledHeight)}
+        );
+        ammo->setScale(scalerX, scalerY);
         userInterface_->addUI_Element(
             ammo
         );
 
+
         auto fill = std::make_shared<FillerUIE>(
-            sf::Vector2i{width_ / 3 - 200, 64},
-            sf::Vector2i{300, height_ - int(64 * 2.5)}
+            sf::Vector2i{int(float(width_) / scalerX) - 3 * paneWidth, paneHeight},
+            sf::Vector2i{int(2 * scaledWidth), height_ - int(scaledHeight)}
         );
-        fill->setScale(3, 2.5);
+        fill->setScale(scalerX, scalerY);
         userInterface_->addUI_Element(
             fill
         );
@@ -185,6 +204,9 @@ namespace game
         drawEntities();
 
         std::memcpy(screenBuffer_, screenClearBuffer_, screenBufferLength_);
+
+        // TODO Move to more adequate place 
+        userInterface_->update();
 
         Game::get().window()->draw(*userInterface_);
 

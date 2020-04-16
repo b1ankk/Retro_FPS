@@ -29,6 +29,13 @@ namespace game
         }
     }
 
+
+    void UserInterface::update()
+    {
+        for (auto& element : uiElements_)
+            element->update();
+    }
+
     void UserInterface::addUI_Element(shared_ptr<UI_Element> element)
     {
         element->setPosition(static_cast<sf::Vector2f>(drawingPosition_ + element->uiPosition()));

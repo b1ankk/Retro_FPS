@@ -21,7 +21,7 @@ namespace game
 
 
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-        // virtual void update() = 0;
+        virtual void update();
 
 
         void addUI_Element(std::shared_ptr<UI_Element> element);
@@ -109,7 +109,7 @@ namespace game
             target.draw(vertices_, states);
         }
 
-        // virtual void update() = 0;
+        virtual void update(){}
 
 
         sf::Vector2i size() const

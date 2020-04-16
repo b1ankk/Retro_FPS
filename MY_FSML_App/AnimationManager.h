@@ -26,7 +26,7 @@ namespace game
 
         Animation getAnimationForName(const std::string& name)
         {
-            return animations_[name];
+            return animations_.at(name);
         }
 
 

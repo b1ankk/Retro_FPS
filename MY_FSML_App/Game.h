@@ -31,6 +31,11 @@ namespace game
         static const int RENDERING_WIDTH;
         static const int RENDERING_HEIGHT;
 
+        static const std::string DEFAULT_FONT_NAME;
+
+
+
+
         const sf::Vector2d INITIAL_PLAYER_POS{22, 12};
         const sf::Vector2d INITIAL_PLAYER_DIR{-1, 0};
 
