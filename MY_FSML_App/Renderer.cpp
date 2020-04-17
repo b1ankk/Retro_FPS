@@ -2,9 +2,7 @@
 
 #include <cassert>
 #include <future>
-#include <iostream>
 #include <memory>
-#include <ostream>
 
 #include "UserInterface.h"
 #include "UI_Element_Children.h"
@@ -12,7 +10,6 @@
 #include "LevelMap.h"
 #include "MapTile.h"
 #include "Entity.h"
-#include "AnimationManager.h"
 
 namespace game
 {

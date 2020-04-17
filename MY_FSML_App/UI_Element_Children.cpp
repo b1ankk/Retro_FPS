@@ -243,7 +243,7 @@ namespace game
     {
         char ammoValString[20];
         snprintf(ammoValString, 20, 
-                 "%2d/%2d",
+                 "%02d/%02d",
                  Game::get().player()->activeGun()->ammo(),
                  Game::get().player()->activeGun()->maxAmmo()
         );
@@ -277,7 +277,7 @@ namespace game
                 "empty_strap",
                 "empty_right"
             )
-            );
+        );
     }
 
 
@@ -288,8 +288,11 @@ namespace game
     AnimatedGunUIE::AnimatedGunUIE(const sf::Vector2i& size, const sf::Vector2i& uiPosition) :
         UI_Element(size, uiPosition)
     {
-        setOrigin(size.x / 2.f, size.y);
-        setPosition(sf::Vector2f(uiPosition.x, uiPosition.y));
+        setOrigin(size.x / 2.f, static_cast<float>(size.y));
+        setPosition(sf::Vector2f(
+            static_cast<float>(uiPosition.x),
+            static_cast<float>(uiPosition.y)
+        ));
     }
 
     void AnimatedGunUIE::createTexture(std::unique_ptr<sf::Texture>& texturePtr) const

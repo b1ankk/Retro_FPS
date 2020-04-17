@@ -135,7 +135,6 @@ namespace game
                 INITIAL_PLAYER_DIR
             )
         };
-
         std::shared_ptr<Gun> activeGun{
             make_shared<Gun>(
                 "shotty",
