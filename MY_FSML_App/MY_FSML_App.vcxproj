@@ -200,6 +200,9 @@
     <ClInclude Include="UserInterface.h" />
     <ClInclude Include="vector_additions.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="asset_info.json" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
