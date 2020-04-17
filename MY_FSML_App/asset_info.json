@@ -149,6 +149,14 @@
         {
           "name": "shotgun_shoot_03",
           "path": "assets\\sprites\\ui\\gun\\shotgun\\anim_shoot\\shotgun_shoot_03.png"
+        },
+        {
+          "name": "shotgun_shoot_04",
+          "path": "assets\\sprites\\ui\\gun\\shotgun\\anim_shoot\\shotgun_shoot_04.png"
+        },
+        {
+          "name": "shotgun_shoot_05",
+          "path": "assets\\sprites\\ui\\gun\\shotgun\\anim_shoot\\shotgun_shoot_05.png"
         }
       ]
     },
@@ -269,26 +277,38 @@
                 },
                 {
                   "frame_name": "shotgun_shoot_01",
-                  "time": 0.15
+                  "time": 0.025
                 },
                 {
                   "frame_name": "shotgun_shoot_02",
-                  "time": 0.3
-                },
-                {
-                  "frame_name": "shotgun_shoot_03",
-                  "time": 0.45
-                },
-                {
-                  "frame_name": "shotgun_shoot_02",
-                  "time": 0.6
+                  "time": 0.05
                 },
                 {
                   "frame_name": "shotgun_shoot_01",
-                  "time": 0.75
+                  "time": 0.075
                 },
                 {
                   "frame_name": "shotgun_shoot_00",
+                  "time": 0.1
+                },
+                {
+                  "frame_name": "shotgun_shoot_03",
+                  "time": 0.2
+                },
+                {
+                  "frame_name": "shotgun_shoot_04",
+                  "time": 0.35
+                },
+                {
+                  "frame_name": "shotgun_shoot_05",
+                  "time": 0.50
+                },
+                {
+                  "frame_name": "shotgun_shoot_04",
+                  "time": 0.65
+                },
+                {
+                  "frame_name": "shotgun_shoot_03",
                   "time": 0.8
                 }
               ]
@@ -298,6 +318,16 @@
       ]
     },
     "fonts": [
+      {
+        "id": 0,
+        "name": "Pixeled",
+        "path": "assets\\fonts\\Pixeled.ttf"
+      },
+      {
+        "id": 1,
+        "name": "VCR_OSD_MONO_1.001",
+        "path": "assets\\fonts\\VCR_OSD_MONO_1.001.ttf"
+      },
       {
         "id": 0,
         "name": "Pixeled",
