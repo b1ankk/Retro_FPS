@@ -301,7 +301,7 @@
                 },
                 {
                   "frame_name": "shotgun_shoot_05",
-                  "time": 0.50
+                  "time": 0.5
                 },
                 {
                   "frame_name": "shotgun_shoot_04",
@@ -318,26 +318,6 @@
       ]
     },
     "fonts": [
-      {
-        "id": 0,
-        "name": "Pixeled",
-        "path": "assets\\fonts\\Pixeled.ttf"
-      },
-      {
-        "id": 1,
-        "name": "VCR_OSD_MONO_1.001",
-        "path": "assets\\fonts\\VCR_OSD_MONO_1.001.ttf"
-      },
-      {
-        "id": 0,
-        "name": "Pixeled",
-        "path": "assets\\fonts\\Pixeled.ttf"
-      },
-      {
-        "id": 1,
-        "name": "VCR_OSD_MONO_1.001",
-        "path": "assets\\fonts\\VCR_OSD_MONO_1.001.ttf"
-      },
       {
         "id": 0,
         "name": "Pixeled",

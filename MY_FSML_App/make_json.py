@@ -131,6 +131,10 @@ if len(infoFile) != 0:
 
 print("WALL SPRITES: ")
 tileTypeId = 0
+tileTypeSize = len(data["assets"]["tile_types"])
+if tileTypeSize > 0:
+    tileTypeId = data["assets"]["tile_types"][tileTypeSize - 1]["id"] + 1
+
 for file in glob.iglob(pathRoot + pathSprites + 'wall/**/*.png', recursive=True):
     name = name_for_path(file, 'png')
 
@@ -276,6 +280,11 @@ for gun_subfolder in glob.iglob(pathRoot + pathSprites + '/ui/gun/*', recursive=
 
 print("FONTS: ")
 fontId = 0
+fontsSize = len(data["assets"]["fonts"])
+if fontsSize > 0:
+    fontId = data["assets"]["fonts"][fontsSize - 1]["id"] + 1
+
+
 for file in glob.iglob(pathRoot + 'fonts/*.ttf', recursive=True):
     name = name_for_path(file, 'ttf')
 
@@ -284,7 +293,8 @@ for file in glob.iglob(pathRoot + 'fonts/*.ttf', recursive=True):
                  (len(spriteNames[name]), name, file))
         for found in spriteNames[name]:
             errprint('\t conflicts: ', found)
-    else:
+
+    elif find_asset_for_name(data["assets"]["fonts"], name) == -1:
         data["assets"]["fonts"].append(
             {
                 "id": fontId,
@@ -294,6 +304,8 @@ for file in glob.iglob(pathRoot + 'fonts/*.ttf', recursive=True):
         )
         fontId += 1
         print('updated: ', file)
+    else:
+        print('unchanged: ', file)
 
 with open('asset_info.json', 'w') as outfile:
     json.dump(data, outfile, indent=2)
