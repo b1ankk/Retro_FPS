@@ -6,18 +6,19 @@
 #include "EntityVector.h"
 #include "GameObjRef.h"
 #include "AssetManager.h"
+#include "Renderer.h"
 
 
 namespace game
 {
     class AssetManager;
     class LevelMap;
-    class Renderer;
     class InputHandler;
     class FPP_Player;
     class TileTypeManager;
     class TextureManager;
     class SpriteManager;
+    class UserInterface;
 
     class Game
     {
@@ -130,6 +131,12 @@ namespace game
         GameObjRef<Renderer> renderer() const
         {
             return renderer_;
+        }
+
+        [[nodiscard]]
+        GameObjRef<UserInterface> userInterface() const
+        {
+            return renderer_->userInterface();
         }
 
         [[nodiscard]]

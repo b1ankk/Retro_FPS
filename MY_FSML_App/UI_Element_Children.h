@@ -1,6 +1,8 @@
 #pragma once
 #include <SFML/Graphics/Text.hpp>
 
+
+#include "Animation.h"
 #include "UserInterface.h"
 
 namespace game
@@ -61,6 +63,26 @@ namespace game
         }
 
         void createTexture(std::unique_ptr<sf::Texture>&) const override;
+    };
+
+
+    class AnimatedGunUIE : public UserInterface::UI_Element
+    {
+    public:
+        AnimatedGunUIE(const sf::Vector2i& size, const sf::Vector2i& uiPosition);
+
+        void createTexture(std::unique_ptr<sf::Texture>&) const override;
+        void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+        void update() override;
+
+
+        void setShootAnimation(Animation);
+        void playShootAnimation();
+        
+    private:
+        mutable Animation shootAnimation_;
+
+
     };
 
 }

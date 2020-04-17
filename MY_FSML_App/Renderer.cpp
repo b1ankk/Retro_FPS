@@ -12,6 +12,7 @@
 #include "LevelMap.h"
 #include "MapTile.h"
 #include "Entity.h"
+#include "AnimationManager.h"
 
 namespace game
 {
@@ -117,7 +118,6 @@ namespace game
             ammo
         );
 
-
         auto fill = std::make_shared<FillerUIE>(
             sf::Vector2i{int(float(width_) / scalerX) - 3 * paneWidth, paneHeight},
             sf::Vector2i{int(2 * scaledWidth), height_ - int(scaledHeight)}
@@ -126,6 +126,17 @@ namespace game
         userInterface_->addUI_Element(
             fill
         );
+
+        auto gun = std::make_shared<AnimatedGunUIE>(
+            sf::Vector2i{160, 160},
+            sf::Vector2i{width_ / 2, height_ - int(scaledHeight)}
+        );
+        gun->setScale(3, 3);
+        gun->setShootAnimation(
+            Game::get().animationManager()->getAnimationForName("shotgun_shoot")
+        );
+        userInterface_->addUI_Element(gun);
+        userInterface_->setGunElement(gun);
 
 
     }

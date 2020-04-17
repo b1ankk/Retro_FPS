@@ -14,6 +14,8 @@
 #include "TextureManager.h"
 #include "Entity.h"
 #include "GameTime.h"
+#include "UserInterface.h"
+#include "UI_Element_Children.h"
 
 namespace game
 {
@@ -64,6 +66,13 @@ namespace game
                     if (event.key.code == sf::Keyboard::F3)
                     {
                         renderer_->setDrawFpsCounter(!renderer_->ifDrawFpsCounter());
+                    }
+                }
+                if (event.type == sf::Event::MouseButtonPressed)
+                {
+                    if (event.mouseButton.button == sf::Mouse::Left)
+                    {
+                        userInterface()->playShootAnim();
                     }
                 }
             }

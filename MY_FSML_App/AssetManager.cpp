@@ -106,7 +106,7 @@ namespace game
             tileTypeManager_->loadTileTypeInfo(tileName, tileType);
         }
 
-        cout << "TileType' info loaded" << endl;
+        cout << "TileTypes' info loaded" << endl;
     }
 
     void AssetManager::loadTileTypes()
@@ -116,7 +116,7 @@ namespace game
 
     void AssetManager::loadAnimations()
     {
-        const char* const subFolders[]{"enemy"};
+        const char* const subFolders[]{"enemy", "gun"};
 
         for (const char* subFolder : subFolders)
         {
@@ -156,14 +156,14 @@ namespace game
                         animation.addFrame(std::move(animFrame));
                     }
 
+                    cout << "Animation loaded: " << animName << endl;
                     animationManager_->addAnimation(std::move(animName), std::move(animation));
-
                 }
 
             }
-        
-            cout << "Animations loaded" << endl;
         }
+
+        cout << "Animations loaded" << endl;
     }
 
     void AssetManager::loadFonts()

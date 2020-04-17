@@ -2,6 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 
+
+#include "GameObjRef.h"
 #include "UserInterface.h"
 
 namespace game
@@ -85,6 +87,12 @@ namespace game
 
 
     public:
+
+        GameObjRef<UserInterface> userInterface() const 
+        {
+            return userInterface_;
+        }
+
         bool ifDrawFpsCounter() const
         {
             return drawFpsCounter_;

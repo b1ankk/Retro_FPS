@@ -5,6 +5,8 @@
 #include <SFML/Graphics/VertexArray.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
+#include "UI_Element_Children.h"
+
 namespace game
 {
     using namespace std;
@@ -45,5 +47,11 @@ namespace game
     void UserInterface::removeUI_Element(const size_t& index)
     {
         uiElements_.erase(uiElements_.begin() + index);
+    }
+
+
+    void UserInterface::playShootAnim()
+    {
+        uiGun_->playShootAnimation();
     }
 }

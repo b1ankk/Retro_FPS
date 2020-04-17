@@ -133,6 +133,22 @@
         {
           "name": "empty_strap",
           "path": "assets\\sprites\\ui\\empty_strap.png"
+        },
+        {
+          "name": "shotgun_shoot_00",
+          "path": "assets\\sprites\\ui\\gun\\shotgun\\anim_shoot\\shotgun_shoot_00.png"
+        },
+        {
+          "name": "shotgun_shoot_01",
+          "path": "assets\\sprites\\ui\\gun\\shotgun\\anim_shoot\\shotgun_shoot_01.png"
+        },
+        {
+          "name": "shotgun_shoot_02",
+          "path": "assets\\sprites\\ui\\gun\\shotgun\\anim_shoot\\shotgun_shoot_02.png"
+        },
+        {
+          "name": "shotgun_shoot_03",
+          "path": "assets\\sprites\\ui\\gun\\shotgun\\anim_shoot\\shotgun_shoot_03.png"
         }
       ]
     },
@@ -234,6 +250,46 @@
                 {
                   "frame_name": "frogmon_walk_03",
                   "time": 1.6
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "gun": [
+        {
+          "name": "shotgun",
+          "anims": [
+            {
+              "anim_name": "shoot",
+              "frames": [
+                {
+                  "frame_name": "shotgun_shoot_00",
+                  "time": 0.001
+                },
+                {
+                  "frame_name": "shotgun_shoot_01",
+                  "time": 0.15
+                },
+                {
+                  "frame_name": "shotgun_shoot_02",
+                  "time": 0.3
+                },
+                {
+                  "frame_name": "shotgun_shoot_03",
+                  "time": 0.45
+                },
+                {
+                  "frame_name": "shotgun_shoot_02",
+                  "time": 0.6
+                },
+                {
+                  "frame_name": "shotgun_shoot_01",
+                  "time": 0.75
+                },
+                {
+                  "frame_name": "shotgun_shoot_00",
+                  "time": 0.8
                 }
               ]
             }

@@ -10,6 +10,7 @@
 #include "UserInterface.h"
 #include "TextureManager.h"
 #include "FPP_Player.h"
+#include "Animation.h"
 
 namespace game
 {
@@ -271,5 +272,45 @@ namespace game
                 "empty_right"
             )
             );
+    }
+
+
+
+    ///////////////////    ANIMATED GUN    ////////////////////////////////
+
+
+    AnimatedGunUIE::AnimatedGunUIE(const sf::Vector2i& size, const sf::Vector2i& uiPosition) :
+        UI_Element(size, uiPosition)
+    {
+        setOrigin(size.x / 2.f, size.y);
+        setPosition(sf::Vector2f(uiPosition.x, uiPosition.y));
+    }
+
+    void AnimatedGunUIE::createTexture(std::unique_ptr<sf::Texture>& texturePtr) const
+    {
+        
+    }
+
+    void AnimatedGunUIE::draw(sf::RenderTarget& target, sf::RenderStates states) const
+    {
+        states.transform *= getTransform();
+        states.texture = shootAnimation_.texture().get();
+        target.draw(vertices_, states);
+    }
+
+    void AnimatedGunUIE::update()
+    {
+        
+    }
+
+
+    void AnimatedGunUIE::setShootAnimation(Animation animation)
+    {
+        shootAnimation_ = std::move(animation);
+    }
+
+    void AnimatedGunUIE::playShootAnimation()
+    {
+        shootAnimation_.play();
     }
 }
