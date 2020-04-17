@@ -14,8 +14,7 @@
 #include "TextureManager.h"
 #include "Entity.h"
 #include "GameTime.h"
-#include "UserInterface.h"
-#include "UI_Element_Children.h"
+#include "Gun.h"
 
 namespace game
 {
@@ -72,7 +71,7 @@ namespace game
                 {
                     if (event.mouseButton.button == sf::Mouse::Left)
                     {
-                        userInterface()->playShootAnim();
+                        player_->shoot();
                     }
                 }
             }
@@ -136,6 +135,18 @@ namespace game
                 INITIAL_PLAYER_DIR
             )
         };
+
+        std::shared_ptr<Gun> activeGun{
+            make_shared<Gun>(
+                "shotty",
+                assetManager_->animationManager()->getAnimationForName("shotgun_shoot"),
+                sf::seconds(0.8),
+                160.
+            )
+        };
+        player_->setActiveGun(
+            activeGun
+        );
 
         levelMap_= {
             make_shared<LevelMap>()

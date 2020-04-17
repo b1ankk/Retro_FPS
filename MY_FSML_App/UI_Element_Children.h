@@ -76,12 +76,6 @@ namespace game
         void update() override;
 
 
-        void setShootAnimation(Animation);
-        void playShootAnimation();
-        
-    private:
-        mutable Animation shootAnimation_;
-
 
     };
 

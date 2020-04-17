@@ -132,12 +132,7 @@ namespace game
             sf::Vector2i{width_ / 2, height_ - int(scaledHeight)}
         );
         gun->setScale(3, 3);
-        gun->setShootAnimation(
-            Game::get().animationManager()->getAnimationForName("shotgun_shoot")
-        );
         userInterface_->addUI_Element(gun);
-        userInterface_->setGunElement(gun);
-
 
     }
 

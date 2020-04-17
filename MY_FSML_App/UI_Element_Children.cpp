@@ -10,7 +10,7 @@
 #include "UserInterface.h"
 #include "TextureManager.h"
 #include "FPP_Player.h"
-#include "Animation.h"
+#include "Gun.h"
 
 namespace game
 {
@@ -241,10 +241,16 @@ namespace game
 
     void AmmoUIE::update()
     {
+        char ammoValString[20];
+        snprintf(ammoValString, 20, 
+                 "%2d/%2d",
+                 Game::get().player()->activeGun()->ammo(),
+                 Game::get().player()->activeGun()->maxAmmo()
+        );
         updateText(
             ammoValue_,
             this,
-            "00/99",
+            ammoValString,
             1 / 3.f,
             0.25f
         );
@@ -294,7 +300,7 @@ namespace game
     void AnimatedGunUIE::draw(sf::RenderTarget& target, sf::RenderStates states) const
     {
         states.transform *= getTransform();
-        states.texture = shootAnimation_.texture().get();
+        states.texture = Game::get().player()->activeGun()->getTexture().get();
         target.draw(vertices_, states);
     }
 
@@ -303,14 +309,4 @@ namespace game
         
     }
 
-
-    void AnimatedGunUIE::setShootAnimation(Animation animation)
-    {
-        shootAnimation_ = std::move(animation);
-    }
-
-    void AnimatedGunUIE::playShootAnimation()
-    {
-        shootAnimation_.play();
-    }
 }

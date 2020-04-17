@@ -3,7 +3,6 @@
 #include <memory>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/VertexArray.hpp>
-#include <SFML/Graphics/Texture.hpp>
 
 #include "UI_Element_Children.h"
 
@@ -49,9 +48,4 @@ namespace game
         uiElements_.erase(uiElements_.begin() + index);
     }
 
-
-    void UserInterface::playShootAnim()
-    {
-        uiGun_->playShootAnimation();
-    }
 }

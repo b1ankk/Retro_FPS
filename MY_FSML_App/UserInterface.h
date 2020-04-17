@@ -27,7 +27,6 @@ namespace game
 
         void addUI_Element(std::shared_ptr<UI_Element> element);
         void removeUI_Element(const size_t& index);
-        void playShootAnim();
 
     private:
         int          width_;
@@ -35,14 +34,8 @@ namespace game
         sf::Vector2i drawingPosition_; // the point of origin
 
         std::vector<std::shared_ptr<UI_Element>> uiElements_;
-        std::shared_ptr<AnimatedGunUIE> uiGun_;
 
     public:
-
-        void setGunElement(std::shared_ptr<AnimatedGunUIE> gun)
-        {
-            uiGun_ = std::move(gun);
-        }
 
         [[nodiscard]]
         int width() const

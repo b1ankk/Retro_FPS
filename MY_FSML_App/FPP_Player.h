@@ -6,6 +6,7 @@
 namespace game
 {
     class LevelMap;
+    class Gun;
 
 
     class FPP_Player
@@ -25,6 +26,9 @@ namespace game
         void nodHead(const double&);        // simulate camera movement in z/x axis
         void move(const sf::Vector2d&, const double& distance);     // change player's position
 
+        // GAME MECHANICS METHODS
+
+        void shoot() const;
         
 
     private:
@@ -38,6 +42,8 @@ namespace game
 
         int health_{100};
         int armor_{0};
+
+        std::shared_ptr<Gun> activeGun_;
 
 
     public:
@@ -73,6 +79,18 @@ namespace game
         int armor() const 
         {
             return armor_;
+        }
+
+
+        [[nodiscard]]
+        std::shared_ptr<Gun> activeGun() const
+        {
+            return activeGun_;
+        }
+
+        void setActiveGun(std::shared_ptr<Gun> activeGun)
+        {
+            activeGun_ = std::move(activeGun);
         }
     };
 }

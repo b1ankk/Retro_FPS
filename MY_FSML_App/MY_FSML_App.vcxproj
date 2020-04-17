@@ -160,6 +160,7 @@
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="FPP_Player.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Gun.cpp" />
     <ClCompile Include="LevelMap.cpp" />
     <ClCompile Include="MapTile.cpp" />
     <ClCompile Include="SpriteManager.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="EntityVector.h" />
     <ClInclude Include="FPP_Player.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Gun.h" />
     <ClInclude Include="LevelMap.h" />
     <ClInclude Include="MapTile.h" />
     <ClInclude Include="SpriteManager.h" />

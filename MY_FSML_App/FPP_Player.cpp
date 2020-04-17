@@ -1,10 +1,11 @@
-#define _USE_MATH_DEFINES
-#include <cmath>
-
 #include "FPP_Player.h"
+
+#include <corecrt_math_defines.h>
+
 
 #include "LevelMap.h"
 #include "MapTile.h"
+#include "Gun.h"
 
 
 namespace game
@@ -62,5 +63,12 @@ namespace game
         //     position_.x = newPosition.x;
         // if (tempWorldMap[static_cast<int>(position_.x)][static_cast<int>(newPosition.y)] == 0)
         //     position_.y = newPosition.y;
+    }
+
+    void FPP_Player::shoot() const
+    {
+        assert(activeGun_ != nullptr);
+
+        activeGun_->shootIfPossible();
     }
 }
