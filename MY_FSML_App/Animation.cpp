@@ -48,7 +48,12 @@ namespace game
 
         // if not playing animation, return last visible frame
         if (!playing_)
-            return frames_[currentFrame_].texture();
+        {
+            if (movetBackToFirstFrame_)
+                return frames_[currentFrame_].texture();
+            else
+                return frames_[lastFrame_].texture();
+        }
 
         // if time to change frame
         if (clock_.getElapsedTime() + pausedTime_ >= frames_[currentFrame_].endTime())
@@ -56,6 +61,7 @@ namespace game
             // if last frame of animation, come back to beginning
             if (currentFrame_ == frames_.size() - 1)
             {
+                lastFrame_ = currentFrame_;
                 currentFrame_ = 0;
                 pausedTime_ = sf::Time::Zero;
                 // if not repeating, stop playing 
@@ -68,10 +74,14 @@ namespace game
             // if some other frame, move to the next one
             else
             {
+                lastFrame_ = currentFrame_;
                 ++currentFrame_;
             }
         }
 
-        return frames_[currentFrame_].texture();
+        if (movetBackToFirstFrame_)
+            return frames_[currentFrame_].texture();
+        else
+            return frames_[lastFrame_].texture();
     }
 }

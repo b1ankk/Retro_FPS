@@ -71,4 +71,16 @@ namespace game
 
         activeGun_->shootIfPossible();
     }
+
+    void FPP_Player::takeHit(double damage)
+    {
+        health_ -= static_cast<int>(damage);
+        if (health_ <= 0)
+            die();
+    }
+
+    void FPP_Player::die()
+    {
+        // TODO dying
+    }
 }

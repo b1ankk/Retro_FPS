@@ -91,6 +91,10 @@
         {
           "name": "frogmon_walk_03",
           "path": "assets\\sprites\\entity\\enemy\\frogmon\\anim_walk\\frogmon_walk_03.png"
+        },
+        {
+          "name": "frogmon_idle_00",
+          "path": "assets\\sprites\\entity\\enemy\\frogmon\\frogmon.png"
         }
       ],
       "ui": [
@@ -220,23 +224,23 @@
               "frames": [
                 {
                   "frame_name": "frogmon_die_00",
-                  "time": 0.4
+                  "time": 0.1
                 },
                 {
                   "frame_name": "frogmon_die_01",
-                  "time": 0.8
+                  "time": 0.2
                 },
                 {
                   "frame_name": "frogmon_die_02",
-                  "time": 1.2
+                  "time": 0.3
                 },
                 {
                   "frame_name": "frogmon_die_03",
-                  "time": 1.6
+                  "time": 0.4
                 },
                 {
                   "frame_name": "frogmon_die_04",
-                  "time": 2.0
+                  "time": 0.5
                 }
               ]
             },
@@ -260,6 +264,15 @@
                   "time": 1.6
                 }
               ]
+            },
+            {
+              "anim_name": "idle",
+              "frames": [
+                {
+                  "frame_name": "frogmon_idle_00",
+                  "time": 1.0 
+                }
+              ] 
             }
           ]
         }

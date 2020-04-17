@@ -17,7 +17,7 @@ namespace game
         EntityVector() = default;
         ~EntityVector() = default;
 
-        void add(std::shared_ptr<game::Entity> entity);
+        void add(std::shared_ptr<Entity> entity);
         void remove(const size_t& index);
 
 
@@ -41,7 +41,7 @@ namespace game
         }
 
     private:
-        std::vector<std::shared_ptr<game::Entity>> entities_{};
+        std::vector<std::shared_ptr<Entity>> entities_{};
 
 
         // METHODS

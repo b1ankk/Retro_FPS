@@ -37,8 +37,11 @@ namespace game
 
         void setActiveAnimation(const std::string& name)
         {
-            activeAnimation_->stop();
-            activeAnimation_ = &animations_[name];
+            if (activeAnimation_ != &animations_.at(name))
+            {
+                activeAnimation_->stop();
+                activeAnimation_ = &animations_.at(name);
+            }
         }
 
         void playAnimation()

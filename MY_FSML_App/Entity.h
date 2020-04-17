@@ -30,6 +30,8 @@ namespace game
         sf::Vector2i                  imageSize_{};
         sf::VertexArray               vertices_{sf::PrimitiveType::Quads};
 
+        sf::Vector2d mapPosition_{};
+
 
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
@@ -49,7 +51,7 @@ namespace game
         
 
 
-        sf::Vector2d mapPosition_{};
+        
 
         double screenYPosition_{0.5}; // vertical position on screen as a fraction [0, 1]
         double distanceToPlayer_{};   // distance to player used in sorting entities
@@ -75,6 +77,11 @@ namespace game
         sf::Vector2d mapPosition() const
         {
             return mapPosition_;
+        }
+
+        void setMapPosition(const sf::Vector2d& position)
+        {
+            mapPosition_ = position;
         }
 
         double distanceToPlayer() const

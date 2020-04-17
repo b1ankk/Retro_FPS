@@ -29,7 +29,7 @@ namespace game
         // GAME MECHANICS METHODS
 
         void shoot() const;
-        
+        void takeHit(double damage);
 
     private:
         // CONTROL
@@ -45,6 +45,8 @@ namespace game
 
         std::shared_ptr<Gun> activeGun_;
 
+
+        void die();
 
     public:
 

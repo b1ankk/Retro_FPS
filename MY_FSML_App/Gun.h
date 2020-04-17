@@ -11,7 +11,7 @@
 
 namespace game
 {
-
+    class Enemy;
 
 
     class Gun
@@ -31,7 +31,8 @@ namespace game
               range_(range),
               damage_(damage),
               effectiveAngle_(effectiveAngle),
-              effectiveAngleVector_(angleToVector(effectiveAngle_))
+              effectiveAngleRad_(effectiveAngle / 180. * M_PI)
+              // effectiveAngleVectorRight_(angleToVector(effectiveAngle_))
         {
         }
 
@@ -48,7 +49,9 @@ namespace game
         double range_;
         double damage_;
         double effectiveAngle_;
-        sf::Vector2d effectiveAngleVector_;
+        double effectiveAngleRad_;
+        // sf::Vector2d effectiveAngleVectorRight_;
+        // sf::Vector2d effectiveAngleVectorLeft_;
 
         int ammo_{32};
         int maxAmmo_{99};
@@ -56,20 +59,20 @@ namespace game
         // METHODS
 
         void shoot();
+        bool isInAngle(std::shared_ptr<Enemy> enemy);
 
 
 
-
-        static sf::Vector2d angleToVector(double angle)
-        {
-            angle /= 180.;
-            angle *= M_PI;
-
-            double x = sin(angle);
-            double y = cos(angle);
-
-            return sf::Vector2d{x, y};
-        }
+        // static sf::Vector2d angleToVector(double angle)
+        // {
+        //     angle /= 180.;
+        //     angle *= M_PI;
+        //
+        //     double x = sin(angle);
+        //     double y = cos(angle);
+        //
+        //     return sf::Vector2d{x, y};
+        // }
 
 
     public:

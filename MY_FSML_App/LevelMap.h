@@ -3,6 +3,8 @@
 #include <vector>
 #include <memory>
 
+
+#include "Enemy.h"
 #include "EntityVector.h"
 
 namespace game
@@ -10,7 +12,6 @@ namespace game
     class MapTile;
     class TileTypeManager;
     class FPP_Player;
-
 
     using IntMap = std::vector<std::vector<int>>;
     using TileMap = std::vector<std::vector<MapTile>>;
@@ -30,6 +31,7 @@ namespace game
     private:
         MapDataPtr mapData_{};
         EntityVector entities_{};
+        std::vector < std::shared_ptr<Enemy>> enemies_;
 
         // GameObjRef<FPP_Player> player_{GAME::PLAYER};
         
@@ -52,6 +54,17 @@ namespace game
         EntityVector& entities()
         {
             return entities_;
+        }
+
+        std::vector < std::shared_ptr<Enemy>>& enemies()
+        {
+            return enemies_;
+        }
+
+        void addEnemy(std::shared_ptr<Enemy> enemy)
+        {
+            enemies_.push_back(enemy);
+            entities_.add(std::static_pointer_cast<Entity, Enemy>(enemy));
         }
 
 

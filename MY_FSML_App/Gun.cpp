@@ -1,5 +1,13 @@
 #include "Gun.h"
 
+#include <iostream>
+#include <ostream>
+
+
+
+#include "Enemy.h"
+#include "LevelMap.h"
+
 namespace game
 {
     void Gun::shootIfPossible()
@@ -12,10 +20,18 @@ namespace game
                 --ammo_;
             }
         }
-        
-
     }
 
+
+    bool Gun::isInAngle(std::shared_ptr<Enemy> enemy)
+    {
+        const sf::Vector2d& playerDir = Game::get().player()->direction();
+        const sf::Vector2d relativePos = enemy->mapPosition() - Game::get().player()->position();
+        double cosValue = calcDotProduct(relativePos, playerDir) / (calcVectorLength(playerDir)* calcVectorLength(relativePos));
+        double angle = acos(cosValue);
+        
+        return abs(angle) < effectiveAngleRad_;
+    }
 
     void Gun::shoot()
     {
@@ -23,6 +39,14 @@ namespace game
         shootAnimation_.stop();
         shootAnimation_.play();
 
-        // TODO damage mechanics
+        for (auto& enemy : Game::get().levelMap()->enemies())
+        {
+            if (isInAngle(enemy))
+            {
+                std::cout << "HIT!" << std::endl;
+                enemy->takeHit(damage_);
+            }
+
+        }
     }
 }

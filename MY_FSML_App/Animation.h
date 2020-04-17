@@ -30,10 +30,15 @@ namespace game
         bool playing_{};
         bool repeating_{};
         int currentFrame_{0};
-
+        int lastFrame_{0};
+        bool movetBackToFirstFrame_{true};
 
     public:
-        
+
+        void setMoveBackToFirstFrame(bool b)
+        {
+            movetBackToFirstFrame_ = b;
+        }
 
         void addFrame(AnimationFrame animFrame)
         {

@@ -9,6 +9,7 @@
 #include "LevelMap.h"
 #include "AssetManager.h"
 #include "AnimationManager.h"
+#include "Enemy.h"
 #include "FPP_Player.h"
 #include "InputHandler.h"
 #include "TextureManager.h"
@@ -181,17 +182,30 @@ namespace game
 
         std::this_thread::sleep_for(0.5s);
 
-        animEnt = {
-            make_shared<AnimatedEntity>(
+        shared_ptr<Enemy> enemy = 
+            make_shared<Enemy>(
                 textureManager()->getTextureForName("frogmon"),
-                sf::Vector2d{18, 20}
-            )
-        };
+                sf::Vector2d{18, 20},
+                100, 32
+            );
         animName = "frogmon_walk";
         anim = animationManager()->getAnimationForName(animName);
-        animEnt->addAnimation(animName, std::move(anim));
-        animEnt->loopAnimation();
-        levelMap_->entities().add(animEnt);
+        enemy->addAnimation(animName, std::move(anim));
+        animName = "frogmon_die";
+        anim = animationManager()->getAnimationForName(animName);
+        anim.setMoveBackToFirstFrame(false);
+        enemy->addAnimation(animName, std::move(anim));
+        animName = "frogmon_idle";
+        anim = animationManager()->getAnimationForName(animName);
+        enemy->addAnimation(animName, anim);
+        enemy->setActiveAnimation(animName);
+        enemy->setDieAnimationName("frogmon_die");
+        enemy->setWalkAnimationName("frogmon_walk");
+        // levelMap_->entities().add(enemy);
+        levelMap_->addEnemy(enemy);
 
+        shared_ptr<Enemy> enemy2 = make_shared<Enemy>(*enemy);
+        enemy2->setMapPosition({18, 15});
+        levelMap_->addEnemy(enemy2);
     }
 }
