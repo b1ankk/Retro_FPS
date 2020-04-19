@@ -4,6 +4,7 @@
 #include <future>
 #include <memory>
 
+#include "Game.h"
 #include "UserInterface.h"
 #include "UI_Element_Children.h"
 #include "FPP_Player.h"

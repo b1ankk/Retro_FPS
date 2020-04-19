@@ -3,8 +3,7 @@
 #include <iostream>
 #include <ostream>
 
-
-
+#include "Game.h"
 #include "Enemy.h"
 #include "LevelMap.h"
 
@@ -33,6 +32,17 @@ namespace game
         return abs(angle) < effectiveAngleRad_;
     }
 
+    double Gun::calcDamage(double distanceSquared)
+    {
+        static const double divider = log(25.);
+        double dmg = log(-sqrt(distanceSquared) + 25.) / divider;
+        dmg *= damage_;
+        std::cout << dmg << std::endl;
+        if (dmg > 0)
+            return dmg;
+        return 0;
+    }
+
     void Gun::shoot()
     {
         delayCounter_.restart();
@@ -44,7 +54,7 @@ namespace game
             if (isInAngle(enemy))
             {
                 std::cout << "HIT!" << std::endl;
-                enemy->takeHit(damage_);
+                enemy->takeHit(calcDamage(enemy->distanceToPlayer()));
             }
 
         }

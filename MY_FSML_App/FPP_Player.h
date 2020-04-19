@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Game.h"
+
+#include <memory>
+
 #include "vector_additions.h"
 
 namespace game

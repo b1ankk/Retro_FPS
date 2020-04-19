@@ -24,49 +24,49 @@ namespace game
 
         
     private:
-        Animation*                                 activeAnimation_{};
+        std::string                                activeAnimationName_;
         std::unordered_map<std::string, Animation> animations_;
 
     public:
         void addAnimation(const std::string& name, Animation animation)
         {
             animations_.insert({name, std::move(animation)});
-            if (activeAnimation_ == nullptr)
-                activeAnimation_ = &animations_[name];
+            if (activeAnimationName_.empty())
+                activeAnimationName_ = name;
         }
 
         void setActiveAnimation(const std::string& name)
         {
-            if (activeAnimation_ != &animations_.at(name))
+            if (activeAnimationName_ != name)
             {
-                activeAnimation_->stop();
-                activeAnimation_ = &animations_.at(name);
+                animations_.at(activeAnimationName_).stop();
+                activeAnimationName_ = name;
             }
         }
 
         void playAnimation()
         {
-            activeAnimation_->play();
+            animations_.at(activeAnimationName_).play();
         }
 
         void loopAnimation()
         {
-            activeAnimation_->loop();
+            animations_.at(activeAnimationName_).loop();
         }
 
         void pauseAnimation()
         {
-            activeAnimation_->pause();
+            animations_.at(activeAnimationName_).pause();
         }
 
         void stopAnimation()
         {
-            activeAnimation_->stopRepeating();
+            animations_.at(activeAnimationName_).stopRepeating();
         }
 
         void forceStopAnimation()
         {
-            activeAnimation_->stop();
+            animations_.at(activeAnimationName_).stop();
         }
 
     };

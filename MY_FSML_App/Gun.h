@@ -23,7 +23,7 @@ namespace game
             Animation shootAnimation,
             const sf::Time shotDelay,
             const double damage,
-            const double effectiveAngle = 10.,
+            const double effectiveAngle = 5.,
             const double range = DBL_MAX)
             : name_(std::move(name)),
               shootAnimation_(std::move(shootAnimation)),
@@ -39,7 +39,7 @@ namespace game
         void shootIfPossible();
 
 
-    private:
+    protected:
         std::string name_{"unnamed"};
         Animation shootAnimation_;
 
@@ -60,7 +60,7 @@ namespace game
 
         void shoot();
         bool isInAngle(std::shared_ptr<Enemy> enemy);
-
+        double calcDamage(double distanceSquared);
 
 
         // static sf::Vector2d angleToVector(double angle)
@@ -106,6 +106,13 @@ namespace game
         double effectiveAngle() const
         {
             return effectiveAngle_;
+        }
+
+        void addAmmo(int amount)
+        {
+            ammo_ += amount;
+            if (ammo_ > maxAmmo_)
+                ammo_ = maxAmmo_;
         }
 
         [[nodiscard]]

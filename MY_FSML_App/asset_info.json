@@ -166,49 +166,49 @@
     },
     "tile_types": [
       {
-        "id": 0,
+        "id": 1,
         "name": "wolf_blue_bricks_wall",
         "sprite_name": "wolf_blue_bricks",
         "traversable": false
       },
       {
-        "id": 1,
+        "id": 2,
         "name": "wolf_bricks_wall",
         "sprite_name": "wolf_bricks",
         "traversable": false
       },
       {
-        "id": 2,
+        "id": 3,
         "name": "wolf_gobelin_wall",
         "sprite_name": "wolf_gobelin",
         "traversable": false
       },
       {
-        "id": 3,
+        "id": 4,
         "name": "wolf_mossy_bricks_wall",
         "sprite_name": "wolf_mossy_bricks",
         "traversable": false
       },
       {
-        "id": 4,
+        "id": 5,
         "name": "wolf_pink_wall",
         "sprite_name": "wolf_pink",
         "traversable": false
       },
       {
-        "id": 5,
+        "id": 6,
         "name": "wolf_stone_wall",
         "sprite_name": "wolf_stone",
         "traversable": false
       },
       {
-        "id": 6,
+        "id": 7,
         "name": "wolf_stone_bricks_wall",
         "sprite_name": "wolf_stone_bricks",
         "traversable": false
       },
       {
-        "id": 7,
+        "id": 8,
         "name": "wolf_wood_wall",
         "sprite_name": "wolf_wood",
         "traversable": false

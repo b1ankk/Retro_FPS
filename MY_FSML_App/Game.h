@@ -1,11 +1,13 @@
 #pragma once
 
 #include <memory>
+#include <random>
 #include <SFML/Graphics/RenderWindow.hpp>
 
 #include "EntityVector.h"
 #include "GameObjRef.h"
 #include "AssetManager.h"
+#include "Enemy.h"
 #include "Renderer.h"
 
 
@@ -37,7 +39,7 @@ namespace game
 
 
 
-        const sf::Vector2d INITIAL_PLAYER_POS{22, 12};
+        const sf::Vector2d INITIAL_PLAYER_POS{22, 2};
         const sf::Vector2d INITIAL_PLAYER_DIR{-1, 0};
 
         const sf::Time SECOND{sf::seconds(1.f)};
@@ -59,12 +61,7 @@ namespace game
 
         //////// GAME OBJECTS ////////
 
-        // FIELDS
-        int lastFps_{};
-
-        double renderScale_{1.};
-
-        // INSTANCES
+        // GAME OBJ INSTANCES
 
         std::shared_ptr<sf::RenderWindow> window_{};
         std::shared_ptr<AssetManager>     assetManager_{};
@@ -75,10 +72,20 @@ namespace game
         std::shared_ptr<LevelMap> levelMap_{};
 
 
+        std::unordered_map<std::string, const Enemy> enemyPatterns_;
+
+
+        // FIELDS
+        int lastFps_{};
+
+        std::mt19937 randEngine_;
+
         // METHODS
 
         void setUpGame();
-
+        void initRandEngine();
+        void setUpEnemyPatterns();
+        void spawnRandomEnemies(int);
 
     public:
 
@@ -161,6 +168,11 @@ namespace game
         const int& fps() const
         {
             return lastFps_;
+        }
+
+        std::mt19937& randEngine()
+        {
+            return randEngine_;
         }
 
 

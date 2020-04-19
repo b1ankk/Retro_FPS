@@ -7,6 +7,7 @@ namespace game
 {
     class Enemy : public AnimatedEntity
     {
+
     public:
         Enemy(const std::shared_ptr<const sf::Texture>& texture,
               const sf::Vector2d&                       mapPosition,
@@ -34,6 +35,7 @@ namespace game
 
 
         virtual void die();
+
 
     public:
 

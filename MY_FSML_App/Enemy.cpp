@@ -1,5 +1,11 @@
 #include "Enemy.h"
 
+#include <cassert>
+#include <random>
+
+#include "Game.h"
+#include "Gun.h"
+
 namespace game
 {
     void Enemy::takeHit(double damage)
@@ -29,9 +35,16 @@ namespace game
 
     void Enemy::die()
     {
-        assert(dieAnimationName_ != "");
+        assert(!dieAnimationName_.empty());
         isAlive_ = false;
         setActiveAnimation(dieAnimationName_);
         playAnimation();
+
+
+        // TODO better ammo system
+        std::uniform_int_distribution<int> dist(0, 4);
+        Game::get().player()->activeGun()->addAmmo(dist(Game::get().randEngine()));
     }
+
+
 }

@@ -8,10 +8,8 @@ namespace game
     {
         std::shared_ptr<SpriteWrapper> spriteWrapper{
             std::make_shared<SpriteWrapper>(
-                SpriteWrapper{
                     std::move(imagePath),
                     std::move(imageName)
-                }
             )
         };
 

@@ -1,8 +1,10 @@
 #include "FPP_Player.h"
 
+
+#include <cassert>
 #include <corecrt_math_defines.h>
 
-
+#include "Game.h"
 #include "LevelMap.h"
 #include "MapTile.h"
 #include "Gun.h"

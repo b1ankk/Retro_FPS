@@ -30,6 +30,7 @@ namespace game
 
     private:
         MapDataPtr mapData_{};
+        sf::Vector2i size_{};
         EntityVector entities_{};
         std::vector < std::shared_ptr<Enemy>> enemies_;
 
@@ -67,6 +68,11 @@ namespace game
             entities_.add(std::static_pointer_cast<Entity, Enemy>(enemy));
         }
 
+
+        sf::Vector2i size() const
+        {
+            return size_;
+        }
 
         static const IntMap TEST_MAP;
         

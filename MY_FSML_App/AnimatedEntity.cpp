@@ -11,7 +11,9 @@ void game::AnimatedEntity::draw(sf::RenderTarget& target, sf::RenderStates state
     // apply the entity's transform -- combine it with the one that was passed by the caller
     states.transform *= sf::Transformable::getTransform();
 
-    states.texture = activeAnimation_->texture().get();
+    Animation* activeAnimation = const_cast<Animation*>(&animations_.at(activeAnimationName_));
+
+    states.texture = activeAnimation->texture().get();
 
     target.draw(vertices_, states);
 }

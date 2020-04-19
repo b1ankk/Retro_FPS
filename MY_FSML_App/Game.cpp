@@ -1,8 +1,7 @@
 #include "Game.h"
 
 #include <thread>
-
-
+#include <vector>
 
 #include "AnimatedEntity.h"
 #include "Renderer.h"
@@ -13,23 +12,25 @@
 #include "FPP_Player.h"
 #include "InputHandler.h"
 #include "TextureManager.h"
-#include "Entity.h"
 #include "GameTime.h"
 #include "Gun.h"
+#include "MapTile.h"
 
 namespace game
 {
     using namespace std;
 
     const sf::Vector2i Game::SCREEN_MIDDLE{WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2};
-    const int Game::RENDERING_WIDTH{WINDOW_WIDTH};
-    const int Game::RENDERING_HEIGHT{WINDOW_HEIGHT};
+    const int          Game::RENDERING_WIDTH{WINDOW_WIDTH};
+    const int          Game::RENDERING_HEIGHT{WINDOW_HEIGHT};
 
     const std::string Game::DEFAULT_FONT_NAME = "Pixeled";
 
     void Game::start()
     {
+        initRandEngine();
         setUpGame();
+        spawnRandomEnemies(80);
 
         int fpsCounter{0};
 
@@ -61,7 +62,9 @@ namespace game
                     if (event.key.code == sf::Keyboard::Escape)
                     {
                         window_->close();
-                        exit(0);
+                        // exit(0);
+                        return;
+                        
                     }
                     if (event.key.code == sf::Keyboard::F3)
                     {
@@ -104,11 +107,11 @@ namespace game
     void Game::setUpGame()
     {
         window_ = {
-           make_shared<sf::RenderWindow>(
-               sf::VideoMode{WINDOW_WIDTH, WINDOW_HEIGHT},
-               "MyGame",
-               sf::Style::Fullscreen
-           )
+            make_shared<sf::RenderWindow>(
+                sf::VideoMode{WINDOW_WIDTH, WINDOW_HEIGHT},
+                "MyGame",
+                sf::Style::Fullscreen
+            )
         };
 
         assetManager_ = {
@@ -127,8 +130,8 @@ namespace game
         inputHandler_ = {
             make_shared<InputHandler>()
         };
-        inputHandler_->setMouseLookSensitivityX(150);
-        inputHandler_->setMovementSpeed(5);
+        inputHandler_->setMouseLookSensitivityX(120);
+        inputHandler_->setMovementSpeed(4);
 
         player_ = {
             make_shared<FPP_Player>(
@@ -136,76 +139,89 @@ namespace game
                 INITIAL_PLAYER_DIR
             )
         };
+        player_->rotate(90);
         std::shared_ptr<Gun> activeGun{
             make_shared<Gun>(
                 "shotty",
                 assetManager_->animationManager()->getAnimationForName("shotgun_shoot"),
                 sf::seconds(0.8),
-                160.
+                105.,
+                3.5
             )
         };
         player_->setActiveGun(
             activeGun
         );
 
-        levelMap_= {
+        levelMap_ = {
             make_shared<LevelMap>()
         };
 
+        setUpEnemyPatterns();
 
         levelMap_->loadFromInts(levelMap_->TEST_MAP);
+    }
 
-        // TEST ENTITIES
-        levelMap_->entities().add(
-            make_shared<Entity>(
-                textureManager()->getTextureForName("frogmon_stand"),
-                sf::Vector2d{15, 15}
-            )
+    void Game::initRandEngine()
+    {
+        random_device rd;
+        randEngine_ = mt19937(0);
+    }
+
+
+    void Game::setUpEnemyPatterns()
+    {
+        // FROGMON 
+        const string enemyName = "frogmon";
+        Enemy frogmon(
+            textureManager()->getTextureForName(enemyName),
+            sf::Vector2d{0, 0},
+            100,
+            32
         );
-        levelMap_->entities().add(
-            make_shared<game::Entity>(
-                textureManager()->getTextureForName("barrel"),
-                sf::Vector2d{14, 8}
-            )
-        );
-        shared_ptr<AnimatedEntity> animEnt{
-            make_shared<AnimatedEntity>(
-                textureManager()->getTextureForName("frogmon"),
-                sf::Vector2d{20, 20}
-            )
-        };
+        Animation animation;
+
         string animName = "frogmon_walk";
-        Animation anim = animationManager()->getAnimationForName(animName);
-        animEnt->addAnimation(animName, std::move(anim));
-        animEnt->loopAnimation();
-        levelMap_->entities().add(animEnt);
+        animation       = animationManager()->getAnimationForName(animName);
+        frogmon.addAnimation(animName, std::move(animation));
 
-        std::this_thread::sleep_for(0.5s);
+        animName  = "frogmon_die";
+        animation = animationManager()->getAnimationForName(animName);
+        animation.setMoveBackToFirstFrame(false);
+        frogmon.addAnimation(animName, std::move(animation));
 
-        shared_ptr<Enemy> enemy = 
-            make_shared<Enemy>(
-                textureManager()->getTextureForName("frogmon"),
-                sf::Vector2d{18, 20},
-                100, 32
-            );
-        animName = "frogmon_walk";
-        anim = animationManager()->getAnimationForName(animName);
-        enemy->addAnimation(animName, std::move(anim));
-        animName = "frogmon_die";
-        anim = animationManager()->getAnimationForName(animName);
-        anim.setMoveBackToFirstFrame(false);
-        enemy->addAnimation(animName, std::move(anim));
-        animName = "frogmon_idle";
-        anim = animationManager()->getAnimationForName(animName);
-        enemy->addAnimation(animName, anim);
-        enemy->setActiveAnimation(animName);
-        enemy->setDieAnimationName("frogmon_die");
-        enemy->setWalkAnimationName("frogmon_walk");
-        // levelMap_->entities().add(enemy);
-        levelMap_->addEnemy(enemy);
+        animName  = "frogmon_idle";
+        animation = animationManager()->getAnimationForName(animName);
+        frogmon.addAnimation(animName, std::move(animation));
+        frogmon.setActiveAnimation(animName);
+        frogmon.setDieAnimationName("frogmon_die");
+        frogmon.setWalkAnimationName("frogmon_walk");
 
-        shared_ptr<Enemy> enemy2 = make_shared<Enemy>(*enemy);
-        enemy2->setMapPosition({18, 15});
-        levelMap_->addEnemy(enemy2);
+        enemyPatterns_.emplace(enemyName, std::move(frogmon));
+        // Enemy::enemyPatterns_.insert({enemyName, std::move(frogmon)});
+
+    }
+
+    void Game::spawnRandomEnemies(int amount)
+    {
+        uniform_int_distribution<int> randX{1, levelMap_->size().x - 1};
+        uniform_int_distribution<int> randY{1, levelMap_->size().y - 1};
+        uniform_real_distribution<double>randOffsetRangeX{0.3, 0.68};
+        uniform_real_distribution<double>randOffsetRangeY{0.3, 0.68};
+
+        while (levelMap_->enemies().size() < amount)
+        {
+            int x = randX(randEngine_);
+            int y = randY(randEngine_);
+            double offsetX = randOffsetRangeX(randEngine_);
+            double offsetY = randOffsetRangeY(randEngine_);
+
+            if (levelMap_->mapData()->at(x).at(y).isTraversable())
+            {
+                std::shared_ptr<Enemy> enemy{make_shared<Enemy>(enemyPatterns_.at("frogmon"))};
+                enemy->setMapPosition(sf::Vector2d(x + offsetX, y + offsetY));
+                levelMap_->addEnemy(enemy);
+            }
+        }
     }
 }

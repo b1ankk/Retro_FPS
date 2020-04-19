@@ -39,5 +39,30 @@ namespace game
         return vNormalized;
     }
     
+    template <typename T>
+    sf::Vector2<T> operator-(const sf::Vector2<T> v, T n)
+    {
+        return sf::Vector2<T>{v.x - n, v.y - n};
+    }
+
+
+    template <typename T>
+    sf::Vector2<T> operator+(const sf::Vector2<T> v, T n)
+    {
+        return sf::Vector2<T>{v.x + n, v.y + n};
+    }
+
+
+    template <typename T, typename U>
+    sf::Vector2<T> operator-(const sf::Vector2<T> v, U n)
+    {
+        return sf::Vector2<T>{v.x - static_cast<T>(n), v.y - static_cast<T>(n)};
+    }
+
+    template <typename T, typename U>
+    sf::Vector2<T> operator+(const sf::Vector2<T> v, U n)
+    {
+        return sf::Vector2<T>{v.x + static_cast<T>(n), v.y + static_cast<T>(n)};
+    }
 
 }
