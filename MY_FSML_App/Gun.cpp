@@ -50,7 +50,7 @@ namespace game
         shootAnimation_.play();
 
         auto distances = Game::get().renderer()->perpWallDistances();
-        const int wallIndex = distances.size() / 2;
+        const int wallIndex = static_cast<int>(distances.size()) / 2;
         const double wallDistance = distances[wallIndex];
 
         for (auto& enemy : Game::get().levelMap()->enemies())

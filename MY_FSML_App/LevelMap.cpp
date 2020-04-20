@@ -32,13 +32,13 @@ namespace game
         }
     
         mapData_ = make_shared<const TileMap>(newTileMap);
-        size_ = sf::Vector2i(mapData_->size(), mapData_->at(0).size());
+        size_ = sf::Vector2i(static_cast<int>(mapData_->size()), static_cast<int>(mapData_->at(0).size()));
     }
 
     void LevelMap::loadFromTiles(TileMap map)
     {
         mapData_ = make_shared<TileMap>(move(map));
-        size_ = sf::Vector2i(mapData_->size(), mapData_->at(0).size());
+        size_ = sf::Vector2i(static_cast<int>(mapData_->size()), static_cast<int>(mapData_->at(0).size()));
     }
 
     void LevelMap::update()

@@ -146,7 +146,7 @@ namespace game
             make_shared<Gun>(
                 "shotty",
                 assetManager_->animationManager()->getAnimationForName("shotgun_shoot"),
-                sf::seconds(0.8),
+                sf::seconds(0.8f),
                 115.,
                 3.5
             )
