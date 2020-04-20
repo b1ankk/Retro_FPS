@@ -556,7 +556,11 @@ namespace game
         text.setFont(*Game::get().fontManager()->getFontForName("Pixeled"));
 
         text.setCharacterSize(34);
+        // text.setLineSpacing(text.getLineSpacing() * 0.6);
+        text.setLineSpacing(0.5);
         text.setFillColor(sf::Color::White);
+        text.setOutlineColor(sf::Color::Black);
+        text.setOutlineThickness(3);
 
         return text;
     }
