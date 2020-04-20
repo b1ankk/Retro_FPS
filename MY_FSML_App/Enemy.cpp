@@ -12,6 +12,7 @@ namespace game
     {
         if (isAlive_)
         {
+            bleed();
             health_ -= static_cast<int>(damage);
             if (health_ <= 0)
                 die();
@@ -22,7 +23,7 @@ namespace game
     void Enemy::walk(const sf::Vector2d& direction, const double distance)
     {
         auto normDir = normalizeVector2(direction);
-        assert(walkAnimationName_ != "");
+        assert(!walkAnimationName_.empty());
         setActiveAnimation(walkAnimationName_);
         playAnimation();
         setPosition(getPosition() + static_cast<sf::Vector2f>(normDir * distance));
@@ -37,9 +38,8 @@ namespace game
     {
         assert(!dieAnimationName_.empty());
         isAlive_ = false;
-        setActiveAnimation(dieAnimationName_);
+        queueAnimation(dieAnimationName_);
         playAnimation();
-
 
         // TODO better ammo system
         std::uniform_int_distribution<int> dist(0, 4);
@@ -47,4 +47,15 @@ namespace game
     }
 
 
+    void Enemy::update()
+    {
+        AnimatedEntity::update();
+        
+    }
+
+    void Enemy::bleed()
+    {
+        queueAnimation(bleedAnimationName_);
+        queueAnimation(idleAnimationName_);
+    }
 }

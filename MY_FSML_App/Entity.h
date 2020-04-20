@@ -54,11 +54,11 @@ namespace game
         
 
         double screenYPosition_{0.5}; // vertical position on screen as a fraction [0, 1]
-        double distanceToPlayer_{};   // distance to player used in sorting entities
+        double squaredDistanceToPlayer_{};   // distance to player used in sorting entities
 
     public:
 
-        // INLINE METHODS
+        virtual void update(){}
 
         void moveOnMap(const sf::Vector2d& direction, const double& distance)
         {
@@ -84,9 +84,9 @@ namespace game
             mapPosition_ = position;
         }
 
-        double distanceToPlayer() const
+        double squaredDistanceToPlayer() const
         {
-            return distanceToPlayer_;
+            return squaredDistanceToPlayer_;
         }
 
         sf::Vector2i imageSize() const

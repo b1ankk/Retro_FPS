@@ -24,7 +24,7 @@ namespace game
             const sf::Time shotDelay,
             const double damage,
             const double effectiveAngle = 5.,
-            const double range = DBL_MAX)
+            const double range = std::numeric_limits<double>::max())
             : name_(std::move(name)),
               shootAnimation_(std::move(shootAnimation)),
               shotDelay_(shotDelay),

@@ -93,6 +93,11 @@ namespace game
             return userInterface_;
         }
 
+        const std::vector<double>& perpWallDistances() const
+        {
+            return perpWallDistances_;
+        }
+
         bool ifDrawFpsCounter() const
         {
             return drawFpsCounter_;

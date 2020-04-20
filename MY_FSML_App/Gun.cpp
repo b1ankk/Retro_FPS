@@ -49,12 +49,16 @@ namespace game
         shootAnimation_.stop();
         shootAnimation_.play();
 
+        auto distances = Game::get().renderer()->perpWallDistances();
+        const int wallIndex = distances.size() / 2;
+        const double wallDistance = distances[wallIndex];
+
         for (auto& enemy : Game::get().levelMap()->enemies())
         {
-            if (isInAngle(enemy))
+            if (sqrt(enemy->squaredDistanceToPlayer()) < wallDistance  &&  isInAngle(enemy))
             {
                 std::cout << "HIT!" << std::endl;
-                enemy->takeHit(calcDamage(enemy->distanceToPlayer()));
+                enemy->takeHit(calcDamage(enemy->squaredDistanceToPlayer()));
             }
 
         }

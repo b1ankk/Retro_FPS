@@ -210,7 +210,7 @@ for enemy_subfolder in glob.iglob(pathRoot + pathSprites + '/entity/enemy/*', re
             anim_index = len(data["assets"]["animations"]["enemy"][enemy_index]["anims"]) - 1
             print('added: ', anim_folder)
 
-            endFrameTime = 0.4
+            endFrameTime = 0.1
             for frame in glob.iglob(anim_folder + f'/%s_%s*.*' % (enemy_name, anim_name)):
                 frame_name = name_for_path(frame, '.')
 
@@ -227,7 +227,7 @@ for enemy_subfolder in glob.iglob(pathRoot + pathSprites + '/entity/enemy/*', re
                             "time": endFrameTime.__round__(2)
                         }
                     )
-                    endFrameTime += 0.4
+                    endFrameTime += 0.1
                     print('udpaded: ', frame)
 
         else:

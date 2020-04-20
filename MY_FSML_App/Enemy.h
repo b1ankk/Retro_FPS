@@ -28,14 +28,19 @@ namespace game
         const int maxHealth_;
         int       health_;
         double    attackDamage_;
-        bool      isAlive_{true};
 
+        bool isBleeding{false};
+        bool isAlive_{true};
+
+        std::string idleAnimationName_;
         std::string walkAnimationName_;
         std::string dieAnimationName_;
+        std::string bleedAnimationName_;
 
 
         virtual void die();
-
+        virtual void bleed();
+        virtual void update() override;
 
     public:
 
@@ -61,6 +66,11 @@ namespace game
             return isAlive_;
         }
 
+        void setIdleAnimationName(std::string idleAnimationName)
+        {
+            idleAnimationName_ = std::move(idleAnimationName);
+        }
+
         void setWalkAnimationName(std::string walkAnimationName)
         {
             walkAnimationName_ = std::move(walkAnimationName);
@@ -69,6 +79,11 @@ namespace game
         void setDieAnimationName(std::string dieAnimationName)
         {
             dieAnimationName_ = std::move(dieAnimationName);
+        }
+
+        void setBleedAnimationName(std::string bleedAnimationName)
+        {
+            bleedAnimationName_ = std::move(bleedAnimationName);
         }
     };
 }

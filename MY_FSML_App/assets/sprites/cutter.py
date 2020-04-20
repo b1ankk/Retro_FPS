@@ -1,7 +1,7 @@
 import glob
 from PIL import Image
 
-stepX, stepY = 64, 64
+stepX, stepY = 18, 18
 
 for file in glob.iglob('*.png'):
 
@@ -12,7 +12,7 @@ for file in glob.iglob('*.png'):
 
     counter = 0
 
-    for x in range(0, width, stepX):
-        for y in range(0, height, stepY):
+    for x in range(2, width, stepX):
+        for y in range(1, height, stepY):
             image.crop((x, y, x + stepX, y + stepY)).save(f'%s_%02d.png' % (imageName, counter), 'PNG')
             counter += 1

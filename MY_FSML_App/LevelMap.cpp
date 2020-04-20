@@ -4,6 +4,7 @@
 #include <SFML/System/Vector2.hpp>
 #include "TileTypeManager.h"
 
+#include "Entity.h"
 #include "Game.h"
 #include "MapTile.h"
 
@@ -38,6 +39,12 @@ namespace game
     {
         mapData_ = make_shared<TileMap>(move(map));
         size_ = sf::Vector2i(mapData_->size(), mapData_->at(0).size());
+    }
+
+    void LevelMap::update()
+    {
+        for (auto& entity : entities_)
+            entity->update();
     }
 
 

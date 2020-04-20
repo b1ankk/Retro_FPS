@@ -23,6 +23,9 @@ namespace game
 
     void Animation::pause()
     {
+        if (!playing_ || hasEnded())
+            return;
+
         pausedTime_ += clock_.getElapsedTime();
         playing_ = false;
     }
@@ -49,7 +52,7 @@ namespace game
         // if not playing animation, return last visible frame
         if (!playing_)
         {
-            if (movetBackToFirstFrame_)
+            if (moveBackToFirstFrame_)
                 return frames_[currentFrame_].texture();
             else
                 return frames_[lastFrame_].texture();
@@ -79,7 +82,7 @@ namespace game
             }
         }
 
-        if (movetBackToFirstFrame_)
+        if (moveBackToFirstFrame_)
             return frames_[currentFrame_].texture();
         else
             return frames_[lastFrame_].texture();

@@ -27,23 +27,47 @@ namespace game
         std::vector<AnimationFrame> frames_{};
         sf::Clock clock_;
         sf::Time pausedTime_{};
-        bool playing_{};
-        bool repeating_{};
+        bool playing_{false};
+        bool repeating_{false};
         int currentFrame_{0};
         int lastFrame_{0};
-        bool movetBackToFirstFrame_{true};
+        bool moveBackToFirstFrame_{true};
 
     public:
 
         void setMoveBackToFirstFrame(bool b)
         {
-            movetBackToFirstFrame_ = b;
+            moveBackToFirstFrame_ = b;
         }
 
         void addFrame(AnimationFrame animFrame)
         {
             frames_.push_back(std::move(animFrame));
         }
+
+
+        [[nodiscard]]
+        bool isPlaying() const
+        {
+            return playing_;
+        }
+
+        [[nodiscard]]
+        bool isRepeating() const
+        {
+            return repeating_;
+        }
+
+        [[nodiscard]]
+        bool hasEnded() const 
+        {
+            if (frames_.empty())
+                return true;
+
+            return !repeating_ && 
+                    clock_.getElapsedTime() >= frames_.at(frames_.size() - 1).endTime();
+        }
+
 
         class AnimationFrame
         {

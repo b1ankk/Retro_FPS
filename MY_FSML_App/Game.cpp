@@ -30,7 +30,7 @@ namespace game
     {
         initRandEngine();
         setUpGame();
-        spawnRandomEnemies(80);
+        spawnRandomEnemies(128);
 
         int fpsCounter{0};
 
@@ -80,6 +80,8 @@ namespace game
                 }
             }
             inputHandler_->handleInput();
+
+            levelMap_->update();
 
             renderer_->renderFrame();
 
@@ -145,7 +147,7 @@ namespace game
                 "shotty",
                 assetManager_->animationManager()->getAnimationForName("shotgun_shoot"),
                 sf::seconds(0.8),
-                105.,
+                115.,
                 3.5
             )
         };
@@ -165,7 +167,7 @@ namespace game
     void Game::initRandEngine()
     {
         random_device rd;
-        randEngine_ = mt19937(0);
+        randEngine_ = mt19937(rd());
     }
 
 
@@ -194,8 +196,15 @@ namespace game
         animation = animationManager()->getAnimationForName(animName);
         frogmon.addAnimation(animName, std::move(animation));
         frogmon.setActiveAnimation(animName);
+
+        animName = "frogmon_bleed";
+        animation = animationManager()->getAnimationForName(animName);
+        frogmon.addAnimation(animName, std::move(animation));
+
+        frogmon.setIdleAnimationName("frogmon_idle");
         frogmon.setDieAnimationName("frogmon_die");
         frogmon.setWalkAnimationName("frogmon_walk");
+        frogmon.setBleedAnimationName("frogmon_bleed");
 
         enemyPatterns_.emplace(enemyName, std::move(frogmon));
         // Enemy::enemyPatterns_.insert({enemyName, std::move(frogmon)});

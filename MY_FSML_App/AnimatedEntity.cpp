@@ -17,3 +17,22 @@ void game::AnimatedEntity::draw(sf::RenderTarget& target, sf::RenderStates state
 
     target.draw(vertices_, states);
 }
+
+void game::AnimatedEntity::update()
+{
+    Entity::update();
+
+    auto& activeAnimation = animations_.at(activeAnimationName_);
+    if (!nextNameQueue_.empty() && (activeAnimation.hasEnded() || activeAnimation.isRepeating()))
+    {
+        activeAnimation.pause();
+        activeAnimationName_ = std::move(nextNameQueue_.front());
+        nextNameQueue_.pop();
+
+        animations_.at(activeAnimationName_).stop();
+        animations_.at(activeAnimationName_).play();
+    }
+
+}
+
+

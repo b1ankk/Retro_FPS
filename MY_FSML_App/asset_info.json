@@ -95,6 +95,90 @@
         {
           "name": "frogmon_idle_00",
           "path": "assets\\sprites\\entity\\enemy\\frogmon\\frogmon.png"
+        },
+        {
+          "name": "blood_splatter_00",
+          "path": "assets\\sprites\\entity\\enemy\\blood\\anim_splatter\\blood_splatter_00.png"
+        },
+        {
+          "name": "blood_splatter_01",
+          "path": "assets\\sprites\\entity\\enemy\\blood\\anim_splatter\\blood_splatter_01.png"
+        },
+        {
+          "name": "blood_splatter_02",
+          "path": "assets\\sprites\\entity\\enemy\\blood\\anim_splatter\\blood_splatter_02.png"
+        },
+        {
+          "name": "blood_splatter_03",
+          "path": "assets\\sprites\\entity\\enemy\\blood\\anim_splatter\\blood_splatter_03.png"
+        },
+        {
+          "name": "blood_splatter_04",
+          "path": "assets\\sprites\\entity\\enemy\\blood\\anim_splatter\\blood_splatter_04.png"
+        },
+        {
+          "name": "blood_splatter_05",
+          "path": "assets\\sprites\\entity\\enemy\\blood\\anim_splatter\\blood_splatter_05.png"
+        },
+        {
+          "name": "blood_splatter_06",
+          "path": "assets\\sprites\\entity\\enemy\\blood\\anim_splatter\\blood_splatter_06.png"
+        },
+        {
+          "name": "blood_splatter_07",
+          "path": "assets\\sprites\\entity\\enemy\\blood\\anim_splatter\\blood_splatter_07.png"
+        },
+        {
+          "name": "blood_splatter_08",
+          "path": "assets\\sprites\\entity\\enemy\\blood\\anim_splatter\\blood_splatter_08.png"
+        },
+        {
+          "name": "frogmon_bleed_ (1)",
+          "path": "assets\\sprites\\entity\\enemy\\frogmon\\anim_bleed\\frogmon_bleed_ (1).png"
+        },
+        {
+          "name": "frogmon_bleed_ (2)",
+          "path": "assets\\sprites\\entity\\enemy\\frogmon\\anim_bleed\\frogmon_bleed_ (2).png"
+        },
+        {
+          "name": "frogmon_bleed_ (3)",
+          "path": "assets\\sprites\\entity\\enemy\\frogmon\\anim_bleed\\frogmon_bleed_ (3).png"
+        },
+        {
+          "name": "frogmon_bleed_ (4)",
+          "path": "assets\\sprites\\entity\\enemy\\frogmon\\anim_bleed\\frogmon_bleed_ (4).png"
+        },
+        {
+          "name": "frogmon_bleed_ (5)",
+          "path": "assets\\sprites\\entity\\enemy\\frogmon\\anim_bleed\\frogmon_bleed_ (5).png"
+        },
+        {
+          "name": "frogmon_bleed_ (6)",
+          "path": "assets\\sprites\\entity\\enemy\\frogmon\\anim_bleed\\frogmon_bleed_ (6).png"
+        },
+        {
+          "name": "frogmon_bleed_ (7)",
+          "path": "assets\\sprites\\entity\\enemy\\frogmon\\anim_bleed\\frogmon_bleed_ (7).png"
+        },
+        {
+          "name": "frogmon_bleed_ (8)",
+          "path": "assets\\sprites\\entity\\enemy\\frogmon\\anim_bleed\\frogmon_bleed_ (8).png"
+        },
+        {
+          "name": "frogmon_bleed_ (9)",
+          "path": "assets\\sprites\\entity\\enemy\\frogmon\\anim_bleed\\frogmon_bleed_ (9).png"
+        },
+        {
+          "name": "frogmon_bleed_ (10.5)",
+          "path": "assets\\sprites\\entity\\enemy\\frogmon\\anim_bleed\\frogmon_bleed_ (10.5).png"
+        },
+        {
+          "name": "frogmon_bleed_ (11.5)",
+          "path": "assets\\sprites\\entity\\enemy\\frogmon\\anim_bleed\\frogmon_bleed_ (11.5).png"
+        },
+        {
+          "name": "frogmon_bleed_ (12)",
+          "path": "assets\\sprites\\entity\\enemy\\frogmon\\anim_bleed\\frogmon_bleed_ (12).png"
         }
       ],
       "ui": [
@@ -224,23 +308,23 @@
               "frames": [
                 {
                   "frame_name": "frogmon_die_00",
-                  "time": 0.1
+                  "time": 0.07
                 },
                 {
                   "frame_name": "frogmon_die_01",
-                  "time": 0.2
+                  "time": 0.14
                 },
                 {
                   "frame_name": "frogmon_die_02",
-                  "time": 0.3
+                  "time": 0.21
                 },
                 {
                   "frame_name": "frogmon_die_03",
-                  "time": 0.4
+                  "time": 0.28
                 },
                 {
                   "frame_name": "frogmon_die_04",
-                  "time": 0.5
+                  "time": 0.35
                 }
               ]
             },
@@ -270,9 +354,108 @@
               "frames": [
                 {
                   "frame_name": "frogmon_idle_00",
-                  "time": 1.0 
+                  "time": 1e-09
                 }
-              ] 
+              ]
+            },
+            {
+              "anim_name": "bleed",
+              "frames": [
+                {
+                  "frame_name": "frogmon_bleed_ (1)",
+                  "time": 0.005
+                },
+                {
+                  "frame_name": "frogmon_bleed_ (2)",
+                  "time": 0.010
+                },
+                {
+                  "frame_name": "frogmon_bleed_ (3)",
+                  "time": 0.015
+                },
+                {
+                  "frame_name": "frogmon_bleed_ (4)",
+                  "time": 0.020
+                },
+                {
+                  "frame_name": "frogmon_bleed_ (5)",
+                  "time": 0.025
+                },
+                {
+                  "frame_name": "frogmon_bleed_ (6)",
+                  "time": 0.030
+                },
+                {
+                  "frame_name": "frogmon_bleed_ (7)",
+                  "time": 0.035
+                },
+                {
+                  "frame_name": "frogmon_bleed_ (8)",
+                  "time": 0.040
+                },
+                {
+                  "frame_name": "frogmon_bleed_ (9)",
+                  "time": 0.045
+                },
+                {
+                  "frame_name": "frogmon_bleed_ (10.5)",
+                  "time": 0.050
+                },
+                {
+                  "frame_name": "frogmon_bleed_ (11.5)",
+                  "time": 0.055
+                },
+                {
+                  "frame_name": "frogmon_bleed_ (12)",
+                  "time": 0.060
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "blood",
+          "anims": [
+            {
+              "anim_name": "splatter",
+              "frames": [
+                {
+                  "frame_name": "blood_splatter_00",
+                  "time": 0.1
+                },
+                {
+                  "frame_name": "blood_splatter_01",
+                  "time": 0.2
+                },
+                {
+                  "frame_name": "blood_splatter_02",
+                  "time": 0.3
+                },
+                {
+                  "frame_name": "blood_splatter_03",
+                  "time": 0.4
+                },
+                {
+                  "frame_name": "blood_splatter_04",
+                  "time": 0.5
+                },
+                {
+                  "frame_name": "blood_splatter_05",
+                  "time": 0.6
+                },
+                {
+                  "frame_name": "blood_splatter_06",
+                  "time": 0.7
+                },
+                {
+                  "frame_name": "blood_splatter_07",
+                  "time": 0.8
+                },
+                {
+                  "frame_name": "blood_splatter_08",
+                  "time": 0.9
+                }
+              ]
             }
           ]
         }

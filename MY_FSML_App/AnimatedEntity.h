@@ -1,4 +1,5 @@
 #pragma once
+#include <queue>
 #include <unordered_map>
 #include <xstring>
 
@@ -21,11 +22,14 @@ namespace game
         }
 
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-
+        void update() override;
         
     private:
         std::string                                activeAnimationName_;
+        std::queue<std::string>                    nextNameQueue_;
         std::unordered_map<std::string, Animation> animations_;
+
+
 
     public:
         void addAnimation(const std::string& name, Animation animation)
@@ -42,6 +46,23 @@ namespace game
                 animations_.at(activeAnimationName_).stop();
                 activeAnimationName_ = name;
             }
+        }
+
+        void queueAnimation(std::string name)
+        {
+            nextNameQueue_.push(std::move(name));
+        }
+
+        [[nodiscard]]
+        const std::string& activeAnimationName() const
+        {
+            return activeAnimationName_;
+        }
+
+        [[nodiscard]]
+        bool hasAnimationEnded() const
+        {
+            return animations_.at(activeAnimationName_).hasEnded();
         }
 
         void playAnimation()

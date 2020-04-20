@@ -27,7 +27,7 @@ namespace game
             const sf::Vector2d difference = entity->mapPosition_ - other;
 
             // no need for sqrt since its only for comparison
-            entity->distanceToPlayer_     = difference.x * difference.x + difference.y * difference.y;
+            entity->squaredDistanceToPlayer_     = difference.x * difference.x + difference.y * difference.y;
         }
     }
 
@@ -38,7 +38,7 @@ namespace game
             entities_.end(),
             [](const shared_ptr<Entity>& left, const shared_ptr<Entity>& right)
             {
-                return left->distanceToPlayer() > right->distanceToPlayer();
+                return left->squaredDistanceToPlayer() > right->squaredDistanceToPlayer();
             }
         );
     }

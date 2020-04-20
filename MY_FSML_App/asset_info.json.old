@@ -91,6 +91,10 @@
         {
           "name": "frogmon_walk_03",
           "path": "assets\\sprites\\entity\\enemy\\frogmon\\anim_walk\\frogmon_walk_03.png"
+        },
+        {
+          "name": "frogmon_idle_00",
+          "path": "assets\\sprites\\entity\\enemy\\frogmon\\frogmon.png"
         }
       ],
       "ui": [
@@ -149,54 +153,62 @@
         {
           "name": "shotgun_shoot_03",
           "path": "assets\\sprites\\ui\\gun\\shotgun\\anim_shoot\\shotgun_shoot_03.png"
+        },
+        {
+          "name": "shotgun_shoot_04",
+          "path": "assets\\sprites\\ui\\gun\\shotgun\\anim_shoot\\shotgun_shoot_04.png"
+        },
+        {
+          "name": "shotgun_shoot_05",
+          "path": "assets\\sprites\\ui\\gun\\shotgun\\anim_shoot\\shotgun_shoot_05.png"
         }
       ]
     },
     "tile_types": [
       {
-        "id": 0,
+        "id": 1,
         "name": "wolf_blue_bricks_wall",
         "sprite_name": "wolf_blue_bricks",
         "traversable": false
       },
       {
-        "id": 1,
+        "id": 2,
         "name": "wolf_bricks_wall",
         "sprite_name": "wolf_bricks",
         "traversable": false
       },
       {
-        "id": 2,
+        "id": 3,
         "name": "wolf_gobelin_wall",
         "sprite_name": "wolf_gobelin",
         "traversable": false
       },
       {
-        "id": 3,
+        "id": 4,
         "name": "wolf_mossy_bricks_wall",
         "sprite_name": "wolf_mossy_bricks",
         "traversable": false
       },
       {
-        "id": 4,
+        "id": 5,
         "name": "wolf_pink_wall",
         "sprite_name": "wolf_pink",
         "traversable": false
       },
       {
-        "id": 5,
+        "id": 6,
         "name": "wolf_stone_wall",
         "sprite_name": "wolf_stone",
         "traversable": false
       },
       {
-        "id": 6,
+        "id": 7,
         "name": "wolf_stone_bricks_wall",
         "sprite_name": "wolf_stone_bricks",
         "traversable": false
       },
       {
-        "id": 7,
+        "id": 8,
         "name": "wolf_wood_wall",
         "sprite_name": "wolf_wood",
         "traversable": false
@@ -212,23 +224,23 @@
               "frames": [
                 {
                   "frame_name": "frogmon_die_00",
-                  "time": 0.4
+                  "time": 0.1
                 },
                 {
                   "frame_name": "frogmon_die_01",
-                  "time": 0.8
+                  "time": 0.2
                 },
                 {
                   "frame_name": "frogmon_die_02",
-                  "time": 1.2
+                  "time": 0.3
                 },
                 {
                   "frame_name": "frogmon_die_03",
-                  "time": 1.6
+                  "time": 0.4
                 },
                 {
                   "frame_name": "frogmon_die_04",
-                  "time": 2.0
+                  "time": 0.5
                 }
               ]
             },
@@ -252,6 +264,15 @@
                   "time": 1.6
                 }
               ]
+            },
+            {
+              "anim_name": "idle",
+              "frames": [
+                {
+                  "frame_name": "frogmon_idle_00",
+                  "time": 1.0 
+                }
+              ] 
             }
           ]
         }
@@ -269,26 +290,38 @@
                 },
                 {
                   "frame_name": "shotgun_shoot_01",
-                  "time": 0.15
+                  "time": 0.025
                 },
                 {
                   "frame_name": "shotgun_shoot_02",
-                  "time": 0.3
-                },
-                {
-                  "frame_name": "shotgun_shoot_03",
-                  "time": 0.45
-                },
-                {
-                  "frame_name": "shotgun_shoot_02",
-                  "time": 0.6
+                  "time": 0.05
                 },
                 {
                   "frame_name": "shotgun_shoot_01",
-                  "time": 0.75
+                  "time": 0.075
                 },
                 {
                   "frame_name": "shotgun_shoot_00",
+                  "time": 0.1
+                },
+                {
+                  "frame_name": "shotgun_shoot_03",
+                  "time": 0.2
+                },
+                {
+                  "frame_name": "shotgun_shoot_04",
+                  "time": 0.35
+                },
+                {
+                  "frame_name": "shotgun_shoot_05",
+                  "time": 0.5
+                },
+                {
+                  "frame_name": "shotgun_shoot_04",
+                  "time": 0.65
+                },
+                {
+                  "frame_name": "shotgun_shoot_03",
                   "time": 0.8
                 }
               ]

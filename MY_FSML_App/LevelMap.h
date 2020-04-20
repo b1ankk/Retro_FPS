@@ -26,6 +26,7 @@ namespace game
 
         void loadFromInts(const IntMap&);
         void loadFromTiles(TileMap);
+        void update();
 
 
     private:
