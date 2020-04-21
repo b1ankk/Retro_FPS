@@ -147,7 +147,7 @@ namespace game
                 "shotty",
                 assetManager_->animationManager()->getAnimationForName("shotgun_shoot"),
                 sf::seconds(0.8f),
-                115.,
+                135.,
                 3.5
             )
         };

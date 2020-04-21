@@ -34,10 +34,17 @@ namespace game
 
     double Gun::calcDamage(double distanceSquared)
     {
-        static const double divider = log(25.);
-        double dmg = log(-sqrt(distanceSquared) + 25.) / divider;
-        dmg *= damage_;
-        std::cout << dmg << std::endl;
+        // static const double divider = log(range_);
+        // double dmg = log(-sqrt(distanceSquared) + range_) / divider;
+        // dmg *= damage_;
+
+        static const double multiplier = damage_ / range_;
+        double dmg = (-sqrt(distanceSquared) + range_) * multiplier;
+
+
+
+        std::cout << (dmg > 0 ? dmg : 0) << std::endl;
+
         if (dmg > 0)
             return dmg;
         return 0;

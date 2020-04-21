@@ -10,7 +10,7 @@ namespace game
 {
     void Enemy::takeHit(double damage)
     {
-        if (isAlive_)
+        if (isAlive_ && damage > 0)
         {
             bleed();
             health_ -= static_cast<int>(damage);
