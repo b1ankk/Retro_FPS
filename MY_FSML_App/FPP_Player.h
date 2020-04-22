@@ -3,13 +3,16 @@
 #include <memory>
 #include <SFML/System/Clock.hpp>
 #include <SFML/System/Time.hpp>
-
+#include <chrono>
 
 #include "Collidable.h"
+#include "Renderer.h"
 #include "vector_additions.h"
 
 namespace game
 {
+    using namespace std::chrono_literals;
+
     class LevelMap;
     class Gun;
 
@@ -50,6 +53,7 @@ namespace game
 
         sf::Time hitDelayTime_{sf::seconds(1)};
         sf::Clock hitDelayClock_;
+        Renderer::FilterColor hitFilterColor_{sf::Color{0xff00004f}, 500ms};
 
         std::shared_ptr<Gun> activeGun_;
 

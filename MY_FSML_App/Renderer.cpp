@@ -24,7 +24,8 @@ namespace game
         screenClearBuffer_(new sf::Uint8[screenBufferLength_]{0}),
         renderDistance_(renderDistance),
         vertices_(sf::PrimitiveType::Quads),
-        perpWallDistances_(width_)
+        perpWallDistances_(width_),
+        screenFilter_(sf::Vector2f{static_cast<float>(width_), static_cast<float>(height_)})
     {
         // std::fill(screenBuffer_, screenBuffer_ + screenBufferLength_, 0xff);
 
@@ -213,6 +214,10 @@ namespace game
         userInterface_->update();
 
         Game::get().window()->draw(*userInterface_);
+
+        screenFilter_.setFillColor(filterColor_.color());
+        Game::get().window()->draw(screenFilter_);
+
 
         if (drawFpsCounter_)
             drawFPS();

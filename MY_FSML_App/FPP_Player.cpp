@@ -3,13 +3,15 @@
 
 #include <cassert>
 #include <corecrt_math_defines.h>
+#include <memory>
+
 
 #include "Game.h"
 #include "LevelMap.h"
 #include "MapTile.h"
 #include "Gun.h"
 #include "CircleCollider.h"
-
+#include "Renderer.h"
 
 namespace game
 {
@@ -21,6 +23,7 @@ namespace game
         direction_(direction),
         cameraPlane_(cameraPlane)
     {
+
     }
 
     void FPP_Player::rotate(const double& degrees)
@@ -79,6 +82,9 @@ namespace game
         if (hitDelayClock_.getElapsedTime() > hitDelayTime_)
         {
             health_ -= static_cast<int>(damage);
+            Game::get().renderer()->applyColorFilter(
+                hitFilterColor_
+            );
             if (health_ <= 0)
                 die();
 
