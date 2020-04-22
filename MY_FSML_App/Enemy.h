@@ -1,4 +1,6 @@
 #pragma once
+#include <memory>
+
 #include "AnimatedEntity.h"
 #include "FPP_Player.h"
 #include "GameObjRef.h"
@@ -18,6 +20,7 @@ namespace game
               health_(maxHealth_),
               attackDamage_(attackDamage)
         {
+
         }
 
         virtual void takeHit(double damage);

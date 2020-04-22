@@ -1,6 +1,9 @@
 #pragma once
 
 #include <memory>
+#include <SFML/System/Clock.hpp>
+#include <SFML/System/Time.hpp>
+
 
 #include "Collidable.h"
 #include "vector_additions.h"
@@ -44,6 +47,9 @@ namespace game
 
         int health_{100};
         int armor_{0};
+
+        sf::Time hitDelayTime_{sf::seconds(1)};
+        sf::Clock hitDelayClock_;
 
         std::shared_ptr<Gun> activeGun_;
 

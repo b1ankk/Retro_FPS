@@ -537,7 +537,7 @@ namespace game
 
                     transformed = true;
                 }
-                if (!transformed) continue;;
+                if (!transformed) continue;
 
 
                 entity->setPosition(static_cast<float>(position), 

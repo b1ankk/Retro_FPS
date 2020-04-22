@@ -1,6 +1,8 @@
 #include "Enemy.h"
 
 #include <cassert>
+#include <iostream>
+#include <ostream>
 #include <random>
 
 #include "Game.h"
@@ -50,7 +52,15 @@ namespace game
     void Enemy::update()
     {
         AnimatedEntity::update();
-        
+
+        if (isAlive() &&
+            squaredDistanceToPlayer() <= 0.81  /*&&
+            isColliding(*Game::get().player())*/)
+        {
+            // std::cout << "COLLISION!: " << mapPosition_.x << " " << mapPosition_.y << std::endl;
+            Game::get().player()->takeHit(attackDamage_);
+        }
+
     }
 
     void Enemy::bleed()

@@ -15,6 +15,7 @@
 #include "GameTime.h"
 #include "Gun.h"
 #include "MapTile.h"
+#include "CircleCollider.h"
 
 namespace game
 {
@@ -64,7 +65,6 @@ namespace game
                         window_->close();
                         // exit(0);
                         return;
-                        
                     }
                     if (event.key.code == sf::Keyboard::F3)
                     {
@@ -175,11 +175,11 @@ namespace game
     {
         // FROGMON 
         const string enemyName = "frogmon";
-        Enemy frogmon(
+        Enemy        frogmon(
             textureManager()->getTextureForName(enemyName),
             sf::Vector2d{0, 0},
             100,
-            32
+            24
         );
         Animation animation;
 
@@ -197,7 +197,7 @@ namespace game
         frogmon.addAnimation(animName, std::move(animation));
         frogmon.setActiveAnimation(animName);
 
-        animName = "frogmon_bleed";
+        animName  = "frogmon_bleed";
         animation = animationManager()->getAnimationForName(animName);
         frogmon.addAnimation(animName, std::move(animation));
 
@@ -206,26 +206,37 @@ namespace game
         frogmon.setWalkAnimationName("frogmon_walk");
         frogmon.setBleedAnimationName("frogmon_bleed");
 
+        frogmon.setCollider(
+            make_shared<CircleCollider>(
+                sf::Vector2d{0, 0},
+                1.5
+            )
+        );
+
         enemyPatterns_.emplace(enemyName, std::move(frogmon));
         // Enemy::enemyPatterns_.insert({enemyName, std::move(frogmon)});
-
     }
 
     void Game::spawnRandomEnemies(int amount)
     {
-        uniform_int_distribution<int> randX{1, levelMap_->size().x - 1};
-        uniform_int_distribution<int> randY{1, levelMap_->size().y - 1};
-        uniform_real_distribution<double>randOffsetRangeX{0.3, 0.68};
-        uniform_real_distribution<double>randOffsetRangeY{0.3, 0.68};
+        uniform_int_distribution<int>     randX{1, levelMap_->size().x - 1};
+        uniform_int_distribution<int>     randY{1, levelMap_->size().y - 1};
+        uniform_real_distribution<double> randOffsetRangeX{0.3, 0.68};
+        uniform_real_distribution<double> randOffsetRangeY{0.3, 0.68};
 
         while (levelMap_->enemies().size() < amount)
         {
-            int x = randX(randEngine_);
-            int y = randY(randEngine_);
+            int    x       = randX(randEngine_);
+            int    y       = randY(randEngine_);
             double offsetX = randOffsetRangeX(randEngine_);
             double offsetY = randOffsetRangeY(randEngine_);
 
-            if (levelMap_->mapData()->at(x).at(y).isTraversable())
+            double relativeX = player_->position().x - x;
+            double relativeY = player_->position().y - y;
+            double distToPlayer = sqrt(relativeX * relativeX + relativeY * relativeY);
+
+            if (distToPlayer > 5  &&
+                levelMap_->mapData()->at(x).at(y).isTraversable())
             {
                 std::shared_ptr<Enemy> enemy{make_shared<Enemy>(enemyPatterns_.at("frogmon"))};
                 enemy->setMapPosition(sf::Vector2d(x + offsetX, y + offsetY));

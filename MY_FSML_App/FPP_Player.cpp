@@ -76,9 +76,14 @@ namespace game
 
     void FPP_Player::takeHit(double damage)
     {
-        health_ -= static_cast<int>(damage);
-        if (health_ <= 0)
-            die();
+        if (hitDelayClock_.getElapsedTime() > hitDelayTime_)
+        {
+            health_ -= static_cast<int>(damage);
+            if (health_ <= 0)
+                die();
+
+            hitDelayClock_.restart();
+        }
     }
 
     void FPP_Player::die()
