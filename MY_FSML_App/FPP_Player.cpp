@@ -8,6 +8,7 @@
 #include "LevelMap.h"
 #include "MapTile.h"
 #include "Gun.h"
+#include "CircleCollider.h"
 
 
 namespace game
@@ -15,6 +16,7 @@ namespace game
     FPP_Player::FPP_Player(const sf::Vector2d& position,
                            const sf::Vector2d& direction,
                            const sf::Vector2d& cameraPlane) :
+        Collidable(std::make_shared<CircleCollider>(position, 0.25)),
         position_(position),
         direction_(direction),
         cameraPlane_(cameraPlane)
@@ -39,32 +41,30 @@ namespace game
         // TODO define FPP_Player::nodHead(const double&)
     }
 
-
     void FPP_Player::move(const sf::Vector2d& rawDirection, const double& distance)
     {
         const sf::Vector2d difference = normalizeVector2(rawDirection) * distance;
         const sf::Vector2d newPosition{position_ + difference};
 
-        // TODO better collision system
+        sf::Vector2i newGridPos{static_cast<sf::Vector2i>(newPosition)};
+        auto& map = *Game::get().levelMap()->mapData();
 
-
-        if ((*Game::get().levelMap()->mapData())
-            [static_cast<size_t>(newPosition.x)][static_cast<int>(position_.y)].isTraversable())
-        {
+        collider().setPosition(newPosition.x, position_.y);
+        if (!isColliding(map[newGridPos.x][static_cast<int>(position_.y)]) &&
+            !isColliding(map[newGridPos.x + static_cast<size_t>(copysign(1, rawDirection.x))][static_cast<int>(position_.y)]))
             position_.x = newPosition.x;
-        }
+        else
+            position_.x = newGridPos.x + (rawDirection.x < 0 ? 0.25 : 0.75);
 
-        if ((*Game::get().levelMap()->mapData())
-            [static_cast<int>(position_.x)][static_cast<int>(newPosition.y)].isTraversable())
-        {
+        collider().setPosition(position_.x, newPosition.y);
+        if (!isColliding(map[static_cast<int>(position_.x)][newGridPos.y]) && 
+            !isColliding(map[static_cast<int>(position_.x)][newGridPos.y + static_cast<size_t>(copysign(1, rawDirection.y))]))
             position_.y = newPosition.y;
-        }
+        else if (map[static_cast<int>(position_.x)][newGridPos.y].isTraversable())
+            position_.y = newGridPos.y + (rawDirection.y < 0 ? 0.25 : 0.75);
 
-
-        // if (tempWorldMap[static_cast<int>(newPosition.x)][static_cast<int>(position_.y)] == 0)
-        //     position_.x = newPosition.x;
-        // if (tempWorldMap[static_cast<int>(position_.x)][static_cast<int>(newPosition.y)] == 0)
-        //     position_.y = newPosition.y;
+        collider().setPosition(position_);
+       
     }
 
     void FPP_Player::shoot() const

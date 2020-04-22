@@ -1,8 +1,8 @@
 #pragma once
 
-
 #include <memory>
 
+#include "Collidable.h"
 #include "vector_additions.h"
 
 namespace game
@@ -11,7 +11,7 @@ namespace game
     class Gun;
 
 
-    class FPP_Player
+    class FPP_Player : public Collidable
     {
     public:
         // CONSTRUCTORS

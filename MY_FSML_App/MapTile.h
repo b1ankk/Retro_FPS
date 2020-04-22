@@ -1,27 +1,31 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
 #include <memory>
 
+#include "Collidable.h"
 #include "TileType.h"
 #include "SpriteWrapper.h"
+#include "RectangleCollider.h"
 
 namespace game
 {
+    class MapTile : public Collidable
 
-    class MapTile
+
     {
     public:
         MapTile(std::shared_ptr<const TileType> tileType,
-                const sf::Vector2i& position)
-            : tileType_(std::move(tileType)),
-              position(position)
+                const sf::Vector2i&             position,
+                std::shared_ptr<Collider>       collider) :
+            Collidable(std::move(collider)),
+            tileType_(std::move(tileType)),
+            position(position)
         {
         }
 
     private:
         std::shared_ptr<const TileType> tileType_;
-        sf::Vector2i position{};
+        sf::Vector2i                    position{};
 
     public:
         // GETTERS & SETTERS
@@ -61,8 +65,5 @@ namespace game
         {
             return tileType_->image()->shadowImage();
         }
-        
     };
-
-    
 }
