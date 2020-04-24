@@ -179,12 +179,18 @@ namespace game
             textureManager()->getTextureForName(enemyName),
             sf::Vector2d{0, 0},
             100,
-            24
+            24,
+            1.2
         );
         Animation animation;
 
-        string animName = "frogmon_walk";
-        animation       = animationManager()->getAnimationForName(animName);
+        string animName = "frogmon_idle";
+        animation = animationManager()->getAnimationForName(animName);
+        frogmon.addAnimation(animName, std::move(animation));
+        frogmon.setActiveAnimation(animName);
+
+        animName = "frogmon_walk";
+        animation = animationManager()->getAnimationForName(animName);
         frogmon.addAnimation(animName, std::move(animation));
 
         animName  = "frogmon_die";
@@ -192,14 +198,10 @@ namespace game
         animation.setMoveBackToFirstFrame(false);
         frogmon.addAnimation(animName, std::move(animation));
 
-        animName  = "frogmon_idle";
-        animation = animationManager()->getAnimationForName(animName);
-        frogmon.addAnimation(animName, std::move(animation));
-        frogmon.setActiveAnimation(animName);
-
         animName  = "frogmon_bleed";
         animation = animationManager()->getAnimationForName(animName);
         frogmon.addAnimation(animName, std::move(animation));
+
 
         frogmon.setIdleAnimationName("frogmon_idle");
         frogmon.setDieAnimationName("frogmon_die");
@@ -209,7 +211,7 @@ namespace game
         frogmon.setCollider(
             make_shared<CircleCollider>(
                 sf::Vector2d{0, 0},
-                1.5
+                0.55
             )
         );
 

@@ -1,12 +1,12 @@
 #include "Enemy.h"
 
 #include <cassert>
-#include <iostream>
-#include <ostream>
 #include <random>
 
 #include "Game.h"
+#include "GameTime.h"
 #include "Gun.h"
+#include "LevelMap.h"
 
 namespace game
 {
@@ -22,13 +22,85 @@ namespace game
 
     }
 
-    void Enemy::walk(const sf::Vector2d& direction, const double distance)
+    void Enemy::walk(const sf::Vector2d& rawDirection, const double distance)
     {
-        auto normDir = normalizeVector2(direction);
         assert(!walkAnimationName_.empty());
-        setActiveAnimation(walkAnimationName_);
-        playAnimation();
-        setPosition(getPosition() + static_cast<sf::Vector2f>(normDir * distance));
+
+        const sf::Vector2d startPosition{mapPosition()};
+
+        const sf::Vector2d difference = normalizeVector2(rawDirection) * distance;
+        const sf::Vector2d newPosition{mapPosition() + difference};
+
+        collider().setPosition(newPosition);
+        sf::Vector2i newGridPos{static_cast<sf::Vector2i>(newPosition)};
+        auto& map = *Game::get().levelMap()->mapData();
+
+        sf::Vector2i next{
+            newGridPos.x + static_cast<int>(copysign(1, rawDirection.x)),
+            newGridPos.y + static_cast<int>(copysign(1, rawDirection.y))
+        };
+
+        // if (!isColliding(map[next.x][int(mapPosition().x)])  &&  
+        //     !isColliding(map[int(mapPosition().x)][next.y])  &&
+        //     !isColliding(map[next.x][next.y]))
+        // {
+        //     setMapPosition(newPosition);
+        //
+        //     queueAnimation(walkAnimationName_);
+        // }
+        // else
+        // {
+        //     collider().setPosition(mapPosition());
+        // }
+
+        collider().setPosition(newPosition.x, mapPosition().y);
+        if (!isColliding(map[next.x][static_cast<int>(mapPosition().y)]))
+        {
+            if (Game::get().levelMap()->isInBounds(next))
+            {
+                if (!isColliding(map[next.x][next.y]))
+                    setMapPosition({newPosition.x, mapPosition().y});
+                else
+                {
+                    while (isColliding(map[next.x][next.y]))
+                        collider().setPosition(collider().position() - rawDirection * 0.005);
+
+                    setMapPosition(collider().position());
+                }
+            }
+            else
+            {
+                setMapPosition({newPosition.x, mapPosition().y});
+            }
+        }
+
+        collider().setPosition(mapPosition().x, newPosition.y);
+        if (!isColliding(map[static_cast<int>(mapPosition().x)][next.y]))
+        {
+            if (Game::get().levelMap()->isInBounds(next))
+            {
+                if (!isColliding(map[next.x][next.y]))
+                    setMapPosition({mapPosition().x, newPosition.y});
+                else
+                {
+                    while (isColliding(map[next.x][next.y]))
+                        collider().setPosition(collider().position() - rawDirection * 0.005);
+
+                    setMapPosition(collider().position());
+                }
+            }
+            else
+            {
+                setMapPosition({mapPosition().x, newPosition.y});
+            }
+        }
+
+        collider().setPosition(mapPosition());
+
+        if (mapPosition() != startPosition)
+            queueAnimation(walkAnimationName_);
+
+
     }
 
     void Enemy::attack(GameObjRef<FPP_Player> player)
@@ -44,7 +116,7 @@ namespace game
         playAnimation();
 
         // TODO better ammo system
-        std::uniform_int_distribution<int> dist(0, 4);
+        static std::uniform_int_distribution<int> dist(0, 4);
         Game::get().player()->activeGun()->addAmmo(dist(Game::get().randEngine()));
     }
 
@@ -53,12 +125,23 @@ namespace game
     {
         AnimatedEntity::update();
 
-        if (isAlive() &&
-            squaredDistanceToPlayer() <= 0.81  /*&&
-            isColliding(*Game::get().player())*/)
+        if (isAlive())
         {
-            // std::cout << "COLLISION!: " << mapPosition_.x << " " << mapPosition_.y << std::endl;
-            Game::get().player()->takeHit(attackDamage_);
+            if (squaredDistanceToPlayer() <= 0.81 && squaredDistanceToPlayer() != 0)
+            {
+                Game::get().player()->takeHit(attackDamage_);
+
+            }
+
+            if (squaredDistanceToPlayer() != 0 && (squaredDistanceToPlayer() <= 64 || health_ < maxHealth_))
+            {
+                sf::Vector2d playerDirection{Game::get().player()->position() - mapPosition()};
+
+                double distance = movementSpeed_ * GameTime::deltaTime() / 1000;
+
+                walk(playerDirection, distance);
+            }
+
         }
 
     }
@@ -67,5 +150,7 @@ namespace game
     {
         queueAnimation(bleedAnimationName_);
         queueAnimation(idleAnimationName_);
+        while (activeAnimationName() == walkAnimationName_)
+            forceNextAnimation();
     }
 }

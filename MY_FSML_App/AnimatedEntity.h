@@ -1,4 +1,6 @@
 #pragma once
+#include <iostream>
+#include <ostream>
 #include <queue>
 #include <unordered_map>
 #include <xstring>
@@ -50,7 +52,10 @@ namespace game
 
         void queueAnimation(std::string name)
         {
-            nextNameQueue_.push(std::move(name));
+            if ((nextNameQueue_.empty() || nextNameQueue_.back() != name))
+            {
+                nextNameQueue_.push(std::move(name));
+            }
         }
 
         [[nodiscard]]
@@ -88,6 +93,20 @@ namespace game
         void forceStopAnimation()
         {
             animations_.at(activeAnimationName_).stop();
+        }
+
+        void forceNextAnimation()
+        {
+            auto& activeAnimation = animations_.at(activeAnimationName_);
+            if (!nextNameQueue_.empty())
+            {
+                activeAnimation.pause();
+                activeAnimationName_ = std::move(nextNameQueue_.front());
+                nextNameQueue_.pop();
+
+                animations_.at(activeAnimationName_).stop();
+                animations_.at(activeAnimationName_).play();
+            }
         }
 
     };

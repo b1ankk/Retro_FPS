@@ -15,6 +15,9 @@ namespace game
 
         friend Game;
 
+        /**
+         * \brief The time in milliseconds it took to generate the last frame.
+         */
         static double deltaTime()
         {
             return deltaTime_;

@@ -9,18 +9,18 @@ namespace game
 {
     class Enemy : public AnimatedEntity
     {
-
     public:
         Enemy(const std::shared_ptr<const sf::Texture>& texture,
               const sf::Vector2d&                       mapPosition,
               const int                                 maxHealth,
-              const double                              attackDamage)
+              const double                              attackDamage,
+              const double                              movementSpeed = 1.0)
             : AnimatedEntity(texture, mapPosition),
               maxHealth_(maxHealth),
               health_(maxHealth_),
-              attackDamage_(attackDamage)
+              attackDamage_(attackDamage),
+              movementSpeed_(movementSpeed)
         {
-
         }
 
         virtual void takeHit(double damage);
@@ -31,6 +31,7 @@ namespace game
         const int maxHealth_;
         int       health_;
         double    attackDamage_;
+        double    movementSpeed_;
 
         bool isBleeding{false};
         bool isAlive_{true};
