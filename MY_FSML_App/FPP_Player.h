@@ -48,7 +48,7 @@ namespace game
 
         // GAME MECHANICS
 
-        int health_{100};
+        int health_{150};
         int armor_{0};
 
         sf::Time hitDelayTime_{sf::seconds(1)};

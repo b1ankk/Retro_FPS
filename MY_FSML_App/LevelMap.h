@@ -3,7 +3,7 @@
 #include <vector>
 #include <memory>
 
-
+#include "MapTile.h"
 #include "Enemy.h"
 #include "EntityVector.h"
 
@@ -69,11 +69,19 @@ namespace game
             entities_.add(std::static_pointer_cast<Entity, Enemy>(enemy));
         }
 
-
+        [[nodiscard]]
         sf::Vector2i size() const
         {
             return size_;
         }
+
+        [[nodiscard]]
+        bool isInBounds(const sf::Vector2i& position) const
+        {
+            return  position.x >= 0 && static_cast<unsigned>(position.x) < mapData_->size() &&
+                    position.y >= 0 && static_cast<unsigned>(position.y) < (*mapData_)[position.x].size();
+        }
+
 
         static const IntMap TEST_MAP;
         

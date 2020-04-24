@@ -52,19 +52,58 @@ namespace game
         sf::Vector2i newGridPos{static_cast<sf::Vector2i>(newPosition)};
         auto& map = *Game::get().levelMap()->mapData();
 
+        // bool isCollidingX = !isColliding(map[newGridPos.x][static_cast<int>(position_.y)]);
+        // bool isCollidingXNext = !isColliding(
+        //     map[newGridPos.x + static_cast<size_t>(copysign(1, rawDirection.x))][static_cast<int>(position_.y)]);
+        //
+        // bool isCollidingY = !isColliding(map[static_cast<int>(position_.x)][newGridPos.y]);
+        // bool isCollidingYNext = !isColliding(
+        //     map[static_cast<int>(position_.x)][newGridPos.y + static_cast<size_t>(copysign(1, rawDirection.y))]);
+        //
+        // if (!isCollidingX && !isCollidingY)
+
+        sf::Vector2i next{
+            newGridPos.x + static_cast<int>(copysign(1, rawDirection.x)),
+            newGridPos.y + static_cast<int>(copysign(1, rawDirection.y))
+        };
+
+
         collider().setPosition(newPosition.x, position_.y);
-        if (!isColliding(map[newGridPos.x][static_cast<int>(position_.y)]) &&
-            !isColliding(map[newGridPos.x + static_cast<size_t>(copysign(1, rawDirection.x))][static_cast<int>(position_.y)]))
-            position_.x = newPosition.x;
+        if (/*!isColliding(map[newGridPos.x][static_cast<int>(position_.y)]) &&*/
+            !isColliding(map[next.x][static_cast<int>(position_.y)]))
+            if (Game::get().levelMap()->isInBounds(next))
+                if (!isColliding(map[next.x][next.y]))
+                    position_.x = newPosition.x;
+                else
+                {
+                    while (isColliding(map[next.x][next.y]))
+                        collider().setPosition(collider().position() - rawDirection * 0.005);
+
+                    position_ = collider().position();
+                }
+            else
+                position_.x = newPosition.x;
         else
             position_.x = newGridPos.x + (rawDirection.x < 0 ? 0.25 : 0.75);
 
         collider().setPosition(position_.x, newPosition.y);
-        if (!isColliding(map[static_cast<int>(position_.x)][newGridPos.y]) && 
-            !isColliding(map[static_cast<int>(position_.x)][newGridPos.y + static_cast<size_t>(copysign(1, rawDirection.y))]))
-            position_.y = newPosition.y;
-        else if (map[static_cast<int>(position_.x)][newGridPos.y].isTraversable())
+        if (/*!isColliding(map[static_cast<int>(position_.x)][newGridPos.y]) && */
+            !isColliding(map[static_cast<int>(position_.x)][next.y]))
+            if (Game::get().levelMap()->isInBounds(next))
+                if (!isColliding(map[next.x][next.y]))
+                    position_.y = newPosition.y;
+                else
+                {
+                    while (isColliding(map[next.x][next.y]))
+                        collider().setPosition(collider().position() - rawDirection * 0.005);
+
+                    position_ = collider().position();
+                }
+            else
+                position_.y = newPosition.y;
+        else
             position_.y = newGridPos.y + (rawDirection.y < 0 ? 0.25 : 0.75);
+
 
         collider().setPosition(position_);
        
