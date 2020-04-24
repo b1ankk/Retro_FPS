@@ -127,21 +127,27 @@ namespace game
 
         if (isAlive())
         {
-            if (squaredDistanceToPlayer() <= 0.81 && squaredDistanceToPlayer() != 0)
+            if (squaredDistanceToPlayer() != 0)
             {
-                Game::get().player()->takeHit(attackDamage_);
+                if (squaredDistanceToPlayer() <= 0.81)
+                {
+                    Game::get().player()->takeHit(attackDamage_);
+                }
 
+                if (squaredDistanceToPlayer() <= 64 || health_ < maxHealth_)
+                {
+                    followPlayer_ = true;
+                }
+
+                if (followPlayer_)
+                {
+                    sf::Vector2d playerDirection{Game::get().player()->position() - mapPosition()};
+
+                    double distance = movementSpeed_ * GameTime::deltaTime() / 1000.;
+
+                    walk(playerDirection, distance);
+                }
             }
-
-            if (squaredDistanceToPlayer() != 0 && (squaredDistanceToPlayer() <= 64 || health_ < maxHealth_))
-            {
-                sf::Vector2d playerDirection{Game::get().player()->position() - mapPosition()};
-
-                double distance = movementSpeed_ * GameTime::deltaTime() / 1000;
-
-                walk(playerDirection, distance);
-            }
-
         }
 
     }

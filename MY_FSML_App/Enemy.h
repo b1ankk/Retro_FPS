@@ -35,6 +35,7 @@ namespace game
 
         bool isBleeding{false};
         bool isAlive_{true};
+        bool followPlayer_{false};
 
         std::string idleAnimationName_;
         std::string walkAnimationName_;

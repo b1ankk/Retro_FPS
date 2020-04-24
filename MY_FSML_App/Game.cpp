@@ -180,7 +180,7 @@ namespace game
             sf::Vector2d{0, 0},
             100,
             24,
-            1.2
+            1.3
         );
         Animation animation;
 

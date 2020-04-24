@@ -468,6 +468,9 @@ namespace game
             rightPtr--;
         }
 
+        if (rightPtr < leftPtr)
+            return {-1, -1};
+
         return std::make_pair(resultL, resultR);
     }
 
@@ -591,6 +594,11 @@ namespace game
         sf::RenderStates rs{};
         rs.transform.translate(10, 20);
         Game::get().window()->draw(text, rs);
+    }
+
+    void Renderer::drawGameOverScreen()
+    {
+        
     }
 
 

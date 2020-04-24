@@ -134,6 +134,8 @@ namespace game
 
         // METHODS
 
+        void initVertices();
+
         void drawPrimitiveWorld();
 
         void drawTexturedWorld(const int& start, const int& end);
@@ -142,7 +144,7 @@ namespace game
 
         void drawFPS();
 
-        void initVertices();
+        void drawGameOverScreen();
 
 
         std::pair<double, double> findTransitionPoint(double left, double right, const double perpDist);

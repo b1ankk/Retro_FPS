@@ -51,7 +51,7 @@ namespace game
         int health_{150};
         int armor_{0};
 
-        sf::Time hitDelayTime_{sf::seconds(1)};
+        sf::Time hitDelayTime_{sf::seconds(0.65f)};
         sf::Clock hitDelayClock_;
         Renderer::FilterColor hitFilterColor_{sf::Color{0xff00004f}, 500ms};
 
