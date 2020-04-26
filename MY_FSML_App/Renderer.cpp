@@ -118,7 +118,7 @@ namespace game
         );
 
         auto fill = std::make_shared<FillerUIE>(
-            sf::Vector2i{int(float(width_) / scalerX) - 3 * paneWidth, paneHeight},
+            sf::Vector2i{static_cast<int>(ceil(float(width_) / scalerX - 3. * paneWidth)), paneHeight},
             sf::Vector2i{int(2 * scaledWidth), height_ - int(scaledHeight)}
         );
         fill->setScale(scalerX, scalerY);

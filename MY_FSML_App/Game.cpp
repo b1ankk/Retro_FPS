@@ -32,7 +32,7 @@ namespace game
     {
         initRandEngine();
         setUpGame();
-        spawnRandomEnemies(256);
+        spawnRandomEnemies(192);
 
         int fpsCounter{0};
 
@@ -161,7 +161,8 @@ namespace game
         player_ = {
             make_shared<FPP_Player>(
                 INITIAL_PLAYER_POS,
-                INITIAL_PLAYER_DIR
+                INITIAL_PLAYER_DIR,
+                sf::Vector2d{0, WINDOW_WIDTH / 2. / WINDOW_HEIGHT}
             )
         };
         player_->rotate(90);
