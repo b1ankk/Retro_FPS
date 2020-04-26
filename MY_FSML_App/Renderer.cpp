@@ -598,7 +598,22 @@ namespace game
 
     void Renderer::drawGameOverScreen()
     {
+        screenFilter_.setFillColor(sf::Color::Red);
+        sf::Text text{
+            "GAME OVER",
+            *Game::get().fontManager()->getFontForId(0),
+            80u
+        };
+        text.setFillColor(sf::Color::White);
+        text.setOutlineThickness(4);
+        text.setOutlineColor(sf::Color::Black);
+        text.setPosition(static_cast<float>(width_) / 2.f, static_cast<float>(height_) / 2.f);
+        auto boundRectValue = text.getGlobalBounds();
+        text.setOrigin(boundRectValue.width / 2, boundRectValue.height / 2);
         
+        Game::get().window()->draw(screenFilter_);
+        Game::get().window()->draw(text);
+        Game::get().window()->display();
     }
 
 

@@ -77,6 +77,7 @@ namespace game
 
         // FIELDS
         int lastFps_{};
+        bool gameOver_{false};
 
         std::mt19937 randEngine_;
 
@@ -175,6 +176,10 @@ namespace game
             return randEngine_;
         }
 
+        void setGameOver()
+        {
+            gameOver_ = true;
+        }
 
     };
 }

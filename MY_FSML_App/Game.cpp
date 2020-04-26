@@ -20,6 +20,7 @@
 namespace game
 {
     using namespace std;
+    using namespace chrono_literals;
 
     const sf::Vector2i Game::SCREEN_MIDDLE{WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2};
     const int          Game::RENDERING_WIDTH{WINDOW_WIDTH};
@@ -79,6 +80,31 @@ namespace game
                     }
                 }
             }
+
+            if (gameOver_)
+            {
+                renderer_->drawGameOverScreen();
+                this_thread::sleep_for(1s);
+                while (gameOver_)
+                {
+                    while (window_->pollEvent(event))
+                    {
+                        if (event.type == sf::Event::KeyPressed)
+                        {
+                            if (event.key.code == sf::Keyboard::Escape ||
+                                event.key.code == sf::Keyboard::Enter ||
+                                event.key.code == sf::Keyboard::Space)
+                            {
+                                window_->close();
+                                return;
+                            }
+                        }
+                    }
+                    this_thread::sleep_for(100ms);
+                }
+            }
+
+
             inputHandler_->handleInput();
 
             levelMap_->update();
@@ -185,11 +211,11 @@ namespace game
         Animation animation;
 
         string animName = "frogmon_idle";
-        animation = animationManager()->getAnimationForName(animName);
+        animation       = animationManager()->getAnimationForName(animName);
         frogmon.addAnimation(animName, std::move(animation));
         frogmon.setActiveAnimation(animName);
 
-        animName = "frogmon_walk";
+        animName  = "frogmon_walk";
         animation = animationManager()->getAnimationForName(animName);
         frogmon.addAnimation(animName, std::move(animation));
 
@@ -221,23 +247,33 @@ namespace game
 
     void Game::spawnRandomEnemies(int amount)
     {
-        uniform_int_distribution<int>     randX{1, levelMap_->size().x - 1};
-        uniform_int_distribution<int>     randY{1, levelMap_->size().y - 1};
+        deque<sf::Vector2i> emptyPlaces;
+        for (int x = 0; x < levelMap_->size().x; ++x)
+            for (int y = 0; y < levelMap_->size().y; ++y)
+                if (levelMap_->mapData()->at(x).at(y).isTraversable())
+                    emptyPlaces.emplace_back(x, y);
+
+
+        uniform_int_distribution<int>     randPosIndex{0, static_cast<int>(emptyPlaces.size()) - 1};
         uniform_real_distribution<double> randOffsetRangeX{0.3, 0.68};
         uniform_real_distribution<double> randOffsetRangeY{0.3, 0.68};
 
+
         while (levelMap_->enemies().size() < amount)
         {
-            int    x       = randX(randEngine_);
-            int    y       = randY(randEngine_);
+            int posIndex = randPosIndex(randEngine_);
+
+            int x = emptyPlaces[posIndex].x;
+            int y = emptyPlaces[posIndex].y;
+
             double offsetX = randOffsetRangeX(randEngine_);
             double offsetY = randOffsetRangeY(randEngine_);
 
-            double relativeX = player_->position().x - x;
-            double relativeY = player_->position().y - y;
+            double relativeX    = player_->position().x - x;
+            double relativeY    = player_->position().y - y;
             double distToPlayer = sqrt(relativeX * relativeX + relativeY * relativeY);
 
-            if (distToPlayer > 5  &&
+            if (distToPlayer > 5 &&
                 levelMap_->mapData()->at(x).at(y).isTraversable())
             {
                 std::shared_ptr<Enemy> enemy{make_shared<Enemy>(enemyPatterns_.at("frogmon"))};

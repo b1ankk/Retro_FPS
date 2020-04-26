@@ -133,6 +133,6 @@ namespace game
 
     void FPP_Player::die()
     {
-        // TODO dying
+        Game::get().setGameOver();
     }
 }

@@ -32,6 +32,8 @@ namespace game
 
         void renderFrame();
         void initUI();
+        void drawGameOverScreen();
+
 
 
         class FilterColor
@@ -143,9 +145,6 @@ namespace game
         void drawEntities();
 
         void drawFPS();
-
-        void drawGameOverScreen();
-
 
         std::pair<double, double> findTransitionPoint(double left, double right, const double perpDist);
 

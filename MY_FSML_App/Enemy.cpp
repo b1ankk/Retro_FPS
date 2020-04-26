@@ -139,7 +139,7 @@ namespace game
                     followPlayer_ = true;
                 }
 
-                if (followPlayer_)
+                if (followPlayer_ && squaredDistanceToPlayer() > 0.16)
                 {
                     sf::Vector2d playerDirection{Game::get().player()->position() - mapPosition()};
 
