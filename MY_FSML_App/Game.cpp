@@ -32,12 +32,9 @@ namespace game
     {
         initRandEngine();
         setUpGame();
-        spawnRandomEnemies(128);
+        spawnRandomEnemies(256);
 
         int fpsCounter{0};
-
-        // TODO switching FPS counter
-        renderer_->setDrawFpsCounter(true);
 
         double targetFPS{300.};
 
@@ -206,7 +203,8 @@ namespace game
             sf::Vector2d{0, 0},
             100,
             24,
-            1.3
+            1.6,
+            8.
         );
         Animation animation;
 
@@ -249,10 +247,20 @@ namespace game
     {
         deque<sf::Vector2i> emptyPlaces;
         for (int x = 0; x < levelMap_->size().x; ++x)
+        {
             for (int y = 0; y < levelMap_->size().y; ++y)
+            {
                 if (levelMap_->mapData()->at(x).at(y).isTraversable())
-                    emptyPlaces.emplace_back(x, y);
+                {
+                    double relativeX    = player_->position().x - x;
+                    double relativeY    = player_->position().y - y;
+                    double distToPlayer = sqrt(relativeX * relativeX + relativeY * relativeY);
 
+                    if (distToPlayer > 8)
+                        emptyPlaces.emplace_back(x, y);
+                }
+            }
+        }
 
         uniform_int_distribution<int>     randPosIndex{0, static_cast<int>(emptyPlaces.size()) - 1};
         uniform_real_distribution<double> randOffsetRangeX{0.3, 0.68};
@@ -269,17 +277,9 @@ namespace game
             double offsetX = randOffsetRangeX(randEngine_);
             double offsetY = randOffsetRangeY(randEngine_);
 
-            double relativeX    = player_->position().x - x;
-            double relativeY    = player_->position().y - y;
-            double distToPlayer = sqrt(relativeX * relativeX + relativeY * relativeY);
-
-            if (distToPlayer > 5 &&
-                levelMap_->mapData()->at(x).at(y).isTraversable())
-            {
-                std::shared_ptr<Enemy> enemy{make_shared<Enemy>(enemyPatterns_.at("frogmon"))};
-                enemy->setMapPosition(sf::Vector2d(x + offsetX, y + offsetY));
-                levelMap_->addEnemy(enemy);
-            }
+            std::shared_ptr<Enemy> enemy{make_shared<Enemy>(enemyPatterns_.at("frogmon"))};
+            enemy->setMapPosition(sf::Vector2d(x + offsetX, y + offsetY));
+            levelMap_->addEnemy(enemy);
         }
     }
 }

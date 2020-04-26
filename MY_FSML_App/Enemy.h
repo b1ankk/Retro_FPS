@@ -11,15 +11,18 @@ namespace game
     {
     public:
         Enemy(const std::shared_ptr<const sf::Texture>& texture,
-              const sf::Vector2d&                       mapPosition,
+              const sf::Vector2d& mapPosition,
               const int                                 maxHealth,
               const double                              attackDamage,
-              const double                              movementSpeed = 1.0)
+              const double                              movementSpeed = 1.0,
+              const double sightRadius = 8.)
             : AnimatedEntity(texture, mapPosition),
               maxHealth_(maxHealth),
               health_(maxHealth_),
               attackDamage_(attackDamage),
-              movementSpeed_(movementSpeed)
+              movementSpeed_(movementSpeed),
+              sightRadius_(sightRadius),
+              sightRadiusSquared_(sightRadius_ * sightRadius_)
         {
         }
 
@@ -32,6 +35,8 @@ namespace game
         int       health_;
         double    attackDamage_;
         double    movementSpeed_;
+        double sightRadius_;
+        double sightRadiusSquared_;
 
         bool isBleeding{false};
         bool isAlive_{true};

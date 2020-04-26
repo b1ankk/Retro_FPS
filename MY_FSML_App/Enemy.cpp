@@ -116,7 +116,7 @@ namespace game
         playAnimation();
 
         // TODO better ammo system
-        static std::uniform_int_distribution<int> dist(0, 4);
+        static std::uniform_int_distribution<int> dist(0, 3);
         Game::get().player()->activeGun()->addAmmo(dist(Game::get().randEngine()));
     }
 
@@ -134,7 +134,7 @@ namespace game
                     Game::get().player()->takeHit(attackDamage_);
                 }
 
-                if (squaredDistanceToPlayer() <= 64 || health_ < maxHealth_)
+                if (squaredDistanceToPlayer() <= sightRadiusSquared_ || health_ < maxHealth_)
                 {
                     followPlayer_ = true;
                 }

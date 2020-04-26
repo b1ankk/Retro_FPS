@@ -333,19 +333,19 @@
               "frames": [
                 {
                   "frame_name": "frogmon_walk_00",
-                  "time": 0.3
+                  "time": 0.25
                 },
                 {
                   "frame_name": "frogmon_walk_01",
-                  "time": 0.6
+                  "time": 0.5
                 },
                 {
                   "frame_name": "frogmon_walk_02",
-                  "time": 0.9
+                  "time": 0.75
                 },
                 {
                   "frame_name": "frogmon_walk_03",
-                  "time": 1.2
+                  "time": 1.0
                 }
               ]
             },
