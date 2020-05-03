@@ -18,7 +18,7 @@ namespace game
     void InputHandler::setup()
     {
         Game::get().window()->setMouseCursorVisible(false);
-        sf::Mouse::setPosition(Game::SCREEN_MIDDLE, *Game::get().window());
+        sf::Mouse::setPosition(Game::get().screenMiddle(), *Game::get().window());
     }
 
 
@@ -35,14 +35,14 @@ namespace game
     void InputHandler::handleMouseLook()
     {
         // X-AXIS LOOK
-        int offsetX = sf::Mouse::getPosition(*Game::get().window()).x - Game::SCREEN_MIDDLE.x;
+        int offsetX = sf::Mouse::getPosition(*Game::get().window()).x - Game::get().screenMiddle().x;
         double degrees = static_cast<double>(offsetX) / Game::get().window()->getSize().x * mouseLookSensitivity_.x;
         Game::get().player()->rotate(degrees);
  
         // TODO Y-AXIS LOOK
 
 
-        sf::Mouse::setPosition(Game::SCREEN_MIDDLE, *Game::get().window());
+        sf::Mouse::setPosition(Game::get().screenMiddle(), *Game::get().window());
     }
 
     void InputHandler::handleKeyMovement()

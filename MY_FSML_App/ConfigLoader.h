@@ -20,7 +20,7 @@ namespace game
         }
 
 
-        Config load();
+        const Config* load();
 
     private:
         std::string      fileName;
@@ -67,8 +67,8 @@ namespace game
 [Window]
 ; 0 - window, 1 - borderless window, 2 - fullscreen
 openMode = 2 
-width = 1080
-height = 1920
+width = 1920
+height = 1080
 maxFps = 0
 )";
 

@@ -205,5 +205,8 @@
     <None Include="asset_info.json">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="config.ini">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

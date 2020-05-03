@@ -4,7 +4,7 @@ namespace game
 {
     using namespace std;
 
-    Config ConfigLoader::load()
+    const Config* ConfigLoader::load()
     {
         open();
         parse();
@@ -17,7 +17,7 @@ namespace game
 
         int wOpenMode;
         readValue(SECTION_WINDOW, "openMode", wOpenMode);
-        if (wOpenMode < 0 || wOpenMode > 3)
+        if (wOpenMode < 0 || wOpenMode > 2)
             readDefaultValue(SECTION_WINDOW, "openMode", wOpenMode);
 
         int wMaxFps;
@@ -27,7 +27,7 @@ namespace game
         
 
 
-        const Config config =
+        const Config* config = new Config
         {
             wWidth,
             wHeight,

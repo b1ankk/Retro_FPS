@@ -22,27 +22,27 @@ namespace game
     using namespace std;
     using namespace chrono_literals;
 
-    const sf::Vector2i Game::SCREEN_MIDDLE{WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2};
-    const int          Game::RENDERING_WIDTH{WINDOW_WIDTH};
-    const int          Game::RENDERING_HEIGHT{WINDOW_HEIGHT};
-
     const std::string Game::DEFAULT_FONT_NAME = "Pixeled";
 
     void Game::start()
     {
+        assert(config_ != nullptr);
+
         initRandEngine();
         setUpGame();
         spawnRandomEnemies(192);
 
         int fpsCounter{0};
 
-        double targetFPS{300.};
+        double targetFPS{
+            config_->wMaxFps != 0 ? config_->wMaxFps : std::numeric_limits<decltype(targetFPS)>::max()
+        };
 
         sf::Time targetFrameTime{
             sf::microseconds(static_cast<sf::Int64>(1'000'000. / targetFPS))
         };
         sf::Time lastFrameTime;
-        game::GameTime::deltaTime_ = lastFrameTime.asMicroseconds() / 1000.f;
+        GameTime::deltaTime_ = lastFrameTime.asMicroseconds() / 1000.f;
 
         sf::Clock fpsClock;
         sf::Clock frameClock;
@@ -131,9 +131,20 @@ namespace game
 
     void Game::setUpGame()
     {
+        int style;
+        switch (config_->wOpenMode)
+        {
+            case 0: style = sf::Style::Default;     break;
+            case 1: style = sf::Style::None;        break;
+            default: style = sf::Style::Fullscreen; break;
+        }
+
         window_ = {
             make_shared<sf::RenderWindow>(
-                sf::VideoMode{WINDOW_WIDTH, WINDOW_HEIGHT},
+                sf::VideoMode{
+                    static_cast<unsigned>(config_->wResWidth),
+                    static_cast<unsigned>(config_->wResHeight)
+                },
                 "MyGame",
                 sf::Style::Fullscreen
             )
@@ -146,8 +157,8 @@ namespace game
 
         renderer_ = {
             make_shared<Renderer>(
-                RENDERING_WIDTH,
-                RENDERING_HEIGHT
+                config_->wResWidth,
+                config_->wResHeight
             )
         };
         renderer_->initUI();
@@ -162,7 +173,7 @@ namespace game
             make_shared<FPP_Player>(
                 INITIAL_PLAYER_POS,
                 INITIAL_PLAYER_DIR,
-                sf::Vector2d{0, WINDOW_WIDTH / 2. / WINDOW_HEIGHT}
+                sf::Vector2d{0, config_->wResWidth / 2. / config_->wResHeight}
             )
         };
         player_->rotate(90);

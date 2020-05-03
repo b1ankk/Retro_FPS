@@ -7,6 +7,7 @@
 #include "EntityVector.h"
 #include "GameObjRef.h"
 #include "AssetManager.h"
+#include "ConfigLoader.h"
 #include "Enemy.h"
 #include "Renderer.h"
 
@@ -27,16 +28,7 @@ namespace game
     public:
         // CONSTANTS
 
-        static const int WINDOW_WIDTH{1920};
-        static const int WINDOW_HEIGHT{1080};
-        static const sf::Vector2i SCREEN_MIDDLE;
-
-        static const int RENDERING_WIDTH;
-        static const int RENDERING_HEIGHT;
-
         static const std::string DEFAULT_FONT_NAME;
-
-
 
 
         const sf::Vector2d INITIAL_PLAYER_POS{22, 2};
@@ -44,8 +36,16 @@ namespace game
 
         const sf::Time SECOND{sf::seconds(1.f)};
 
-        Game(const Game&) = delete;
+        // CONSTRUCTORS & STATIC INITIALIZERS
 
+        Game(const Game&) = delete;
+        Game(Game&&) = delete;
+
+        void setConfig(const Config* config)
+        {
+            config_.reset(config);
+            screenMiddle_ = {config_->wResWidth / 2, config_->wResHeight / 2};
+        }
         void start();
 
         static Game& get()
@@ -61,7 +61,10 @@ namespace game
 
         //////// GAME OBJECTS ////////
 
-        // GAME OBJ INSTANCES
+        //CONFIG HOLDER
+        std::unique_ptr<const Config> config_{nullptr};
+
+        // BASIC MEMBERS
 
         std::shared_ptr<sf::RenderWindow> window_{};
         std::shared_ptr<AssetManager>     assetManager_{};
@@ -71,11 +74,12 @@ namespace game
 
         std::shared_ptr<LevelMap> levelMap_{};
 
-
         std::unordered_map<std::string, const Enemy> enemyPatterns_;
 
 
         // FIELDS
+
+        sf::Vector2i screenMiddle_;
         int lastFps_{};
         bool gameOver_{false};
 
@@ -171,6 +175,12 @@ namespace game
             return lastFps_;
         }
 
+        [[nodiscard]]
+        const sf::Vector2i& screenMiddle() const
+        {
+            return screenMiddle_;
+        }
+
         std::mt19937& randEngine()
         {
             return randEngine_;
@@ -181,6 +191,7 @@ namespace game
             gameOver_ = true;
         }
 
+        
     };
 }
 
