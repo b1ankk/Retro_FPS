@@ -257,6 +257,7 @@ namespace game
 
     void Game::spawnRandomEnemies(int amount)
     {
+        // list possible spawn positions
         deque<sf::Vector2i> emptyPlaces;
         for (int x = 0; x < levelMap_->size().x; ++x)
         {
@@ -274,13 +275,14 @@ namespace game
             }
         }
 
-        uniform_int_distribution<int>     randPosIndex{0, static_cast<int>(emptyPlaces.size()) - 1};
         uniform_real_distribution<double> randOffsetRangeX{0.3, 0.68};
         uniform_real_distribution<double> randOffsetRangeY{0.3, 0.68};
 
 
-        while (levelMap_->enemies().size() < amount)
+        while (levelMap_->enemies().size() < amount && !emptyPlaces.empty())
         {
+            uniform_int_distribution<int> randPosIndex{0, static_cast<int>(emptyPlaces.size()) - 1};
+
             int posIndex = randPosIndex(randEngine_);
 
             int x = emptyPlaces[posIndex].x;
@@ -292,6 +294,9 @@ namespace game
             std::shared_ptr<Enemy> enemy{make_shared<Enemy>(enemyPatterns_.at("frogmon"))};
             enemy->setMapPosition(sf::Vector2d(x + offsetX, y + offsetY));
             levelMap_->addEnemy(enemy);
+
+            swap(emptyPlaces[posIndex], *(emptyPlaces.end() - 1));
+            emptyPlaces.pop_back();
         }
     }
 }
