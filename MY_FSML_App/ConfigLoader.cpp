@@ -25,14 +25,18 @@ namespace game
         if (wMaxFps < 0)
             readDefaultValue(SECTION_WINDOW, "maxFps", wMaxFps);
         
-
+        double iMouseSensitivityX;
+        readValue(SECTION_INPUT, "mouseSensitivityX", iMouseSensitivityX);
+        if (wMaxFps < 0)
+            readDefaultValue(SECTION_INPUT, "mouseSensitivityX", iMouseSensitivityX);
 
         const Config* config = new Config
         {
             wWidth,
             wHeight,
             wOpenMode,
-            wMaxFps
+            wMaxFps,
+            iMouseSensitivityX
         };
 
         return config;

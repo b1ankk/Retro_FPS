@@ -166,7 +166,7 @@ namespace game
         inputHandler_ = {
             make_shared<InputHandler>()
         };
-        inputHandler_->setMouseLookSensitivityX(120);
+        inputHandler_->setMouseLookSensitivityX(config_->iMouseSensitivityX);
         inputHandler_->setMovementSpeed(4);
 
         player_ = {
@@ -216,7 +216,7 @@ namespace game
             100,
             24,
             1.6,
-            8.
+            6.
         );
         Animation animation;
 

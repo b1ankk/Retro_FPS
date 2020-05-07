@@ -62,6 +62,7 @@ namespace game
 
         const std::string SECTION_DEFAULT = "DEFAULT";
         const std::string SECTION_WINDOW = "Window";
+        const std::string SECTION_INPUT = "Input";
 
         const std::string baseConfPattern = 1 + R"(
 [Window]
@@ -70,6 +71,9 @@ openMode = 2
 width = 1920
 height = 1080
 maxFps = 0
+
+[Input]
+mouseSensitivityX = 1.0
 )";
 
     };
@@ -80,6 +84,7 @@ maxFps = 0
         const int wResHeight;
         const int wOpenMode;
         const int wMaxFps;
+        const double iMouseSensitivityX;
     };
 
 }

@@ -36,7 +36,7 @@ namespace game
     {
         // X-AXIS LOOK
         int offsetX = sf::Mouse::getPosition(*Game::get().window()).x - Game::get().screenMiddle().x;
-        double degrees = static_cast<double>(offsetX) / Game::get().window()->getSize().x * mouseLookSensitivity_.x;
+        double degrees = static_cast<double>(offsetX) / Game::get().window()->getSize().x * mouseLookSensitivity_.x * 100.;
         Game::get().player()->rotate(degrees);
  
         // TODO Y-AXIS LOOK
